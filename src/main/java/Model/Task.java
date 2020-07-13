@@ -1,42 +1,66 @@
 package Model;
 
-import java.util.List;
-
 public class Task {
-    ProjectName prName;
-    String title;
-    List<Person> phuTrach;
-    String startDate;
-    String expectedDate;
-    String finishDate;
-    int process;
+    private String prName;
+    private String title;
+    private String phuTrach;
+    private String startDate;
+    private String deadline;
+    private String finishDate;
+    private int expectedTime;
+    private int finishTime;
+    private int process;
 
     public Task() {
     }
 
-    public Task(ProjectName prName, String title, List<Person> phuTrach, String startDate, String expectedDate, String finishDate, int process) {
+    public Task(String prName, String title, String phuTrach, String startDate, String deadline) {
         this.prName = prName;
         this.title = title;
         this.phuTrach = phuTrach;
         this.startDate = startDate;
-        this.expectedDate = expectedDate;
+        this.deadline = deadline;
+    }
+
+    public Task(String prName, String title, String phuTrach, String startDate, String deadline, String finishDate, int process) {
+        this.prName = prName;
+        this.title = title;
+        this.phuTrach = phuTrach;
+        this.startDate = startDate;
+        this.deadline = deadline;
         this.finishDate = finishDate;
         this.process = process;
     }
 
-    public List<Person> getPhuTrach() {
+    public int getExpectedTime() {
+        return expectedTime;
+    }
+
+    public void setExpectedTime(int expectedTime) {
+        this.expectedTime = expectedTime;
+    }
+
+    public int getFinishTime() {
+        return finishTime;
+    }
+
+    public void setFinishTime(int finishTime) {
+        this.finishTime = finishTime;
+    }
+
+    public String getPhuTrach() {
         return phuTrach;
     }
 
-    public void setPhuTrach(List<Person> phuTrach) {
+    public void setPhuTrach(String phuTrach) {
         this.phuTrach = phuTrach;
     }
 
-    public ProjectName getPrName() {
+    public String getPrName() {
         return prName;
     }
 
-    public void setPrName(ProjectName prName) {
+    public void setPrName(String prName) {
         this.prName = prName;
     }
 
@@ -56,12 +80,12 @@ public class Task {
         this.startDate = startDate;
     }
 
-    public String getExpectedDate() {
-        return expectedDate;
+    public String getDeadline() {
+        return deadline;
     }
 
-    public void setExpectedDate(String expectedDate) {
-        this.expectedDate = expectedDate;
+    public void setDeadline(String deadline) {
+        this.deadline = deadline;
     }
 
     public String getFinishDate() {
