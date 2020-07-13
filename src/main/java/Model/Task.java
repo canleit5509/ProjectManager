@@ -1,9 +1,11 @@
 package Model;
 
+import java.util.List;
+
 public class Task {
     ProjectName prName;
     String title;
-    Person nguoiPhuTrach;
+    List<Person> phuTrach;
     String startDate;
     String expectedDate;
     String finishDate;
@@ -12,14 +14,22 @@ public class Task {
     public Task() {
     }
 
-    public Task(ProjectName prName, String title, Person nguoiPhuTrach, String startDate, String expectedDate, String finishDate, int process) {
+    public Task(ProjectName prName, String title, List<Person> phuTrach, String startDate, String expectedDate, String finishDate, int process) {
         this.prName = prName;
         this.title = title;
-        this.nguoiPhuTrach = nguoiPhuTrach;
+        this.phuTrach = phuTrach;
         this.startDate = startDate;
         this.expectedDate = expectedDate;
         this.finishDate = finishDate;
         this.process = process;
+    }
+
+    public List<Person> getPhuTrach() {
+        return phuTrach;
+    }
+
+    public void setPhuTrach(List<Person> phuTrach) {
+        this.phuTrach = phuTrach;
     }
 
     public ProjectName getPrName() {
@@ -36,14 +46,6 @@ public class Task {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public Person getNguoiPhuTrach() {
-        return nguoiPhuTrach;
-    }
-
-    public void setNguoiPhuTrach(Person nguoiPhuTrach) {
-        this.nguoiPhuTrach = nguoiPhuTrach;
     }
 
     public String getStartDate() {
