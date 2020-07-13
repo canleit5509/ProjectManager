@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="600.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.PrimaryViewController">
+   <children>
+      <TableView prefHeight="530.0" prefWidth="1211.0">
+        <columns>
+          <TableColumn prefWidth="123.0" text="Project Name" />
+          <TableColumn prefWidth="245.0" text="Task" />
+            <TableColumn prefWidth="111.0" text="Người Phụ trách" />
+            <TableColumn prefWidth="110.0" text="Ngày Bắt đầu" />
+            <TableColumn prefWidth="110.0" text="Deadline" />
+            <TableColumn prefWidth="110.0" text="Ngày hoàn thành" />
+            <TableColumn prefWidth="130.0" text="Thời gian" />
+            <TableColumn prefWidth="130.0" text="Thời gian hoàn thành" />
+            <TableColumn prefWidth="140.0" text="Phần trăm hoàn thành" />
+        </columns>
+      </TableView>
+      <Button layoutX="1048.0" layoutY="550.0" mnemonicParsing="false" text="Chi tiết" />
+      <Button layoutX="736.0" layoutY="550.0" mnemonicParsing="false" text="Xoá" />
+      <Button layoutX="386.0" layoutY="550.0" mnemonicParsing="false" text="Sửa" />
+      <Button layoutX="72.0" layoutY="550.0" mnemonicParsing="false" text="Thêm" />
+   </children>
+</AnchorPane>
