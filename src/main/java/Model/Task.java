@@ -4,7 +4,7 @@ public class Task {
     private String id;
     private String prName;
     private String title;
-    private String charger;
+    private String name;
     private String startDate;
     private String deadline;
     private String finishDate;
@@ -15,29 +15,29 @@ public class Task {
     public Task() {
     }
 
-    public Task(String prName, String title, String phuTrach, String startDate, String deadline) {
+    public Task(String prName, String title, String name, String startDate, String deadline) {
         this.prName = prName;
         this.title = title;
-        this.charger = phuTrach;
+        this.name = name;
         this.startDate = startDate;
         this.deadline = deadline;
     }
 
 
-    public Task(String prName, String title, String phuTrach, String startDate, String deadline, String finishDate, int process) {
+    public Task(String prName, String title, String name, String startDate, String deadline, String finishDate, int process) {
         this.prName = prName;
         this.title = title;
-        this.charger = phuTrach;
+        this.name = name;
         this.startDate = startDate;
         this.deadline = deadline;
         this.finishDate = finishDate;
         this.process = process;
     }
 
-    public Task(String prName, String title, String phuTrach, String startDate, String deadline, String finishDate, int expectedTime, int finishTime, int process) {
+    public Task(String prName, String title, String name, String startDate, String deadline, String finishDate, int expectedTime, int finishTime, int process) {
         this.prName = prName;
         this.title = title;
-        this.charger = phuTrach;
+        this.name = name;
         this.startDate = startDate;
         this.deadline = deadline;
         this.finishDate = finishDate;
@@ -62,12 +62,12 @@ public class Task {
         this.finishTime = finishTime;
     }
 
-    public String getPhuTrach() {
-        return charger;
+    public String getName() {
+        return name;
     }
 
-    public void setPhuTrach(String phuTrach) {
-        this.charger = phuTrach;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPrName() {
