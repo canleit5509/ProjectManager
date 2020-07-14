@@ -20,9 +20,9 @@
             <TableColumn fx:id="tcProcess" prefWidth="140.0" text="Phần trăm hoàn thành" />
         </columns>
       </TableView>
-      <Button layoutX="1048.0" layoutY="550.0" mnemonicParsing="false" text="Chi tiết" />
-      <Button layoutX="736.0" layoutY="550.0" mnemonicParsing="false" text="Xoá" />
-      <Button layoutX="386.0" layoutY="550.0" mnemonicParsing="false" text="Sửa" />
-      <Button layoutX="72.0" layoutY="550.0" mnemonicParsing="false" text="Thêm" />
+      <Button fx:id="btnDetail" layoutX="1048.0" layoutY="550.0" mnemonicParsing="false" text="Chi tiết" />
+      <Button fx:id="btnDel" layoutX="736.0" layoutY="550.0" mnemonicParsing="false" text="Xoá" />
+      <Button fx:id="btnEdit" layoutX="386.0" layoutY="550.0" mnemonicParsing="false" text="Sửa" />
+      <Button fx:id="btnAdd" onAction="#addTask" layoutX="72.0" layoutY="550.0" mnemonicParsing="false" text="Thêm" />
    </children>
 </AnchorPane>
