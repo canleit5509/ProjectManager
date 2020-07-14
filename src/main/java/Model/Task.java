@@ -10,7 +10,7 @@ public class Task {
     private String finishDate;
     private int expectedTime;
     private int finishTime;
-    private int process;
+    private int processed;
 
     public Task() {
     }
@@ -24,6 +24,7 @@ public class Task {
     }
 
 
+
     public Task(String prName, String title, String name, String startDate, String deadline, String finishDate, int process) {
         this.prName = prName;
         this.title = title;
@@ -31,8 +32,9 @@ public class Task {
         this.startDate = startDate;
         this.deadline = deadline;
         this.finishDate = finishDate;
-        this.process = process;
+        this.processed = processed;
     }
+
 
     public Task(String prName, String title, String name, String startDate, String deadline, String finishDate, int expectedTime, int finishTime, int process) {
         this.prName = prName;
@@ -43,7 +45,7 @@ public class Task {
         this.finishDate = finishDate;
         this.expectedTime = expectedTime;
         this.finishTime = finishTime;
-        this.process = process;
+        this.processed = processed;
     }
 
     public int getExpectedTime() {
@@ -65,6 +67,7 @@ public class Task {
     public String getName() {
         return name;
     }
+
 
     public void setName(String name) {
         this.name = name;
@@ -110,12 +113,12 @@ public class Task {
         this.finishDate = finishDate;
     }
 
-    public int getProcess() {
-        return process;
+    public int getProcessed() {
+        return processed;
     }
 
-    public void setProcess(int process) {
-        this.process = process;
+    public void setProcessed(int processed) {
+        this.processed = processed;
     }
 
     public String getId() {
