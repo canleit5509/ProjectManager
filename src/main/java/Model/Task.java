@@ -1,9 +1,10 @@
 package Model;
 
 public class Task {
+    private String id;
     private String prName;
     private String title;
-    private String phuTrach;
+    private String charger;
     private String startDate;
     private String deadline;
     private String finishDate;
@@ -17,18 +18,31 @@ public class Task {
     public Task(String prName, String title, String phuTrach, String startDate, String deadline) {
         this.prName = prName;
         this.title = title;
-        this.phuTrach = phuTrach;
+        this.charger = phuTrach;
         this.startDate = startDate;
         this.deadline = deadline;
     }
 
+
     public Task(String prName, String title, String phuTrach, String startDate, String deadline, String finishDate, int process) {
         this.prName = prName;
         this.title = title;
-        this.phuTrach = phuTrach;
+        this.charger = phuTrach;
         this.startDate = startDate;
         this.deadline = deadline;
         this.finishDate = finishDate;
+        this.process = process;
+    }
+
+    public Task(String prName, String title, String phuTrach, String startDate, String deadline, String finishDate, int expectedTime, int finishTime, int process) {
+        this.prName = prName;
+        this.title = title;
+        this.charger = phuTrach;
+        this.startDate = startDate;
+        this.deadline = deadline;
+        this.finishDate = finishDate;
+        this.expectedTime = expectedTime;
+        this.finishTime = finishTime;
         this.process = process;
     }
 
@@ -49,11 +63,11 @@ public class Task {
     }
 
     public String getPhuTrach() {
-        return phuTrach;
+        return charger;
     }
 
     public void setPhuTrach(String phuTrach) {
-        this.phuTrach = phuTrach;
+        this.charger = phuTrach;
     }
 
     public String getPrName() {
@@ -102,5 +116,13 @@ public class Task {
 
     public void setProcess(int process) {
         this.process = process;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }
