@@ -4,13 +4,13 @@ public class Task {
     private String id;
     private String prName;
     private String title;
-    private String charger;
+    private String name;
     private String startDate;
     private String deadline;
     private String finishDate;
     private int expectedTime;
     private int finishTime;
-    private int process;
+    private int processed;
 
     public Task() {
     }
@@ -18,32 +18,33 @@ public class Task {
     public Task(String prName, String title, String phuTrach, String startDate, String deadline) {
         this.prName = prName;
         this.title = title;
-        this.charger = phuTrach;
+        this.name = phuTrach;
         this.startDate = startDate;
         this.deadline = deadline;
     }
 
 
-    public Task(String prName, String title, String phuTrach, String startDate, String deadline, String finishDate, int process) {
+    public Task(String prName, String title, String phuTrach, String startDate, String deadline, String finishDate, int processed) {
         this.prName = prName;
         this.title = title;
-        this.charger = phuTrach;
+        this.name = phuTrach;
         this.startDate = startDate;
         this.deadline = deadline;
         this.finishDate = finishDate;
-        this.process = process;
+        this.processed = processed;
     }
 
-    public Task(String prName, String title, String phuTrach, String startDate, String deadline, String finishDate, int expectedTime, int finishTime, int process) {
+    public Task(String id, String prName, String title, String phuTrach, String startDate, String deadline, String finishDate, int expectedTime, int finishTime, int processed) {
+        this.id = id;
         this.prName = prName;
         this.title = title;
-        this.charger = phuTrach;
+        this.name = phuTrach;
         this.startDate = startDate;
         this.deadline = deadline;
         this.finishDate = finishDate;
         this.expectedTime = expectedTime;
         this.finishTime = finishTime;
-        this.process = process;
+        this.processed = processed;
     }
 
     public int getExpectedTime() {
@@ -62,12 +63,12 @@ public class Task {
         this.finishTime = finishTime;
     }
 
-    public String getPhuTrach() {
-        return charger;
+    public String getName() {
+        return name;
     }
 
-    public void setPhuTrach(String phuTrach) {
-        this.charger = phuTrach;
+    public void setName(String phuTrach) {
+        this.name = phuTrach;
     }
 
     public String getPrName() {
@@ -110,12 +111,12 @@ public class Task {
         this.finishDate = finishDate;
     }
 
-    public int getProcess() {
-        return process;
+    public int getProcessed() {
+        return processed;
     }
 
-    public void setProcess(int process) {
-        this.process = process;
+    public void setProcessed(int processed) {
+        this.processed = processed;
     }
 
     public String getId() {
