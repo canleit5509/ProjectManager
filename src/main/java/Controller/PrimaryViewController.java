@@ -62,7 +62,7 @@ public class PrimaryViewController implements Initializable {
         tcFinishDate.setCellValueFactory(new PropertyValueFactory<Task, String>("finishDate"));
         tcExpectedTime.setCellValueFactory(new PropertyValueFactory<Task, String>("expectedTime"));
         tcFinishTime.setCellValueFactory(new PropertyValueFactory<Task, String>("finishTime"));
-        tcProcess.setCellValueFactory(new PropertyValueFactory<Task, String>("process"));
+        tcProcess.setCellValueFactory(new PropertyValueFactory<Task, String>("processed"));
         tbData.setItems(listTask);
         tbData.setEditable(true);
     }

@@ -25,7 +25,7 @@ public class Task {
 
 
 
-    public Task(String prName, String title, String name, String startDate, String deadline, String finishDate, int process) {
+    public Task(String prName, String title, String name, String startDate, String deadline, String finishDate, int processed) {
         this.prName = prName;
         this.title = title;
         this.name = name;
@@ -36,7 +36,7 @@ public class Task {
     }
 
 
-    public Task(String prName, String title, String name, String startDate, String deadline, String finishDate, int expectedTime, int finishTime, int process) {
+    public Task(String prName, String title, String name, String startDate, String deadline, String finishDate, int expectedTime, int finishTime, int processed) {
         this.prName = prName;
         this.title = title;
         this.name = name;
