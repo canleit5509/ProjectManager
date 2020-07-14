@@ -15,30 +15,31 @@ public class Task {
     public Task() {
     }
 
-    public Task(String prName, String title, String phuTrach, String startDate, String deadline) {
+    public Task(String prName, String title, String name, String startDate, String deadline) {
         this.prName = prName;
         this.title = title;
-        this.name = phuTrach;
+        this.name = name;
         this.startDate = startDate;
         this.deadline = deadline;
     }
 
 
-    public Task(String prName, String title, String phuTrach, String startDate, String deadline, String finishDate, int processed) {
+
+    public Task(String prName, String title, String name, String startDate, String deadline, String finishDate, int process) {
         this.prName = prName;
         this.title = title;
-        this.name = phuTrach;
+        this.name = name;
         this.startDate = startDate;
         this.deadline = deadline;
         this.finishDate = finishDate;
         this.processed = processed;
     }
 
-    public Task(String id, String prName, String title, String phuTrach, String startDate, String deadline, String finishDate, int expectedTime, int finishTime, int processed) {
-        this.id = id;
+
+    public Task(String prName, String title, String name, String startDate, String deadline, String finishDate, int expectedTime, int finishTime, int process) {
         this.prName = prName;
         this.title = title;
-        this.name = phuTrach;
+        this.name = name;
         this.startDate = startDate;
         this.deadline = deadline;
         this.finishDate = finishDate;
@@ -67,8 +68,9 @@ public class Task {
         return name;
     }
 
-    public void setName(String phuTrach) {
-        this.name = phuTrach;
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPrName() {
