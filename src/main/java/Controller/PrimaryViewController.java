@@ -5,14 +5,23 @@ import Model.Task;
 import javafx.beans.property.Property;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
 
 public class PrimaryViewController implements Initializable {
     @FXML
@@ -47,7 +56,7 @@ public class PrimaryViewController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         tcProjectName.setCellValueFactory(new PropertyValueFactory<Task, String>("prName"));
         tcTask.setCellValueFactory(new PropertyValueFactory<Task, String>("title"));
-        tcNgPTr.setCellValueFactory(new PropertyValueFactory<Task, String>("phuTrach"));
+        tcNgPTr.setCellValueFactory(new PropertyValueFactory<Task, String>("name"));
         tcDateStart.setCellValueFactory(new PropertyValueFactory<Task, String>("startDate"));
         tcDeadline.setCellValueFactory(new PropertyValueFactory<Task, String>("deadline"));
         tcFinishDate.setCellValueFactory(new PropertyValueFactory<Task, String>("finishDate"));
@@ -56,5 +65,19 @@ public class PrimaryViewController implements Initializable {
         tcProcess.setCellValueFactory(new PropertyValueFactory<Task, String>("process"));
         tbData.setItems(listTask);
         tbData.setEditable(true);
+    }
+    //TODO:
+    public void addTask(Event e) throws IOException {
+        Stage stage = (Stage)((Node) e.getSource()).getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/AddTaskView.fxml"));
+        Parent addTaskParent = loader.load();
+        Scene scene = new Scene(addTaskParent);
+        Stage addTaskWindow = new Stage();
+        addTaskWindow.setTitle("Thêm công việc");
+        addTaskWindow.setScene(scene);
+        addTaskWindow.initModality(Modality.WINDOW_MODAL);
+        addTaskWindow.initOwner(stage);
+        addTaskWindow.showAndWait();
     }
 }
