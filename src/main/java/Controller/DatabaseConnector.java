@@ -126,7 +126,7 @@ public class DatabaseConnector {
     public void updateTask(Task task) {
         try {
             String sql = "update task set projectName='" + task.getPrName() + "', title='" + task.getTitle()
-                    + "', name='" + task.getName() + "', startDate='" + task.getStartDate() + "', deadLine='" + task.getDeadline() + "', finishDate='"
+                    + "', name='" + task.getName() + "', startDate='" + task.getStartDate() + "', deadline='" + task.getDeadline() + "', finishDate='"
                     + task.getFinishDate() + "', expectTime='" + task.getExpectedTime() + "', finishTime='" + task.getFinishTime() + "', processed='"
                     + task.getProcessed() + "' where id='" + task.getId() + "'";
             Statement sta = getConnection().createStatement();

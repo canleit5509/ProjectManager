@@ -1,5 +1,6 @@
 import Controller.DatabaseConnector;
 import Controller.PersonDao;
+import Controller.ProjectNameDao;
 import Model.Person;
 import Model.ProjectName;
 import Model.Task;
@@ -29,13 +30,10 @@ public class App extends Application {
         primaryStage.setTitle("Project Manage");
         primaryStage.setScene(scene);
         primaryStage.show();
-        ArrayList<Person> list;
-        Person a = new Person("13","Dat","red");
-
-        PersonDao personDao = new PersonDao();
-        //personDao.add(a);
-        list = personDao.getAll();
-        personDao.delete(a);
-        System.out.println(list.get(0).getId());
+        ProjectName a = new ProjectName("HippoTech", "red");
+        ProjectNameDao projectNameDao = new ProjectNameDao();
+        projectNameDao.add(a);
+        ArrayList<ProjectName> b = projectNameDao.getAll();
+        System.out.println(b.get(0).getProjectName());
     }
 }
