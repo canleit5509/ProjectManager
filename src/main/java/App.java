@@ -1,4 +1,6 @@
 import Controller.DatabaseConnector;
+import Controller.PersonDao;
+import Controller.ProjectNameDao;
 import Model.Person;
 import Model.ProjectName;
 import Model.Task;
@@ -12,6 +14,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class App extends Application {
 
@@ -27,5 +30,10 @@ public class App extends Application {
         primaryStage.setTitle("Project Manage");
         primaryStage.setScene(scene);
         primaryStage.show();
+        ProjectName a = new ProjectName("HippoTech", "red");
+        ProjectNameDao projectNameDao = new ProjectNameDao();
+        projectNameDao.add(a);
+        ArrayList<ProjectName> b = projectNameDao.getAll();
+        System.out.println(b.get(0).getProjectName());
     }
 }
