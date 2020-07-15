@@ -47,6 +47,43 @@ public class DatabaseConnector {
         return null;
     }
 
+    public ArrayList<String> getAllProjectName() {
+        try {
+            ArrayList<String> list = new ArrayList<>();
+            String sql = " select projectName from projectname";
+            Statement sta = getConnection().createStatement();
+            ResultSet RS = sta.executeQuery(sql);
+            while (RS.next() == true) {
+                String s = RS.getString("projectName");
+                list.add(s);
+            }
+            return list;
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseConnector.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        closeConnection();
+        return null;
+    }
+
+    public ArrayList<String> getAllPersonName() {
+        try {
+            ArrayList<String> list = new ArrayList<>();
+            String sql = " select id,name from person";
+            Statement sta = getConnection().createStatement();
+            ResultSet RS = sta.executeQuery(sql);
+            while (RS.next() == true) {
+                String id = RS.getString("id");
+                String name = RS.getString("name");
+                list.add(id+" | "+name);
+            }
+            return list;
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseConnector.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        closeConnection();
+        return null;
+    }
+
     public void addPerson(Person person) {
         try {
             String sql = "insert into person values('" + person.getId() + "','" + person.getName() + "','" + person.getColor() + "')";

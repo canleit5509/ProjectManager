@@ -15,8 +15,29 @@ public class Task {
     public Task() {
     }
 
+    public Task(String prName, String title, String name, String startDate, String deadline) {
+        this.prName = prName;
+        this.title = title;
+        this.name = name;
+        this.startDate = startDate;
+        this.deadline = deadline;
+    }
+
+
+
+    public Task(String prName, String title, String name, String startDate, String deadline, String finishDate, int processed) {
+        this.prName = prName;
+        this.title = title;
+        this.name = name;
+        this.startDate = startDate;
+        this.deadline = deadline;
+        this.finishDate = finishDate;
+        this.processed = processed;
+    }
+
+
     public Task(String id, String prName, String title, String name, String startDate, String deadline, String finishDate, int expectedTime, int finishTime, int processed) {
-        this.id=id;
+        this.id = id;
         this.prName = prName;
         this.title = title;
         this.name = name;
@@ -107,5 +128,21 @@ public class Task {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "id='" + id + '\'' +
+                ", prName='" + prName + '\'' +
+                ", title='" + title + '\'' +
+                ", name='" + name + '\'' +
+                ", startDate='" + startDate + '\'' +
+                ", deadline='" + deadline + '\'' +
+                ", finishDate='" + finishDate + '\'' +
+                ", expectedTime=" + expectedTime +
+                ", finishTime=" + finishTime +
+                ", processed=" + processed +
+                '}';
     }
 }
