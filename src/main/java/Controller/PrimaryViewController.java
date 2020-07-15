@@ -1,10 +1,9 @@
 package Controller;
 
-import Model.ProjectName;
 import Model.Task;
-import javafx.beans.property.Property;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,6 +11,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -45,12 +45,13 @@ public class PrimaryViewController implements Initializable {
     @FXML
     TableColumn<Task, String> tcProcess;
     private ObservableList<Task> listTask;
+    private DatabaseConnector dbConn;
 
 
     public PrimaryViewController(){
         Task a = new Task("Project", "Task", "Nguoi phu trach","5/5/5", "6/6/6");
-        listTask = FXCollections.observableArrayList();
-        listTask.add(a);
+        dbConn = new DatabaseConnector();
+        listTask = FXCollections.observableArrayList(dbConn.getAllTask());
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -79,5 +80,30 @@ public class PrimaryViewController implements Initializable {
         addTaskWindow.initModality(Modality.WINDOW_MODAL);
         addTaskWindow.initOwner(stage);
         addTaskWindow.showAndWait();
+    }
+
+    public void updateTask(ActionEvent e) throws IOException {
+        Stage stage = (Stage)((Node) e.getSource()).getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/UpdateTaskView.fxml"));
+        Parent updateTaskParent = loader.load();
+        Scene scene = new Scene(updateTaskParent);
+        UpdateTaskViewController controller = loader.getController();
+        Task selected = (Task) tbData.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Warning");
+            alert.setHeaderText("Vui lòng chọn công việc cần chỉnh sửa");
+            alert.show();
+        } else {
+            controller.setTask(selected);
+            controller.setComboBox();
+            Stage updateTaskWindow = new Stage();
+            updateTaskWindow.setTitle("Chỉnh sửa công việc");
+            updateTaskWindow.setScene(scene);
+            updateTaskWindow.initModality(Modality.WINDOW_MODAL);
+            updateTaskWindow.initOwner(stage);
+            updateTaskWindow.showAndWait();
+        }
     }
 }
