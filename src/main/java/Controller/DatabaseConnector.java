@@ -11,6 +11,13 @@ import java.util.logging.Logger;
 public class DatabaseConnector {
     private Connection conn;
 
+    public DatabaseConnector(){
+        try {
+            this.conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/projectmanager", "root", "192025509Aa");
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseConnector.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     public Connection getConnection() {
         try {
             this.conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/projectmanager", "root", "");
