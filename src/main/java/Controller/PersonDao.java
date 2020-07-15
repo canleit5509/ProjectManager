@@ -11,15 +11,18 @@ public class PersonDao implements DAO<Person> {
     private static final String DB_URL = "jdbc:mysql://localhost:3306/projectmanager";
     private static final String ID = "root";
     private static final String PASS = "192025509Aa";
-
+    /*TODO: lifecycle for DAO
+    *
+    */
+    private Connection connection;
     public PersonDao() {
-
+        connection = getConnection();
     }
 
     @Override
     public ArrayList<Person> getAll() {
         ArrayList<Person> listPeople = new ArrayList<>();
-        Connection connection = null;
+
         Statement statement = null;
         try {
             connection = getConnection();
@@ -34,9 +37,7 @@ public class PersonDao implements DAO<Person> {
             throwables.printStackTrace();
         } finally {
             close(statement);
-            close(connection);
         }
-
         return listPeople;
     }
 
@@ -47,7 +48,6 @@ public class PersonDao implements DAO<Person> {
 
     @Override
     public void add(Person person) {
-        Connection connection = null;
         Statement statement = null;
         try {
             connection = getConnection();
@@ -58,13 +58,11 @@ public class PersonDao implements DAO<Person> {
             ex.printStackTrace();
         } finally {
             close(statement);
-            close(connection);
         }
     }
 
     @Override
     public void update(Person person) {
-        Connection connection = null;
         Statement statement = null;
         try {
             connection = getConnection();
@@ -76,13 +74,11 @@ public class PersonDao implements DAO<Person> {
             throwables.printStackTrace();
         } finally {
             close(statement);
-            close(connection);
         }
     }
 
     @Override
     public void delete(Person person) {
-        Connection connection = null;
         Statement statement = null;
         try {
             connection = getConnection();
@@ -93,7 +89,6 @@ public class PersonDao implements DAO<Person> {
             throwables.printStackTrace();
         } finally {
             close(statement);
-            close(connection);
         }
     }
 

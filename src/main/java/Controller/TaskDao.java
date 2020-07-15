@@ -28,7 +28,7 @@ public class TaskDao implements DAO<Task> {
             while (RS.next()) {
                 Task task = new Task(RS.getString("id"), RS.getString("projectName"), RS.getString("title"),
                         RS.getString("name"), RS.getString("startDate"), RS.getString("deadline"),
-                        RS.getString("finishDate"), RS.getInt("expectedTime"),RS.getInt("finishTime"),
+                        RS.getString("finishDate"), RS.getInt("expectTime"),RS.getInt("finishTime"),
                         RS.getInt("processed"));
                 tasks.add(task);
             }

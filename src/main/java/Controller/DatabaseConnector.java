@@ -12,16 +12,17 @@ import java.util.logging.Logger;
 public class DatabaseConnector {
     private Connection conn;
 
-    public DatabaseConnector(){
+    public DatabaseConnector() {
         try {
             this.conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/projectmanager", "root", "192025509Aa");
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseConnector.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
     public Connection getConnection() {
         try {
-            this.conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/projectmanager", "root", "");
+            this.conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/projectmanager", "root", "192025509Aa");
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseConnector.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -42,7 +43,7 @@ public class DatabaseConnector {
             String sql = " select * from task";
             Statement sta = getConnection().createStatement();
             ResultSet RS = sta.executeQuery(sql);
-            while (RS.next() == true) {
+            while (RS.next()) {
                 Task task = new Task(RS.getString("id"), RS.getString("projectName"), RS.getString("title"), RS.getString("name"), RS.getString("startDate"), RS.getString("deadLine"), RS.getString("finishDate"), RS.getInt("expectTime"), RS.getInt("finishTime"), RS.getInt("processed"));
                 list.add(task);
             }
@@ -60,7 +61,7 @@ public class DatabaseConnector {
             String sql = " select projectName from projectname";
             Statement sta = getConnection().createStatement();
             ResultSet RS = sta.executeQuery(sql);
-            while (RS.next() == true) {
+            while (RS.next()) {
                 String s = RS.getString("projectName");
                 list.add(s);
             }
@@ -78,10 +79,10 @@ public class DatabaseConnector {
             String sql = " select id,name from person";
             Statement sta = getConnection().createStatement();
             ResultSet RS = sta.executeQuery(sql);
-            while (RS.next() == true) {
+            while (RS.next()) {
                 String id = RS.getString("id");
                 String name = RS.getString("name");
-                list.add(id+" | "+name);
+                list.add(id + " | " + name);
             }
             return list;
         } catch (SQLException ex) {
@@ -170,7 +171,7 @@ public class DatabaseConnector {
 
     public void updateProject(ProjectName project) {
         try {
-            String sql = "update projectname set color= '" + project.getProjectColor() + "' where projectName = '" + project.getProjectName() + "'";
+            String sql = "update projectname set projectColor = '" + project.getProjectColor() + "' where projectName = '" + project.getProjectName() + "'";
             Statement sta = getConnection().createStatement();
             sta.executeUpdate(sql);
             closeConnection();

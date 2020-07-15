@@ -45,31 +45,30 @@ public class PrimaryViewController implements Initializable {
     @FXML
     TableColumn<Task, String> tcProcess;
     private ObservableList<Task> listTask;
-    private DatabaseConnector dbConn;
 
-
-    public PrimaryViewController(){
-        Task a = new Task("Project", "Task", "Nguoi phu trach","5/5/5", "6/6/6");
-        dbConn = new DatabaseConnector();
-        listTask = FXCollections.observableArrayList(dbConn.getAllTask());
+    public PrimaryViewController() {
+        TaskDao taskDao = new TaskDao();
+        listTask = FXCollections.observableArrayList(taskDao.getAll());
     }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        tcProjectName.setCellValueFactory(new PropertyValueFactory<Task, String>("prName"));
-        tcTask.setCellValueFactory(new PropertyValueFactory<Task, String>("title"));
-        tcNgPTr.setCellValueFactory(new PropertyValueFactory<Task, String>("name"));
-        tcDateStart.setCellValueFactory(new PropertyValueFactory<Task, String>("startDate"));
-        tcDeadline.setCellValueFactory(new PropertyValueFactory<Task, String>("deadline"));
-        tcFinishDate.setCellValueFactory(new PropertyValueFactory<Task, String>("finishDate"));
-        tcExpectedTime.setCellValueFactory(new PropertyValueFactory<Task, String>("expectedTime"));
-        tcFinishTime.setCellValueFactory(new PropertyValueFactory<Task, String>("finishTime"));
-        tcProcess.setCellValueFactory(new PropertyValueFactory<Task, String>("processed"));
+        tcProjectName.setCellValueFactory(new PropertyValueFactory<>("prName"));
+        tcTask.setCellValueFactory(new PropertyValueFactory<>("title"));
+        tcNgPTr.setCellValueFactory(new PropertyValueFactory<>("name"));
+        tcDateStart.setCellValueFactory(new PropertyValueFactory<>("startDate"));
+        tcDeadline.setCellValueFactory(new PropertyValueFactory<>("deadline"));
+        tcFinishDate.setCellValueFactory(new PropertyValueFactory<>("finishDate"));
+        tcExpectedTime.setCellValueFactory(new PropertyValueFactory<>("expectedTime"));
+        tcFinishTime.setCellValueFactory(new PropertyValueFactory<>("finishTime"));
+        tcProcess.setCellValueFactory(new PropertyValueFactory<>("processed"));
         tbData.setItems(listTask);
         tbData.setEditable(true);
     }
+
     //TODO:
     public void addTask(Event e) throws IOException {
-        Stage stage = (Stage)((Node) e.getSource()).getScene().getWindow();
+        Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/AddTaskView.fxml"));
         Parent addTaskParent = loader.load();
@@ -83,13 +82,13 @@ public class PrimaryViewController implements Initializable {
     }
 
     public void updateTask(ActionEvent e) throws IOException {
-        Stage stage = (Stage)((Node) e.getSource()).getScene().getWindow();
+        Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/UpdateTaskView.fxml"));
         Parent updateTaskParent = loader.load();
         Scene scene = new Scene(updateTaskParent);
         UpdateTaskViewController controller = loader.getController();
-        Task selected = (Task) tbData.getSelectionModel().getSelectedItem();
+        Task selected = tbData.getSelectionModel().getSelectedItem();
         if (selected == null) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Warning");
