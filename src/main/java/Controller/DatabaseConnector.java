@@ -5,6 +5,7 @@ import Model.ProjectName;
 import Model.Task;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -26,6 +27,24 @@ public class DatabaseConnector {
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseConnector.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public ArrayList<Task> getAllTask() {
+        try {
+            ArrayList<Task> list = new ArrayList<>();
+            String sql = " select * from task";
+            Statement sta = getConnection().createStatement();
+            ResultSet RS = sta.executeQuery(sql);
+            while (RS.next() == true) {
+                Task task = new Task(RS.getString("id"), RS.getString("projectName"), RS.getString("title"), RS.getString("name"), RS.getString("startDate"), RS.getString("deadLine"), RS.getString("finishDate"), RS.getInt("expectTime"), RS.getInt("finishTime"), RS.getInt("processed"));
+                list.add(task);
+            }
+            return list;
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseConnector.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        closeConnection();
+        return null;
     }
 
     public void addPerson(Person person) {

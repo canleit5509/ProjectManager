@@ -22,7 +22,7 @@
       </TableView>
       <Button fx:id="btnDetail" layoutX="1048.0" layoutY="550.0" mnemonicParsing="false" text="Chi tiết" />
       <Button fx:id="btnDel" layoutX="736.0" layoutY="550.0" mnemonicParsing="false" text="Xoá" />
-      <Button fx:id="btnEdit" layoutX="386.0" layoutY="550.0" mnemonicParsing="false" text="Sửa" />
+      <Button fx:id="btnEdit" onAction="#updateTask" layoutX="386.0" layoutY="550.0" mnemonicParsing="false" text="Sửa" />
       <Button fx:id="btnAdd" onAction="#addTask" layoutX="72.0" layoutY="550.0" mnemonicParsing="false" text="Thêm" />
    </children>
 </AnchorPane>

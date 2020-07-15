@@ -5,6 +5,7 @@ import Model.Task;
 import javafx.beans.property.Property;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -75,6 +76,20 @@ public class PrimaryViewController implements Initializable {
         Scene scene = new Scene(addTaskParent);
         Stage addTaskWindow = new Stage();
         addTaskWindow.setTitle("Thêm công việc");
+        addTaskWindow.setScene(scene);
+        addTaskWindow.initModality(Modality.WINDOW_MODAL);
+        addTaskWindow.initOwner(stage);
+        addTaskWindow.showAndWait();
+    }
+
+    public void updateTask(ActionEvent e) throws IOException {
+        Stage stage = (Stage)((Node) e.getSource()).getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/UpdateTaskView.fxml"));
+        Parent addTaskParent = loader.load();
+        Scene scene = new Scene(addTaskParent);
+        Stage addTaskWindow = new Stage();
+        addTaskWindow.setTitle("Chỉnh sửa công việc");
         addTaskWindow.setScene(scene);
         addTaskWindow.initModality(Modality.WINDOW_MODAL);
         addTaskWindow.initOwner(stage);
