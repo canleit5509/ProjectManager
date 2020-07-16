@@ -96,10 +96,34 @@ public class AddTaskViewController implements Initializable {
         name.setItems(personList);
     }
 
+    public int workDays(LocalDate begin, LocalDate end) {
+        int beginW = begin.getDayOfWeek().getValue();
+        int endW = end.getDayOfWeek().getValue();
+        int days = end.compareTo(begin);
+        int result = days - 2 * (days / 7);
+        if (!(days % 7 == 0)) {
+            if (beginW == 7) {
+                result -= 1;
+            } else if (endW == 7) {
+                result -= 1;
+            } else if (endW < beginW) {
+                result -= 2;
+            }
+        }
+        return result;
+    }
+
     public void onPickDeadline(ActionEvent e) {
         LocalDate ldStart = startDate.getValue();
         LocalDate ldDeadline = deadline.getValue();
-        ldStart.datesUntil(ldDeadline);
+        if (ldDeadline.compareTo(ldStart) < 0) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Thông báo");
+            alert.setHeaderText("Ngày deadline trước ngày bắt đầu!");
+            alert.showAndWait();
+        } else {
+            expectedTime.setText(String.valueOf(workDays(ldStart,ldDeadline)));
+        }
     }
 
     public void AddProject(ActionEvent e) throws IOException {
