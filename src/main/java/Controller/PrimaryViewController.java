@@ -130,4 +130,21 @@ public class PrimaryViewController implements Initializable {
             alert.show();
         }
     }
+
+    public void btnProject(ActionEvent e) throws IOException {
+    }
+
+    public void btnPerson(ActionEvent e) throws IOException {
+        Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/PersonManagement.fxml"));
+        Parent addTaskParent = loader.load();
+        Scene scene = new Scene(addTaskParent);
+        Stage addTaskWindow = new Stage();
+        addTaskWindow.setTitle("Quản lý nhân sự");
+        addTaskWindow.setScene(scene);
+        addTaskWindow.initModality(Modality.WINDOW_MODAL);
+        addTaskWindow.initOwner(stage);
+        addTaskWindow.showAndWait();
+    }
 }
