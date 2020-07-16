@@ -50,7 +50,11 @@ public class UpdateTaskViewController {
         title.setText(task.getTitle());
         startDate.setValue(LocalDate.parse(task.getStartDate()));
         deadline.setValue(LocalDate.parse(task.getDeadline()));
-        finishDate.setValue(LocalDate.parse(task.getFinishDate()));
+        if(task.getFinishDate()==null){
+            finishDate.setValue(null);
+        }else{
+            finishDate.setValue(LocalDate.parse(task.getFinishDate()));
+        }
         expectedTime.setText(task.getExpectedTime()+"");
         finishTime.setText(task.getFinishTime()+"");
         processed.setText(task.getProcessed()+"");
