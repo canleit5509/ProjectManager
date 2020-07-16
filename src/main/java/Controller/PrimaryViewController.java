@@ -85,6 +85,7 @@ public class PrimaryViewController implements Initializable {
         addTaskWindow.initModality(Modality.WINDOW_MODAL);
         addTaskWindow.initOwner(stage);
         addTaskWindow.showAndWait();
+        RefreshTable();
     }
 
     public void updateTask(ActionEvent e) throws IOException {

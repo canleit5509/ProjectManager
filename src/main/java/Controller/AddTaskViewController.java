@@ -2,6 +2,8 @@ package Controller;
 
 
 import Model.Task;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,6 +18,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 public class AddTaskViewController implements Initializable {
@@ -42,27 +46,64 @@ public class AddTaskViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        setComboBox();
+        Random random = new Random();
+        int taskID = random.nextInt(899999) + 100000;
+        id.setText(String.valueOf(taskID));
 
     }
-    public Task getTask(){
+
+    public Task getTask() {
         Task task = new Task();
         task.setId(id.getText());
-        task.setPrName(prName.getPromptText());
-        task.setName(name.getPromptText());
+        task.setPrName(prName.getValue());
+
+        if (!name.getValue().contains("|"))
+            task.setName(name.getValue());
+        else
+            task.setName(name.getValue().substring(7));
         task.setTitle(title.getText());
-        task.setStartDate(startDate.getPromptText());
-        task.setDeadline(deadline.getPromptText());
-        task.setFinishDate(finishDate.getPromptText());
-        task.setExpectedTime(Integer.parseInt(expectedTime.getText()));
-        task.setFinishTime(Integer.parseInt(finishTime.getText()));
-        task.setProcessed(Integer.parseInt(processed.getText()));
+
+        String txtStartDate = String.valueOf(startDate.getValue());
+        if (!txtStartDate.equals("null")) {
+            task.setStartDate(txtStartDate);
+        }
+        String txtDeadline = String.valueOf(deadline.getValue());
+        if (!txtDeadline.equals("null")) {
+            task.setDeadline(txtDeadline);
+        }
+        if (!String.valueOf(finishDate.getValue()).equals("null")) {
+            task.setFinishDate(String.valueOf(finishDate.getValue()));
+        }
+        if (!expectedTime.getText().isBlank()) {
+            task.setExpectedTime(Integer.parseInt(expectedTime.getText()));
+        }
+        if (!finishTime.getText().isBlank()) {
+            task.setFinishTime(Integer.parseInt(finishTime.getText()));
+        }
+        if (!processed.getText().isBlank()) {
+            task.setProcessed(Integer.parseInt(processed.getText()));
+        }
         return task;
     }
-    public void setComboBox(){
 
+    public void setComboBox() {
+        PersonDao personDao = new PersonDao();
+        ProjectNameDao projectNameDao = new ProjectNameDao();
+        ObservableList<String> prList = FXCollections.observableArrayList(projectNameDao.getAllName());
+        ObservableList<String> personList = FXCollections.observableArrayList(personDao.getAllName());
+        prName.setItems(prList);
+        name.setItems(personList);
     }
+
+    public void onPickDeadline(ActionEvent e) {
+        LocalDate ldStart = startDate.getValue();
+        LocalDate ldDeadline = deadline.getValue();
+        ldStart.datesUntil(ldDeadline);
+    }
+
     public void AddProject(ActionEvent e) throws IOException {
-        Stage stage = (Stage)((Node) e.getSource()).getScene().getWindow();
+        Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/AddProject.fxml"));
         Parent addProject = loader.load();
@@ -77,7 +118,7 @@ public class AddTaskViewController implements Initializable {
     }
 
     public void AddPerson(ActionEvent e) throws IOException {
-        Stage stage = (Stage)((Node) e.getSource()).getScene().getWindow();
+        Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/AddPerson.fxml"));
         Parent addProject = loader.load();
@@ -92,8 +133,21 @@ public class AddTaskViewController implements Initializable {
         AddPerson addPerson = loader.getController();
         addPerson.setID();
     }
+
     public void cancel(ActionEvent e) throws IOException {
         Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+        stage.close();
+    }
+
+    public void submit(ActionEvent e) {
+        Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+        System.out.println(getTask());
+        TaskDao taskDao = new TaskDao();
+        taskDao.add(getTask());
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Thông báo");
+        alert.setHeaderText("Thêm thành công");
+        alert.showAndWait();
         stage.close();
     }
 }

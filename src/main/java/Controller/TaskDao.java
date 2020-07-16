@@ -21,8 +21,8 @@ public class TaskDao implements DAO<Task> {
             "expectTime, finishTime, processed) VALUES(?, ?, ?, ?, ? ,?, ?, ?, ?, ?)";
     private static final String UPDATE = "UPDATE task SET projectName=?, title=?, name=?, startDate=?, deadline=?, " +
             "finishDate=?, expectTime=?, finishTime=?, processed=? WHERE id=?";
-    Connection connection;
-    PreparedStatement preparedStatement;
+    private Connection connection;
+    private PreparedStatement preparedStatement;
 
     public TaskDao() {
         connection = getConnection();
@@ -105,16 +105,16 @@ public class TaskDao implements DAO<Task> {
     public void update(Task task) {
         try {
             preparedStatement = connection.prepareStatement(UPDATE);
-            preparedStatement.setString(1, task.getId());
-            preparedStatement.setString(2, task.getPrName());
-            preparedStatement.setString(3, task.getTitle());
-            preparedStatement.setString(4, task.getName());
-            preparedStatement.setString(5, task.getStartDate());
-            preparedStatement.setString(6, task.getDeadline());
-            preparedStatement.setString(7, task.getFinishDate());
-            preparedStatement.setInt(8, task.getExpectedTime());
-            preparedStatement.setInt(9, task.getFinishTime());
-            preparedStatement.setInt(10, task.getProcessed());
+            preparedStatement.setString(10, task.getId());
+            preparedStatement.setString(1, task.getPrName());
+            preparedStatement.setString(2, task.getTitle());
+            preparedStatement.setString(3, task.getName());
+            preparedStatement.setString(4, task.getStartDate());
+            preparedStatement.setString(5, task.getDeadline());
+            preparedStatement.setString(6, task.getFinishDate());
+            preparedStatement.setInt(7, task.getExpectedTime());
+            preparedStatement.setInt(8, task.getFinishTime());
+            preparedStatement.setInt(9, task.getProcessed());
             preparedStatement.executeUpdate();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
