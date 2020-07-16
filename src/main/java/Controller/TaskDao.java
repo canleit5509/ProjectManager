@@ -11,7 +11,7 @@ public class TaskDao implements DAO<Task> {
     private static final String DRIVER_NAME = "com.mysql.cj.jdbc.Driver";
     private static final String DB_URL = "jdbc:mysql://localhost:3306/projectmanager";
     private static final String ID = "root";
-    private static final String PASS = "192025509Aa";
+    private static final String PASS = "";
 
     private static final String DELETE = "DELETE FROM task WHERE id=?";
     private static final String FIND_ALL = "SELECT * FROM task ORDER BY id";
@@ -105,16 +105,16 @@ public class TaskDao implements DAO<Task> {
     public void update(Task task) {
         try {
             preparedStatement = connection.prepareStatement(UPDATE);
-            preparedStatement.setString(1, task.getId());
-            preparedStatement.setString(2, task.getPrName());
-            preparedStatement.setString(3, task.getTitle());
-            preparedStatement.setString(4, task.getName());
-            preparedStatement.setString(5, task.getStartDate());
-            preparedStatement.setString(6, task.getDeadline());
-            preparedStatement.setString(7, task.getFinishDate());
-            preparedStatement.setInt(8, task.getExpectedTime());
-            preparedStatement.setInt(9, task.getFinishTime());
-            preparedStatement.setInt(10, task.getProcessed());
+            preparedStatement.setString(10, task.getId());
+            preparedStatement.setString(1, task.getPrName());
+            preparedStatement.setString(2, task.getTitle());
+            preparedStatement.setString(3, task.getName());
+            preparedStatement.setString(4, task.getStartDate());
+            preparedStatement.setString(5, task.getDeadline());
+            preparedStatement.setString(6, task.getFinishDate());
+            preparedStatement.setInt(7, task.getExpectedTime());
+            preparedStatement.setInt(8, task.getFinishTime());
+            preparedStatement.setInt(9, task.getProcessed());
             preparedStatement.executeUpdate();
         } catch (SQLException throwables) {
             throwables.printStackTrace();

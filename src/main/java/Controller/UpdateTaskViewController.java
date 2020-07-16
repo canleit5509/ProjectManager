@@ -1,6 +1,7 @@
 package Controller;
 
 
+import Model.Person;
 import Model.Task;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableArray;
@@ -58,8 +59,8 @@ public class UpdateTaskViewController {
     public void setComboBox(){
         PersonDao personDao = new PersonDao();
         ProjectNameDao projectNameDao = new ProjectNameDao();
-        ObservableList<String> prList = FXCollections.observableArrayList(projectNameDao.getAllName());
-        ObservableList<String> personList = FXCollections.observableArrayList(personDao.getAllName());
+        ObservableList<String> prList = FXCollections.observableArrayList(projectNameDao.getAllNameNow());
+        ObservableList<String> personList = FXCollections.observableArrayList(personDao.getAllIDName());
         prName.setItems(prList);
         name.setItems(personList);
     }
