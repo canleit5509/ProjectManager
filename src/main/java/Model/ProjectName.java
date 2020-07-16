@@ -3,18 +3,25 @@ package Model;
 public class ProjectName {
     private String projectName;
     private String projectColor;
+    private int done;
 
 
     public ProjectName() {
     }
 
-    public ProjectName(String projectName, String projectColor) {
+    public ProjectName(String projectName, String projectColor, int done) {
         this.projectName = projectName;
         this.projectColor = projectColor;
+        this.done = done;
     }
 
+    public int getDone() {
+        return done;
+    }
 
-
+    public void setDone(int done) {
+        this.done = done;
+    }
 
     public String getProjectName() {
         return projectName;
