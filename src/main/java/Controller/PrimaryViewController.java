@@ -51,6 +51,12 @@ public class PrimaryViewController implements Initializable {
         listTask = FXCollections.observableArrayList(taskDao.getAll());
     }
 
+    public void RefreshTable(){
+        TaskDao taskDao = new TaskDao();
+        ObservableList<Task> taskList = FXCollections.observableArrayList(taskDao.getAll());
+        tbData.setItems(taskList);
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         tcProjectName.setCellValueFactory(new PropertyValueFactory<>("prName"));
@@ -103,6 +109,7 @@ public class PrimaryViewController implements Initializable {
             updateTaskWindow.initModality(Modality.WINDOW_MODAL);
             updateTaskWindow.initOwner(stage);
             updateTaskWindow.showAndWait();
+            tbData.refresh();
         }
     }
 
@@ -115,8 +122,8 @@ public class PrimaryViewController implements Initializable {
             alert.show();
         } else {
             tbData.getItems().remove(selected);
-            DatabaseConnector dbConn = new DatabaseConnector();
-            dbConn.deleteTask(selected.getId());
+            TaskDao taskDao = new TaskDao();
+            taskDao.delete(selected);
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Thông báo");
             alert.setHeaderText("Đã xóa");

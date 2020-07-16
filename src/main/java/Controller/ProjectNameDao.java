@@ -11,7 +11,7 @@ public class ProjectNameDao implements DAO<ProjectName> {
     private static final String DRIVER_NAME = "com.mysql.cj.jdbc.Driver";
     private static final String DB_URL = "jdbc:mysql://localhost:3306/projectmanager";
     private static final String ID = "root";
-    private static final String PASS = "192025509Aa";
+    private static final String PASS = "";
     Connection connection;
     public ProjectNameDao(){
     connection = getConnection();
@@ -86,6 +86,27 @@ public class ProjectNameDao implements DAO<ProjectName> {
         } finally {
             close(statement);
         }
+    }
+
+    @Override
+    public ArrayList<String> getAllName() {
+        ArrayList<String> projectNames = new ArrayList<>();
+        Statement statement = null;
+        try {
+            connection = getConnection();
+            String sql = "SELECT projectName FROM projectname";
+            statement = connection.createStatement();
+            ResultSet RS = statement.executeQuery(sql);
+            while (RS.next()) {
+                String s = RS.getString("projectName");
+                projectNames.add(s);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            close(statement);
+        }
+        return projectNames;
     }
 
     private Connection getConnection() {

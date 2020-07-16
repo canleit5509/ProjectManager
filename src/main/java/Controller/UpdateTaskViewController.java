@@ -3,6 +3,7 @@ package Controller;
 
 import Model.Task;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -10,10 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -46,8 +44,8 @@ public class UpdateTaskViewController {
     public void setTask(Task task){
         //TODO: chinh database task.startDate, deadline, finishDate thanh Date
         id.setText(task.getId());
-        prName.setPromptText(task.getPrName());
-        name.setPromptText(task.getName());
+        prName.setValue(task.getPrName());
+        name.setValue(task.getName());
         title.setText(task.getTitle());
         startDate.setValue(LocalDate.parse(task.getStartDate()));
         deadline.setValue(LocalDate.parse(task.getDeadline()));
@@ -58,9 +56,10 @@ public class UpdateTaskViewController {
     }
 
     public void setComboBox(){
-        DatabaseConnector dbConn = new DatabaseConnector();
-        ObservableList<String> prList = FXCollections.observableArrayList(dbConn.getAllProjectName());
-        ObservableList<String> personList = FXCollections.observableArrayList(dbConn.getAllPersonName());
+        PersonDao personDao = new PersonDao();
+        ProjectNameDao projectNameDao = new ProjectNameDao();
+        ObservableList<String> prList = FXCollections.observableArrayList(projectNameDao.getAllName());
+        ObservableList<String> personList = FXCollections.observableArrayList(personDao.getAllName());
         prName.setItems(prList);
         name.setItems(personList);
     }
@@ -100,5 +99,37 @@ public class UpdateTaskViewController {
         addPerson.setID();
         addProjectWindow.showAndWait();
         setComboBox();
+    }
+
+    public void btnOK(ActionEvent e) throws IOException {
+        String txtID = id.getText();
+        String txtPrName = prName.getValue();
+        String txtName="";
+        if(!name.getValue().contains("|"))
+            txtName = name.getValue();
+        else
+            txtName = name.getValue().substring(7);
+        String txtTitle = title.getText();
+        String txtStartDate = startDate.getValue().toString();
+        String txtDeadline = deadline.getValue().toString();
+        String txtFinishDate = finishDate.getValue().toString();
+        int intExpectTime = Integer.parseInt(expectedTime.getText());
+        int intFinishTime = Integer.parseInt(finishTime.getText());
+        int intProcessed = Integer.parseInt(processed.getText());
+        TaskDao taskDao = new TaskDao();
+        Task task = new Task(txtID,txtPrName,txtTitle,txtName,txtStartDate,txtDeadline,txtFinishDate
+                ,intExpectTime,intFinishTime,intProcessed);
+        taskDao.update(task);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Thông báo");
+        alert.setHeaderText("Cập nhật thành công");
+        alert.showAndWait();
+//        FXMLLoader loader = new FXMLLoader();
+//        PrimaryViewController primaryView = loader.getController();
+//        ObservableList<Task> taskList = FXCollections.observableArrayList(taskDao.getAll());
+//        primaryView.tbData.setItems(taskList);
+//        primaryView.RefreshTable();
+        Stage stage = (Stage)((Node) e.getSource()).getScene().getWindow();
+        stage.close();
     }
 }

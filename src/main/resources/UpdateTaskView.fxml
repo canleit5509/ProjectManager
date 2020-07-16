@@ -19,7 +19,7 @@
       <DatePicker fx:id="deadline" layoutX="445.0" layoutY="239.0" prefHeight="25.0" prefWidth="220.0" />
       <Label layoutX="32.0" layoutY="242.0" text="Ngày bắt đầu:" />
       <Label layoutX="375.0" layoutY="242.0" text="Deadline:" />
-      <Button layoutX="227.0" layoutY="380.0" mnemonicParsing="false" text="OK" />
+      <Button layoutX="227.0" layoutY="380.0" mnemonicParsing="false" onAction="#btnOK" text="OK" />
       <Button layoutX="419.0" layoutY="380.0" mnemonicParsing="false" onAction="#cancel" text="Cancel" />
       <Button layoutX="304.0" layoutY="65.0" mnemonicParsing="false" onAction="#AddProject" text="+" />
       <Button layoutX="680.0" layoutY="65.0" mnemonicParsing="false" onAction="#AddPerson" text="+" />

@@ -1,6 +1,7 @@
 package Controller;
 
 import Model.Person;
+import Model.ProjectName;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ public class PersonDao implements DAO<Person> {
     private static final String DRIVER_NAME = "com.mysql.cj.jdbc.Driver";
     private static final String DB_URL = "jdbc:mysql://localhost:3306/projectmanager";
     private static final String ID = "root";
-    private static final String PASS = "192025509Aa";
+    private static final String PASS = "";
     /*TODO: lifecycle for DAO
     *
     */
@@ -90,6 +91,28 @@ public class PersonDao implements DAO<Person> {
         } finally {
             close(statement);
         }
+    }
+
+    @Override
+    public ArrayList<String> getAllName() {
+        ArrayList<String> projectNames = new ArrayList<>();
+        Statement statement = null;
+        try {
+            connection = getConnection();
+            String sql = "SELECT id,name FROM person";
+            statement = connection.createStatement();
+            ResultSet RS = statement.executeQuery(sql);
+            while (RS.next()) {
+                String id = RS.getString("id");
+                String name = RS.getString("name");
+                projectNames.add(id+ "|" + name);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            close(statement);
+        }
+        return projectNames;
     }
 
     private Connection getConnection() {

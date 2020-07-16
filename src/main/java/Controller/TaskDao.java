@@ -11,7 +11,7 @@ public class TaskDao implements DAO<Task> {
     private static final String DRIVER_NAME = "com.mysql.cj.jdbc.Driver";
     private static final String DB_URL = "jdbc:mysql://localhost:3306/projectmanager";
     private static final String ID = "root";
-    private static final String PASS = "192025509Aa";
+    private static final String PASS = "";
     public TaskDao(){
 
     }
@@ -106,8 +106,8 @@ public class TaskDao implements DAO<Task> {
             connection = getConnection();
             String sql = "update task set projectName='" + task.getPrName() + "', title='" + task.getTitle()
                     + "', name='" + task.getName() + "', startDate='" + task.getStartDate() + "', deadline='" + task.getDeadline() + "', finishDate='"
-                    + task.getFinishDate() + "', expectTime='" + task.getExpectedTime() + "', finishTime='" + task.getFinishTime() + "', processed='"
-                    + task.getProcessed() + "' where id='" + task.getId() + "'";
+                    + task.getFinishDate() + "', expectTime=" + task.getExpectedTime() + ", finishTime=" + task.getFinishTime() + ", processed="
+                    + task.getProcessed() + " where id='" + task.getId() + "'";
             statement = connection.createStatement();
             statement.executeUpdate(sql);
         } catch (SQLException throwables) {
@@ -134,6 +134,12 @@ public class TaskDao implements DAO<Task> {
             close(connection);
         }
     }
+
+    @Override
+    public ArrayList<String> getAllName() {
+        return null;
+    }
+
     private Connection getConnection() {
         try {
             Class.forName(DRIVER_NAME);

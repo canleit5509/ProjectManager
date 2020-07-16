@@ -1,4 +1,3 @@
-import Controller.DatabaseConnector;
 import Controller.PersonDao;
 import Controller.ProjectNameDao;
 import Controller.TaskDao;
