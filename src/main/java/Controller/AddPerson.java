@@ -1,7 +1,6 @@
 package Controller;
 
 import Model.Person;
-import Model.ProjectName;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -37,6 +36,7 @@ public class AddPerson implements Initializable {
         alert.setHeaderText("Thêm thành công");
         alert.show();
         Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+        System.out.println("OK");
         stage.close();
     }
 
