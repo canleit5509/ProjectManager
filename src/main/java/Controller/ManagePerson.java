@@ -78,6 +78,8 @@ public class ManagePerson implements Initializable {
             updatePerson.setPerson(person);
             addProjectWindow.showAndWait();
             RefreshTable(personDao.getAllPersonNow());
+            checkNow.setSelected(true);
+            btnKick.setVisible(true);
         }
 
     }

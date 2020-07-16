@@ -16,6 +16,7 @@ public class ProjectNameDao implements DAO<ProjectName> {
     private static final String DELETE = "DELETE FROM projectname WHERE projectName=?";
     private static final String FIND_ALL = "SELECT * FROM projectname ORDER BY projectName";
     private static final String FIND_ALL_NOW = "SELECT * FROM projectname WHERE done=false ORDER BY projectName";
+    private static final String FIND_ALL_DONE = "SELECT * FROM projectname WHERE done=true ORDER BY projectName";
     private static final String FIND_BY_ID = "SELECT * FROM projectName WHERE projectName=?";
     private static final String INSERT = "INSERT INTO projectname(projectName, projectColor, done) VALUES(?, ?, ?)";
     private static final String UPDATE = "UPDATE projectname SET projectColor=?, done=? WHERE projectName=?";
@@ -29,6 +30,42 @@ public class ProjectNameDao implements DAO<ProjectName> {
         
         try {
             preparedStatement = connection.prepareStatement(FIND_ALL);
+            ResultSet RS = preparedStatement.executeQuery();
+            while (RS.next()) {
+                ProjectName projectName = new ProjectName(RS.getString("projectName"), RS.getString("projectColor"), RS.getInt("done"));
+                projectNames.add(projectName);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            close(preparedStatement);
+        }
+        return projectNames;
+    }
+
+    public ArrayList<ProjectName> getAllNow() {
+        ArrayList<ProjectName> projectNames = new ArrayList<>();
+
+        try {
+            preparedStatement = connection.prepareStatement(FIND_ALL_NOW);
+            ResultSet RS = preparedStatement.executeQuery();
+            while (RS.next()) {
+                ProjectName projectName = new ProjectName(RS.getString("projectName"), RS.getString("projectColor"), RS.getInt("done"));
+                projectNames.add(projectName);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            close(preparedStatement);
+        }
+        return projectNames;
+    }
+
+    public ArrayList<ProjectName> getAllDone() {
+        ArrayList<ProjectName> projectNames = new ArrayList<>();
+
+        try {
+            preparedStatement = connection.prepareStatement(FIND_ALL_DONE);
             ResultSet RS = preparedStatement.executeQuery();
             while (RS.next()) {
                 ProjectName projectName = new ProjectName(RS.getString("projectName"), RS.getString("projectColor"), RS.getInt("done"));
@@ -69,6 +106,7 @@ public class ProjectNameDao implements DAO<ProjectName> {
             preparedStatement.setString(1, project.getProjectColor());
             preparedStatement.setInt(2,project.getDone());
             preparedStatement.setString(3, project.getProjectName());
+            preparedStatement.executeUpdate();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {
