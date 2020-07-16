@@ -109,7 +109,7 @@ public class PrimaryViewController implements Initializable {
             updateTaskWindow.initModality(Modality.WINDOW_MODAL);
             updateTaskWindow.initOwner(stage);
             updateTaskWindow.showAndWait();
-            tbData.refresh();
+            RefreshTable();
         }
     }
 
