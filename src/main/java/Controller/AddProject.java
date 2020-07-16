@@ -16,10 +16,12 @@ public class AddProject {
     @FXML
     ColorPicker color;
     DatabaseConnector dbConn;
+    ProjectNameDao nameDao = new ProjectNameDao();
     public void okBtn(ActionEvent e) {
         ProjectName projectName = new ProjectName(prName.getText(),color.getValue().toString());
-        dbConn = new DatabaseConnector();
-        dbConn.addProject(projectName);
+        nameDao.add(projectName);
+//        dbConn = new DatabaseConnector();
+//        dbConn.addProject(projectName);
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Thông báo");
         alert.setHeaderText("Thêm thành công");

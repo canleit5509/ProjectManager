@@ -1,6 +1,6 @@
 package Controller;
 
-import Model.ProjectName;
+
 import Model.Task;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,7 +17,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import javax.swing.*;
+
 import java.io.IOException;
 import java.time.LocalDate;
 
@@ -25,9 +25,9 @@ public class UpdateTaskViewController {
     @FXML
     Label id;
     @FXML
-    ComboBox prName;
+    ComboBox<String> prName;
     @FXML
-    ComboBox name;
+    ComboBox<String> name;
     @FXML
     TextField title;
     @FXML
@@ -44,6 +44,7 @@ public class UpdateTaskViewController {
     TextField processed;
 
     public void setTask(Task task){
+        //TODO: chinh database task.startDate, deadline, finishDate thanh Date
         id.setText(task.getId());
         prName.setPromptText(task.getPrName());
         name.setPromptText(task.getName());

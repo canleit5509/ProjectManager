@@ -12,14 +12,13 @@ public class ProjectNameDao implements DAO<ProjectName> {
     private static final String DB_URL = "jdbc:mysql://localhost:3306/projectmanager";
     private static final String ID = "root";
     private static final String PASS = "192025509Aa";
-
+    Connection connection;
     public ProjectNameDao(){
-
+    connection = getConnection();
     }
     @Override
     public ArrayList<ProjectName> getAll() {
         ArrayList<ProjectName> projectNames = new ArrayList<>();
-        Connection connection = null;
         Statement statement = null;
         try {
             connection = getConnection();
@@ -34,7 +33,6 @@ public class ProjectNameDao implements DAO<ProjectName> {
             throwables.printStackTrace();
         } finally {
             close(statement);
-            close(connection);
         }
         return projectNames;
     }
@@ -46,7 +44,6 @@ public class ProjectNameDao implements DAO<ProjectName> {
 
     @Override
     public void add(ProjectName project) {
-        Connection connection = null;
         Statement statement = null;
         try {
             connection = getConnection();
@@ -57,17 +54,15 @@ public class ProjectNameDao implements DAO<ProjectName> {
             ex.printStackTrace();
         } finally {
             close(statement);
-            close(connection);
         }
     }
 
     @Override
     public void update(ProjectName project) {
-        Connection connection = null;
         Statement statement = null;
         try {
             connection = getConnection();
-            String sql = "update projectname set color= '" + project.getProjectColor()
+            String sql = "update projectname set projectColor= '" + project.getProjectColor()
                     + "' where projectName = '" + project.getProjectName() + "'";
             statement = connection.createStatement();
             statement.executeUpdate(sql);
@@ -75,13 +70,11 @@ public class ProjectNameDao implements DAO<ProjectName> {
             throwables.printStackTrace();
         } finally {
             close(statement);
-            close(connection);
         }
     }
 
     @Override
     public void delete(ProjectName projectName) {
-        Connection connection = null;
         Statement statement = null;
         try {
             connection = getConnection();
@@ -92,7 +85,6 @@ public class ProjectNameDao implements DAO<ProjectName> {
             throwables.printStackTrace();
         } finally {
             close(statement);
-            close(connection);
         }
     }
 
