@@ -96,12 +96,9 @@ public class PersonDao implements DAO<Person> {
     @Override
     public ArrayList<String> getAllName() {
         ArrayList<String> projectNames = new ArrayList<>();
-        Statement statement = null;
         try {
-            connection = getConnection();
-            String sql = "SELECT id,name FROM person";
-            statement = connection.createStatement();
-            ResultSet RS = statement.executeQuery(sql);
+            preparedStatement = connection.prepareStatement(FIND_ALL);
+            ResultSet RS = preparedStatement.executeQuery();
             while (RS.next()) {
                 String id = RS.getString("id");
                 String name = RS.getString("name");
@@ -110,7 +107,7 @@ public class PersonDao implements DAO<Person> {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {
-            close(statement);
+            close(preparedStatement);
         }
         return projectNames;
     }

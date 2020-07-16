@@ -11,20 +11,24 @@ public class ProjectNameDao implements DAO<ProjectName> {
     private static final String DRIVER_NAME = "com.mysql.cj.jdbc.Driver";
     private static final String DB_URL = "jdbc:mysql://localhost:3306/projectmanager";
     private static final String ID = "root";
-    private static final String PASS = "";
+    private static final String PASS = "192025509Aa";
     Connection connection;
+    private static final String DELETE = "DELETE FROM projectname WHERE projectName=?";
+    private static final String FIND_ALL = "SELECT * FROM projectname ORDER BY projectName";
+    private static final String FIND_BY_ID = "SELECT * FROM projectName WHERE projectName=?";
+    private static final String INSERT = "INSERT INTO projectname(projectName, projectColor) VALUES(?, ?)";
+    private static final String UPDATE = "UPDATE projectname SET projectColor=? WHERE projectName=?";
+    PreparedStatement preparedStatement;
     public ProjectNameDao(){
     connection = getConnection();
     }
     @Override
     public ArrayList<ProjectName> getAll() {
         ArrayList<ProjectName> projectNames = new ArrayList<>();
-        Statement statement = null;
+        
         try {
-            connection = getConnection();
-            String sql = "SELECT * FROM projectname";
-            statement = connection.createStatement();
-            ResultSet RS = statement.executeQuery(sql);
+            preparedStatement = connection.prepareStatement(FIND_ALL);
+            ResultSet RS = preparedStatement.executeQuery();
             while (RS.next()) {
                 ProjectName projectName = new ProjectName(RS.getString("projectName"), RS.getString("projectColor"));
                 projectNames.add(projectName);
@@ -32,7 +36,7 @@ public class ProjectNameDao implements DAO<ProjectName> {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {
-            close(statement);
+            close(preparedStatement);
         }
         return projectNames;
     }
@@ -44,59 +48,50 @@ public class ProjectNameDao implements DAO<ProjectName> {
 
     @Override
     public void add(ProjectName project) {
-        Statement statement = null;
         try {
-            connection = getConnection();
-            String sql = "insert into projectname values('" + project.getProjectName() + "','" + project.getProjectColor() + "')";
-            statement = connection.createStatement();
-            statement.executeUpdate(sql);
+            preparedStatement = connection.prepareStatement(INSERT);
+            preparedStatement.setString(1, project.getProjectName());
+            preparedStatement.setString(2, project.getProjectColor());
+            preparedStatement.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();
         } finally {
-            close(statement);
+            close(preparedStatement);
         }
     }
 
     @Override
     public void update(ProjectName project) {
-        Statement statement = null;
         try {
-            connection = getConnection();
-            String sql = "update projectname set projectColor= '" + project.getProjectColor()
-                    + "' where projectName = '" + project.getProjectName() + "'";
-            statement = connection.createStatement();
-            statement.executeUpdate(sql);
+            preparedStatement = connection.prepareStatement(UPDATE);
+            preparedStatement.setString(1, project.getProjectColor());
+            preparedStatement.setString(2, project.getProjectName());
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {
-            close(statement);
+            close(preparedStatement);
         }
     }
 
     @Override
     public void delete(ProjectName projectName) {
-        Statement statement = null;
         try {
-            connection = getConnection();
-            String sql = " delete from projectname where projectName = '" + projectName.getProjectName() + "'";
-            statement = connection.createStatement();
-            statement.executeUpdate(sql);
+            preparedStatement = connection.prepareStatement(DELETE);
+            preparedStatement.setString(1, projectName.getProjectName());
+            preparedStatement.executeUpdate();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {
-            close(statement);
+            close(preparedStatement);
         }
     }
 
     @Override
     public ArrayList<String> getAllName() {
         ArrayList<String> projectNames = new ArrayList<>();
-        Statement statement = null;
         try {
-            connection = getConnection();
-            String sql = "SELECT projectName FROM projectname";
-            statement = connection.createStatement();
-            ResultSet RS = statement.executeQuery(sql);
+            preparedStatement = connection.prepareStatement(FIND_ALL);
+            ResultSet RS = preparedStatement.executeQuery();
             while (RS.next()) {
                 String s = RS.getString("projectName");
                 projectNames.add(s);
@@ -104,7 +99,7 @@ public class ProjectNameDao implements DAO<ProjectName> {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {
-            close(statement);
+            close(preparedStatement);
         }
         return projectNames;
     }
