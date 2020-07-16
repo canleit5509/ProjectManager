@@ -4,6 +4,7 @@ public class Person {
     private String id;
     private String name;
     private String color;
+    private int retired;
 
     public Person() {
     }
@@ -13,10 +14,19 @@ public class Person {
         this.color = color;
     }
 
-    public Person(String id, String name, String color) {
+    public Person(String id, String name, String color, int retired) {
         this.id = id;
         this.name = name;
         this.color = color;
+        this.retired = retired;
+    }
+
+    public int getRetired() {
+        return retired;
+    }
+
+    public void setRetired(int retired) {
+        this.retired = retired;
     }
 
     public String getName() {

@@ -16,8 +16,8 @@ public class ProjectNameDao implements DAO<ProjectName> {
     private static final String DELETE = "DELETE FROM projectname WHERE projectName=?";
     private static final String FIND_ALL = "SELECT * FROM projectname ORDER BY projectName";
     private static final String FIND_BY_ID = "SELECT * FROM projectName WHERE projectName=?";
-    private static final String INSERT = "INSERT INTO projectname(projectName, projectColor) VALUES(?, ?)";
-    private static final String UPDATE = "UPDATE projectname SET projectColor=? WHERE projectName=?";
+    private static final String INSERT = "INSERT INTO projectname(projectName, projectColor, done) VALUES(?, ?, ?)";
+    private static final String UPDATE = "UPDATE projectname SET projectColor=?, done=? WHERE projectName=?";
     PreparedStatement preparedStatement;
     public ProjectNameDao(){
     connection = getConnection();
@@ -30,7 +30,7 @@ public class ProjectNameDao implements DAO<ProjectName> {
             preparedStatement = connection.prepareStatement(FIND_ALL);
             ResultSet RS = preparedStatement.executeQuery();
             while (RS.next()) {
-                ProjectName projectName = new ProjectName(RS.getString("projectName"), RS.getString("projectColor"));
+                ProjectName projectName = new ProjectName(RS.getString("projectName"), RS.getString("projectColor"), RS.getInt("done"));
                 projectNames.add(projectName);
             }
         } catch (SQLException throwables) {
@@ -52,6 +52,7 @@ public class ProjectNameDao implements DAO<ProjectName> {
             preparedStatement = connection.prepareStatement(INSERT);
             preparedStatement.setString(1, project.getProjectName());
             preparedStatement.setString(2, project.getProjectColor());
+            preparedStatement.setInt(3, project.getDone());
             preparedStatement.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -65,7 +66,8 @@ public class ProjectNameDao implements DAO<ProjectName> {
         try {
             preparedStatement = connection.prepareStatement(UPDATE);
             preparedStatement.setString(1, project.getProjectColor());
-            preparedStatement.setString(2, project.getProjectName());
+            preparedStatement.setInt(2,project.getDone());
+            preparedStatement.setString(3, project.getProjectName());
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {

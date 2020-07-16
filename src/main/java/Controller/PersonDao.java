@@ -1,7 +1,6 @@
 package Controller;
 
 import Model.Person;
-import Model.ProjectName;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -17,8 +16,8 @@ public class PersonDao implements DAO<Person> {
     private static final String FIND_ALL = "SELECT * FROM person ORDER BY id";
     private static final String FIND_BY_ID = "SELECT * FROM person WHERE id=?";
     private static final String FIND_BY_NAME = "SELECT * FROM person WHERE name=?";
-    private static final String INSERT = "INSERT INTO person(id, name, color) VALUES(?, ?, ?)";
-    private static final String UPDATE = "UPDATE person SET name=?, color=?, passwd=? WHERE id=?";
+    private static final String INSERT = "INSERT INTO person(id, name, color, retired) VALUES(?, ?, ?, ?)";
+    private static final String UPDATE = "UPDATE person SET name=?, color=?, retired=? WHERE id=?";
     /*TODO: lifecycle for DAO
     *
     */
@@ -35,7 +34,7 @@ public class PersonDao implements DAO<Person> {
             preparedStatement = connection.prepareStatement(FIND_ALL);
             ResultSet RS = preparedStatement.executeQuery();
             while (RS.next()) {
-                Person person = new Person(RS.getString("id"), RS.getString("name"), RS.getString("color"));
+                Person person = new Person(RS.getString("id"), RS.getString("name"), RS.getString("color"),RS.getInt("retired"));
                 listPeople.add(person);
             }
         } catch (SQLException throwables) {
@@ -58,6 +57,7 @@ public class PersonDao implements DAO<Person> {
             preparedStatement.setString(1, person.getId());
             preparedStatement.setString(2, person.getName());
             preparedStatement.setString(3, person.getColor());
+            preparedStatement.setInt(4, person.getRetired());
             preparedStatement.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -72,7 +72,8 @@ public class PersonDao implements DAO<Person> {
             preparedStatement = connection.prepareStatement(UPDATE);
             preparedStatement.setString(1,person.getName());
             preparedStatement.setString(2,person.getColor());
-            preparedStatement.setString(3, person.getId());
+            preparedStatement.setInt(3, person.getRetired());
+            preparedStatement.setString(4, person.getId());
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {
