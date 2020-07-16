@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="600.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="Controller.PrimaryViewController">
+<AnchorPane prefHeight="600.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.PrimaryViewController">
    <children>
       <TableView fx:id="tbData" prefHeight="530.0" prefWidth="1211.0">
         <columns>
@@ -21,8 +19,8 @@
         </columns>
       </TableView>
       <Button fx:id="btnDetail" layoutX="1048.0" layoutY="550.0" mnemonicParsing="false" text="Chi tiết" />
-      <Button fx:id="btnDel" layoutX="736.0" layoutY="550.0" mnemonicParsing="false" text="Xoá" />
-      <Button fx:id="btnEdit" onAction="#updateTask" layoutX="386.0" layoutY="550.0" mnemonicParsing="false" text="Sửa" />
-      <Button fx:id="btnAdd" onAction="#addTask" layoutX="72.0" layoutY="550.0" mnemonicParsing="false" text="Thêm" />
+      <Button fx:id="btnDel" layoutX="736.0" layoutY="550.0" mnemonicParsing="false" onAction="#Delete" text="Xoá" />
+      <Button fx:id="btnEdit" layoutX="386.0" layoutY="550.0" mnemonicParsing="false" onAction="#updateTask" text="Sửa" />
+      <Button fx:id="btnAdd" layoutX="72.0" layoutY="550.0" mnemonicParsing="false" onAction="#addTask" text="Thêm" />
    </children>
 </AnchorPane>

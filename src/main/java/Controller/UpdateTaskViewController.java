@@ -95,9 +95,9 @@ public class UpdateTaskViewController {
         addProjectWindow.setScene(scene);
         addProjectWindow.initModality(Modality.WINDOW_MODAL);
         addProjectWindow.initOwner(stage);
-        addProjectWindow.showAndWait();
-        setComboBox();
         AddPerson addPerson = loader.getController();
         addPerson.setID();
+        addProjectWindow.showAndWait();
+        setComboBox();
     }
 }

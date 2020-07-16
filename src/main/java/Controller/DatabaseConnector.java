@@ -14,7 +14,7 @@ public class DatabaseConnector {
 
     public DatabaseConnector(){
         try {
-            this.conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/projectmanager", "root", "192025509Aa");
+            this.conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/projectmanager", "root", "");
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseConnector.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -81,7 +81,7 @@ public class DatabaseConnector {
             while (RS.next() == true) {
                 String id = RS.getString("id");
                 String name = RS.getString("name");
-                list.add(id+" | "+name);
+                list.add(id+"|"+name);
             }
             return list;
         } catch (SQLException ex) {
@@ -149,7 +149,7 @@ public class DatabaseConnector {
 
     public void deleteTask(String id) {
         try {
-            String sql = " delete from task where id = '" + id + "'";
+            String sql = "delete from task where id = '" + id + "'";
             Statement sta = getConnection().createStatement();
             sta.executeUpdate(sql);
         } catch (SQLException ex) {

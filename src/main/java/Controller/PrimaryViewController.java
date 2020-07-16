@@ -106,4 +106,22 @@ public class PrimaryViewController implements Initializable {
             updateTaskWindow.showAndWait();
         }
     }
+
+    public void Delete(ActionEvent e) {
+        Task selected = (Task) tbData.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Warning");
+            alert.setHeaderText("Vui lòng chọn công việc cần xóa");
+            alert.show();
+        } else {
+            tbData.getItems().remove(selected);
+            DatabaseConnector dbConn = new DatabaseConnector();
+            dbConn.deleteTask(selected.getId());
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Thông báo");
+            alert.setHeaderText("Đã xóa");
+            alert.show();
+        }
+    }
 }
