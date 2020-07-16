@@ -137,6 +137,11 @@ public class TaskDao implements DAO<Task> {
         }
     }
 
+    @Override
+    public ArrayList<String> getAllName() {
+        return null;
+    }
+
     private Connection getConnection() {
         try {
             Class.forName(DRIVER_NAME);

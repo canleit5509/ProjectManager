@@ -31,7 +31,6 @@ public class AddPerson implements Initializable {
     }
     public void okBtn(ActionEvent e) {
         Person person = new Person(txtID.getText(),psName.getText(),color.getValue().toString());
-        System.out.println(person.toString());
         personDao.add(person);
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Thông báo");

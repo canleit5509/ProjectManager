@@ -1,6 +1,7 @@
 package Controller;
 
 import Model.Person;
+import Model.ProjectName;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -90,6 +91,28 @@ public class PersonDao implements DAO<Person> {
         } finally {
             close(preparedStatement);
         }
+    }
+
+    @Override
+    public ArrayList<String> getAllName() {
+        ArrayList<String> projectNames = new ArrayList<>();
+        Statement statement = null;
+        try {
+            connection = getConnection();
+            String sql = "SELECT id,name FROM person";
+            statement = connection.createStatement();
+            ResultSet RS = statement.executeQuery(sql);
+            while (RS.next()) {
+                String id = RS.getString("id");
+                String name = RS.getString("name");
+                projectNames.add(id+ "|" + name);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            close(statement);
+        }
+        return projectNames;
     }
 
     private Connection getConnection() {
