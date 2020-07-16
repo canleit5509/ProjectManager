@@ -12,46 +12,49 @@ public class TaskDao implements DAO<Task> {
     private static final String DB_URL = "jdbc:mysql://localhost:3306/projectmanager";
     private static final String ID = "root";
     private static final String PASS = "192025509Aa";
-    public TaskDao(){
 
+    private static final String DELETE = "DELETE FROM task WHERE id=?";
+    private static final String FIND_ALL = "SELECT * FROM task ORDER BY id";
+    private static final String FIND_BY_ID = "SELECT * FROM task WHERE id=?";
+    private static final String FIND_BY_NAME = "SELECT * FROM task WHERE name=?";
+    private static final String INSERT = "INSERT INTO task(id, projectName, title, name, startDate, deadline, finishDate," +
+            "expectTime, finishTime, processed) VALUES(?, ?, ?, ?, ? ,?, ?, ?, ?, ?)";
+    private static final String UPDATE = "UPDATE task SET projectName=?, title=?, name=?, startDate=?, deadline=?, " +
+            "finishDate=?, expectTime=?, finishTime=?, processed=? WHERE id=?";
+    Connection connection;
+    PreparedStatement preparedStatement;
+
+    public TaskDao() {
+        connection = getConnection();
     }
+
     @Override
     public ArrayList<Task> getAll() {
         ArrayList<Task> tasks = new ArrayList<>();
-        Connection connection = null;
-        Statement statement = null;
         try {
-            connection = getConnection();
-            String sql = "SELECT * FROM task";
-            statement = connection.createStatement();
-            ResultSet RS = statement.executeQuery(sql);
+            preparedStatement = connection.prepareStatement(FIND_ALL);
+            ResultSet RS = preparedStatement.executeQuery();
             while (RS.next()) {
                 Task task = new Task(RS.getString("id"), RS.getString("projectName"), RS.getString("title"),
                         RS.getString("name"), RS.getString("startDate"), RS.getString("deadline"),
-                        RS.getString("finishDate"), RS.getInt("expectTime"),RS.getInt("finishTime"),
+                        RS.getString("finishDate"), RS.getInt("expectTime"), RS.getInt("finishTime"),
                         RS.getInt("processed"));
                 tasks.add(task);
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {
-            close(statement);
-            close(connection);
+            close(preparedStatement);
         }
         return tasks;
     }
 
     @Override
     public Optional<Task> get(String id) {
-        Connection conn = null;
-        Statement stmt = null;
-
         try {
-            conn = getConnection();
-            String sql = "SELECT * FROM task WHERE id = '" + id + "'";
-            stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
-
+            preparedStatement = connection.prepareStatement(FIND_BY_ID);
+            preparedStatement.setString(1, id);
+            ResultSet rs = preparedStatement.executeQuery();
             if (rs.next()) {
                 Task task = new Task();
                 task.setId(rs.getString("id"));
@@ -69,71 +72,71 @@ public class TaskDao implements DAO<Task> {
                 return Optional.empty();
             }
         } catch (SQLException e) {
-            // e.printStackTrace();
             throw new RuntimeException(e);
         } finally {
-            close(stmt);
-            close(conn);
+            close(preparedStatement);
         }
 
     }
 
     @Override
     public void add(Task task) {
-        Connection connection = null;
-        Statement statement = null;
         try {
-            connection = getConnection();
-            String sql = "insert into task values('" + task.getId() + "','" + task.getPrName() + "','" + task.getTitle()
-                    + "','" + task.getName() + "','" + task.getStartDate() + "','" + task.getDeadline() + "','"
-                    + task.getFinishDate() + "','" + task.getExpectedTime() + "','" + task.getFinishTime() + "','"
-                    + task.getProcessed() + "')";
-            statement = connection.createStatement();
-            statement.executeUpdate(sql);
+            preparedStatement = connection.prepareStatement(INSERT);
+            preparedStatement.setString(1, task.getId());
+            preparedStatement.setString(2, task.getPrName());
+            preparedStatement.setString(3, task.getTitle());
+            preparedStatement.setString(4, task.getName());
+            preparedStatement.setString(5, task.getStartDate());
+            preparedStatement.setString(6, task.getDeadline());
+            preparedStatement.setString(7, task.getFinishDate());
+            preparedStatement.setInt(8, task.getExpectedTime());
+            preparedStatement.setInt(9, task.getFinishTime());
+            preparedStatement.setInt(10, task.getProcessed());
+            preparedStatement.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();
         } finally {
-            close(statement);
-            close(connection);
+            close(preparedStatement);
         }
     }
 
     @Override
     public void update(Task task) {
-        Connection connection = null;
-        Statement statement = null;
         try {
-            connection = getConnection();
-            String sql = "update task set projectName='" + task.getPrName() + "', title='" + task.getTitle()
-                    + "', name='" + task.getName() + "', startDate='" + task.getStartDate() + "', deadline='" + task.getDeadline() + "', finishDate='"
-                    + task.getFinishDate() + "', expectTime='" + task.getExpectedTime() + "', finishTime='" + task.getFinishTime() + "', processed='"
-                    + task.getProcessed() + "' where id='" + task.getId() + "'";
-            statement = connection.createStatement();
-            statement.executeUpdate(sql);
+            preparedStatement = connection.prepareStatement(UPDATE);
+            preparedStatement.setString(1, task.getId());
+            preparedStatement.setString(2, task.getPrName());
+            preparedStatement.setString(3, task.getTitle());
+            preparedStatement.setString(4, task.getName());
+            preparedStatement.setString(5, task.getStartDate());
+            preparedStatement.setString(6, task.getDeadline());
+            preparedStatement.setString(7, task.getFinishDate());
+            preparedStatement.setInt(8, task.getExpectedTime());
+            preparedStatement.setInt(9, task.getFinishTime());
+            preparedStatement.setInt(10, task.getProcessed());
+            preparedStatement.executeUpdate();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {
-            close(statement);
-            close(connection);
+            close(preparedStatement);
         }
     }
 
     @Override
     public void delete(Task task) {
-        Connection connection = null;
-        Statement statement = null;
+
         try {
-            connection = getConnection();
-            String sql = " delete from task where id = '" + task.getId() + "'";
-            statement = connection.createStatement();
-            statement.executeUpdate(sql);
+            preparedStatement = connection.prepareStatement(DELETE);
+            preparedStatement.setString(1, task.getId());
+            preparedStatement.executeUpdate();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {
-            close(statement);
-            close(connection);
+            close(preparedStatement);
         }
     }
+
     private Connection getConnection() {
         try {
             Class.forName(DRIVER_NAME);

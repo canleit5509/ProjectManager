@@ -11,9 +11,17 @@ public class PersonDao implements DAO<Person> {
     private static final String DB_URL = "jdbc:mysql://localhost:3306/projectmanager";
     private static final String ID = "root";
     private static final String PASS = "192025509Aa";
+
+    private static final String DELETE = "DELETE FROM person WHERE id=?";
+    private static final String FIND_ALL = "SELECT * FROM person ORDER BY id";
+    private static final String FIND_BY_ID = "SELECT * FROM person WHERE id=?";
+    private static final String FIND_BY_NAME = "SELECT * FROM person WHERE name=?";
+    private static final String INSERT = "INSERT INTO person(id, name, color) VALUES(?, ?, ?)";
+    private static final String UPDATE = "UPDATE person SET name=?, color=?, passwd=? WHERE id=?";
     /*TODO: lifecycle for DAO
     *
     */
+    private PreparedStatement preparedStatement;
     private Connection connection;
     public PersonDao() {
         connection = getConnection();
@@ -22,13 +30,9 @@ public class PersonDao implements DAO<Person> {
     @Override
     public ArrayList<Person> getAll() {
         ArrayList<Person> listPeople = new ArrayList<>();
-
-        Statement statement = null;
         try {
-            connection = getConnection();
-            String sql = "SELECT * FROM person";
-            statement = connection.createStatement();
-            ResultSet RS = statement.executeQuery(sql);
+            preparedStatement = connection.prepareStatement(FIND_ALL);
+            ResultSet RS = preparedStatement.executeQuery();
             while (RS.next()) {
                 Person person = new Person(RS.getString("id"), RS.getString("name"), RS.getString("color"));
                 listPeople.add(person);
@@ -36,7 +40,7 @@ public class PersonDao implements DAO<Person> {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {
-            close(statement);
+            close(preparedStatement);
         }
         return listPeople;
     }
@@ -48,47 +52,43 @@ public class PersonDao implements DAO<Person> {
 
     @Override
     public void add(Person person) {
-        Statement statement = null;
         try {
-            connection = getConnection();
-            String sql = "insert into person values('" + person.getId() + "','" + person.getName() + "','" + person.getColor() + "')";
-            statement = connection.createStatement();
-            statement.executeUpdate(sql);
+            preparedStatement = connection.prepareStatement(INSERT);
+            preparedStatement.setString(1, person.getId());
+            preparedStatement.setString(2, person.getName());
+            preparedStatement.setString(3, person.getColor());
+            preparedStatement.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();
         } finally {
-            close(statement);
+            close(preparedStatement);
         }
     }
 
     @Override
     public void update(Person person) {
-        Statement statement = null;
         try {
-            connection = getConnection();
-            String sql = "update person set name= '" + person.getName() + "', color= '"
-                    + person.getColor() + "' where id='" + person.getId() + "'";
-            statement = connection.createStatement();
-            statement.executeUpdate(sql);
+            preparedStatement = connection.prepareStatement(UPDATE);
+            preparedStatement.setString(1,person.getName());
+            preparedStatement.setString(2,person.getColor());
+            preparedStatement.setString(3, person.getId());
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {
-            close(statement);
+            close(preparedStatement);
         }
     }
 
     @Override
     public void delete(Person person) {
-        Statement statement = null;
         try {
-            connection = getConnection();
-            String sql = " delete from person where id = '" + person.getId() + "'";
-            statement = connection.createStatement();
-            statement.executeUpdate(sql);
+            preparedStatement = connection.prepareStatement(DELETE);
+            preparedStatement.setString(1, person.getId());
+            preparedStatement.executeUpdate();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {
-            close(statement);
+            close(preparedStatement);
         }
     }
 

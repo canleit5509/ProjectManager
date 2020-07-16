@@ -23,7 +23,6 @@ public class AddPerson implements Initializable {
     TextField psName;
     @FXML
     ColorPicker color;
-    DatabaseConnector dbConn;
     PersonDao personDao = new PersonDao();
     public void setID(){
         Random random = new Random();

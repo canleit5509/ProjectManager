@@ -35,7 +35,18 @@ public class Task {
         this.processed = processed;
     }
 
-
+    public Task(String id, String prName, String title, String name, String startDate, String deadline, String finishDate, int expectedTime, int finishTime, int processed) {
+        this.id = id;
+        this.prName = prName;
+        this.title = title;
+        this.name = name;
+        this.startDate = startDate;
+        this.deadline = deadline;
+        this.finishDate = finishDate;
+        this.expectedTime = expectedTime;
+        this.finishTime = finishTime;
+        this.processed = processed;
+    }
 
     public int getExpectedTime() {
         return expectedTime;
