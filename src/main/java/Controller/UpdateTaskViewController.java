@@ -124,11 +124,6 @@ public class UpdateTaskViewController {
         alert.setTitle("Thông báo");
         alert.setHeaderText("Cập nhật thành công");
         alert.showAndWait();
-//        FXMLLoader loader = new FXMLLoader();
-//        PrimaryViewController primaryView = loader.getController();
-//        ObservableList<Task> taskList = FXCollections.observableArrayList(taskDao.getAll());
-//        primaryView.tbData.setItems(taskList);
-//        primaryView.RefreshTable();
         Stage stage = (Stage)((Node) e.getSource()).getScene().getWindow();
         stage.close();
     }
