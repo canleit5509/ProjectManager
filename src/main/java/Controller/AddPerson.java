@@ -30,7 +30,7 @@ public class AddPerson implements Initializable {
         txtID.setText(id+"");
     }
     public void okBtn(ActionEvent e) {
-        Person person = new Person(txtID.getText(),psName.getText(),color.getValue().toString());
+        Person person = new Person(txtID.getText(),psName.getText(),color.getValue().toString(),0);
         personDao.add(person);
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Thông báo");

@@ -17,7 +17,7 @@ public class AddProject {
     ColorPicker color;
     ProjectNameDao nameDao = new ProjectNameDao();
     public void okBtn(ActionEvent e) {
-        ProjectName projectName = new ProjectName(prName.getText(),color.getValue().toString());
+        ProjectName projectName = new ProjectName(prName.getText(),color.getValue().toString(),0);
         nameDao.add(projectName);
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Thông báo");
