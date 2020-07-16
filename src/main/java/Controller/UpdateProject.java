@@ -1,6 +1,7 @@
 package Controller;
 
 import Model.Person;
+import Model.ProjectName;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -12,9 +13,7 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class UpdatePerson implements Initializable {
-    @FXML
-    Label txtID;
+public class UpdateProject implements Initializable {
     @FXML
     TextField txtName;
     @FXML
@@ -22,38 +21,36 @@ public class UpdatePerson implements Initializable {
     @FXML
     RadioButton radioNow;
     @FXML
-    RadioButton radioRetired;
+    RadioButton radioDone;
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         ToggleGroup group = new ToggleGroup();
         radioNow.setToggleGroup(group);
-        radioRetired.setToggleGroup(group);
+        radioDone.setToggleGroup(group);
     }
-    public void setPerson(Person person){
-        txtID.setText(person.getId());
-        txtName.setText(person.getName());
-        color.setValue(Color.valueOf(person.getColor()));
-        if(person.getRetired()==0){
-            radioRetired.setSelected(false);
+    public void setProject(ProjectName projectName){
+        txtName.setText(projectName.getProjectName());
+        color.setValue(Color.valueOf(projectName.getProjectColor()));
+        if(projectName.getDone()==0){
+            radioDone.setSelected(false);
             radioNow.setSelected(true);
         }else{
             radioNow.setSelected(false);
-            radioRetired.setSelected(true);
+            radioDone.setSelected(true);
         }
     }
 
     public void okBtn(ActionEvent e) {
-        String id = txtID.getText();
         String name = txtName.getText();
         String txtColor = color.getValue().toString();
-        int retired=0;
-        if(radioRetired.isSelected())
-            retired=1;
-        Person person = new Person(id,name,txtColor,retired);
-        PersonDao personDao = new PersonDao();
-        personDao.update(person);
+        int done=0;
+        if(radioDone.isSelected())
+            done=1;
+        ProjectName project = new ProjectName(name,txtColor,done);
+        ProjectNameDao projectNameDao = new ProjectNameDao();
+        projectNameDao.update(project);
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Thông báo");
         alert.setHeaderText("Cập nhật thành công");
