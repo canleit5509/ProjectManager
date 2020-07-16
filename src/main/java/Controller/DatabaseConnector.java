@@ -82,11 +82,7 @@ public class DatabaseConnector {
             while (RS.next()) {
                 String id = RS.getString("id");
                 String name = RS.getString("name");
-<<<<<<< HEAD
-                list.add(id+"|"+name);
-=======
                 list.add(id + " | " + name);
->>>>>>> 853198d571b90b8b7f8d14b80f5cee50839f5248
             }
             return list;
         } catch (SQLException ex) {
