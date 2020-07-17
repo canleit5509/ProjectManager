@@ -42,7 +42,7 @@ public class UpdateTaskViewController {
     @FXML
     TextField processed;
 
-    public void setTask(Task task){
+    public void setTask(Task task) {
         //TODO: chinh database task.startDate, deadline, finishDate thanh Date
         id.setText(task.getId());
         prName.setValue(task.getPrName());
@@ -50,17 +50,17 @@ public class UpdateTaskViewController {
         title.setText(task.getTitle());
         startDate.setValue(LocalDate.parse(task.getStartDate()));
         deadline.setValue(LocalDate.parse(task.getDeadline()));
-        if(task.getFinishDate()==null){
+        if (task.getFinishDate() == null) {
             finishDate.setValue(null);
-        }else{
+        } else {
             finishDate.setValue(LocalDate.parse(task.getFinishDate()));
         }
-        expectedTime.setText(task.getExpectedTime()+"");
-        finishTime.setText(task.getFinishTime()+"");
-        processed.setText(task.getProcessed()+"");
+        expectedTime.setText(task.getExpectedTime() + "");
+        finishTime.setText(task.getFinishTime() + "");
+        processed.setText(task.getProcessed() + "");
     }
 
-    public void setComboBox(){
+    public void setComboBox() {
         PersonDao personDao = new PersonDao();
         ProjectNameDao projectNameDao = new ProjectNameDao();
         ObservableList<String> prList = FXCollections.observableArrayList(projectNameDao.getAllNameNow());
@@ -69,13 +69,13 @@ public class UpdateTaskViewController {
         name.setItems(personList);
     }
 
-    public void cancel(ActionEvent e) throws IOException {
+    public void cancel(ActionEvent e) {
         Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         stage.close();
     }
 
     public void AddProject(ActionEvent e) throws IOException {
-        Stage stage = (Stage)((Node) e.getSource()).getScene().getWindow();
+        Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/AddProject.fxml"));
         Parent addProject = loader.load();
@@ -90,7 +90,7 @@ public class UpdateTaskViewController {
     }
 
     public void AddPerson(ActionEvent e) throws IOException {
-        Stage stage = (Stage)((Node) e.getSource()).getScene().getWindow();
+        Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/AddPerson.fxml"));
         Parent addProject = loader.load();
@@ -106,30 +106,49 @@ public class UpdateTaskViewController {
         setComboBox();
     }
 
-    public void btnOK(ActionEvent e) throws IOException {
-        String txtID = id.getText();
-        String txtPrName = prName.getValue();
-        String txtName="";
-        if(!name.getValue().contains("|"))
-            txtName = name.getValue();
+    public Task getTask() {
+        Task task = new Task();
+        task.setId(id.getText());
+        task.setPrName(prName.getValue());
+
+        if (!name.getValue().contains("|"))
+            task.setName(name.getValue());
         else
-            txtName = name.getValue().substring(7);
-        String txtTitle = title.getText();
-        String txtStartDate = startDate.getValue().toString();
-        String txtDeadline = deadline.getValue().toString();
-        String txtFinishDate = finishDate.getValue().toString();
-        int intExpectTime = Integer.parseInt(expectedTime.getText());
-        int intFinishTime = Integer.parseInt(finishTime.getText());
-        int intProcessed = Integer.parseInt(processed.getText());
+            task.setName(name.getValue().substring(7));
+        task.setTitle(title.getText());
+
+        String txtStartDate = String.valueOf(startDate.getValue());
+        if (!txtStartDate.equals("null")) {
+            task.setStartDate(txtStartDate);
+        }
+        String txtDeadline = String.valueOf(deadline.getValue());
+        if (!txtDeadline.equals("null")) {
+            task.setDeadline(txtDeadline);
+        }
+        if (!String.valueOf(finishDate.getValue()).equals("null")) {
+            task.setFinishDate(String.valueOf(finishDate.getValue()));
+        }
+        if (!expectedTime.getText().isBlank()) {
+            task.setExpectedTime(Integer.parseInt(expectedTime.getText()));
+        }
+        if (!finishTime.getText().isBlank()) {
+            task.setFinishTime(Integer.parseInt(finishTime.getText()));
+        }
+        if (!processed.getText().isBlank()) {
+            task.setProcessed(Integer.parseInt(processed.getText()));
+        }
+        return task;
+    }
+
+    public void btnOK(ActionEvent e) {
         TaskDao taskDao = new TaskDao();
-        Task task = new Task(txtID,txtPrName,txtTitle,txtName,txtStartDate,txtDeadline,txtFinishDate
-                ,intExpectTime,intFinishTime,intProcessed);
+        Task task = getTask();
         taskDao.update(task);
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Thông báo");
         alert.setHeaderText("Cập nhật thành công");
         alert.showAndWait();
-        Stage stage = (Stage)((Node) e.getSource()).getScene().getWindow();
+        Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         stage.close();
     }
 }

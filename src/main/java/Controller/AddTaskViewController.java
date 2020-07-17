@@ -15,6 +15,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.InputMethodEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 
 import java.io.IOException;
@@ -112,7 +113,11 @@ public class AddTaskViewController implements Initializable {
         if (!String.valueOf(finishDate.getValue()).equals("null")) {
             task.setFinishDate(String.valueOf(finishDate.getValue()));
         }
-        if (!processed.getText().isBlank()) {
+        task.setExpectedTime(Integer.parseInt(expectedTime.getText()));
+        if(!finishTime.getText().equals("")){
+            task.setFinishTime(Integer.parseInt(finishTime.getText()));
+        }
+        if (!processed.getText().equals("")) {
             task.setProcessed(Integer.parseInt(processed.getText()));
         }
         return task;
@@ -121,8 +126,8 @@ public class AddTaskViewController implements Initializable {
     public void setComboBox() {
         PersonDao personDao = new PersonDao();
         ProjectNameDao projectNameDao = new ProjectNameDao();
-        ObservableList<String> prList = FXCollections.observableArrayList(projectNameDao.getAllName());
-        ObservableList<String> personList = FXCollections.observableArrayList(personDao.getAllName());
+        ObservableList<String> prList = FXCollections.observableArrayList(projectNameDao.getAllNameNow());
+        ObservableList<String> personList = FXCollections.observableArrayList(personDao.getAllIDName());
         prName.setItems(prList);
         name.setItems(personList);
     }
@@ -146,7 +151,23 @@ public class AddTaskViewController implements Initializable {
         }
         return numberOfDays;
     }
+    public void onPickStart(ActionEvent e) {
+        Callback<DatePicker, DateCell> callback = new Callback<>() {
+            @Override
+            public DateCell call(DatePicker datePicker) {
+                return new DateCell() {
+                    @Override
+                    public void updateItem(LocalDate item, boolean empty) {
+                        super.updateItem(item, empty); //To change body of generated methods, choose Tools | Templates.
+                        setDisable(empty || item.compareTo(startDate.getValue()) < 0);
+                    }
 
+                };
+            }
+        };
+        deadline.setDayCellFactory(callback);
+        finishDate.setDayCellFactory(callback);
+    }
     public void onPickDeadline(ActionEvent e) throws ParseException {
         LocalDate date1 = startDate.getValue();
         LocalDate date2 = deadline.getValue();
@@ -205,7 +226,7 @@ public class AddTaskViewController implements Initializable {
         addPerson.setID();
     }
 
-    public void cancel(ActionEvent e) throws IOException {
+    public void cancel(ActionEvent e) {
         Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         stage.close();
     }
@@ -215,6 +236,7 @@ public class AddTaskViewController implements Initializable {
             Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
             TaskDao taskDao = new TaskDao();
             taskDao.add(getTask());
+            System.out.println(getTask().toString());
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Thông báo");
             alert.setHeaderText("Thêm thành công");
