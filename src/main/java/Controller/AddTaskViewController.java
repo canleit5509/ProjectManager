@@ -14,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 
 import java.io.IOException;
@@ -50,13 +51,17 @@ public class AddTaskViewController implements Initializable {
         Random random = new Random();
         int taskID = random.nextInt(899999) + 100000;
         id.setText(String.valueOf(taskID));
-
     }
 
     public Task getTask() {
         Task task = new Task();
         task.setId(id.getText());
-        task.setPrName(prName.getValue());
+        if (prName.getValue().equals(""))  {
+            Alert();
+        }
+        else {
+            task.setPrName(prName.getValue());
+        }
 
         if (!name.getValue().contains("|"))
             task.setName(name.getValue());
@@ -90,8 +95,8 @@ public class AddTaskViewController implements Initializable {
     public void setComboBox() {
         PersonDao personDao = new PersonDao();
         ProjectNameDao projectNameDao = new ProjectNameDao();
-        ObservableList<String> prList = FXCollections.observableArrayList(projectNameDao.getAllName());
-        ObservableList<String> personList = FXCollections.observableArrayList(personDao.getAllName());
+        ObservableList<String> prList = FXCollections.observableArrayList(projectNameDao.getAllNameNow());
+        ObservableList<String> personList = FXCollections.observableArrayList(personDao.getAllIDName());
         prName.setItems(prList);
         name.setItems(personList);
     }
@@ -113,6 +118,23 @@ public class AddTaskViewController implements Initializable {
         return result;
     }
 
+    public void onPickStart(ActionEvent e) {
+        Callback<DatePicker, DateCell> callback = new Callback<>() {
+            @Override
+            public DateCell call(DatePicker datePicker) {
+                return new DateCell() {
+                    @Override
+                    public void updateItem(LocalDate item, boolean empty) {
+                        super.updateItem(item, empty); //To change body of generated methods, choose Tools | Templates.
+                        setDisable(empty || item.compareTo(startDate.getValue()) < 0);
+                    }
+
+                };
+            }
+        };
+        deadline.setDayCellFactory(callback);
+        finishDate.setDayCellFactory(callback);
+    }
     public void onPickDeadline(ActionEvent e) {
         LocalDate ldStart = startDate.getValue();
         LocalDate ldDeadline = deadline.getValue();
@@ -122,7 +144,7 @@ public class AddTaskViewController implements Initializable {
             alert.setHeaderText("Ngày deadline trước ngày bắt đầu!");
             alert.showAndWait();
         } else {
-            expectedTime.setText(String.valueOf(workDays(ldStart,ldDeadline)));
+            expectedTime.setText(String.valueOf(workDays(ldStart, ldDeadline)));
         }
     }
 
@@ -158,7 +180,7 @@ public class AddTaskViewController implements Initializable {
         addPerson.setID();
     }
 
-    public void cancel(ActionEvent e) throws IOException {
+    public void cancel(ActionEvent e) {
         Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         stage.close();
     }
@@ -173,5 +195,11 @@ public class AddTaskViewController implements Initializable {
         alert.setHeaderText("Thêm thành công");
         alert.showAndWait();
         stage.close();
+    }
+    public void Alert(){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Thông báo");
+        alert.setHeaderText("Chưa nhập đủ những trường cần thiết!");
+        alert.showAndWait();
     }
 }
