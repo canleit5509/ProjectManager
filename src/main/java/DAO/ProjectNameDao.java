@@ -21,13 +21,15 @@ public class ProjectNameDao implements DAO<ProjectName> {
     private static final String INSERT = "INSERT INTO projectname(projectName, projectColor, done) VALUES(?, ?, ?)";
     private static final String UPDATE = "UPDATE projectname SET projectColor=?, done=? WHERE projectName=?";
     PreparedStatement preparedStatement;
-    public ProjectNameDao(){
-    connection = getConnection();
+
+    public ProjectNameDao() {
+        connection = getConnection();
     }
+
     @Override
     public ArrayList<ProjectName> getAll() {
         ArrayList<ProjectName> projectNames = new ArrayList<>();
-        
+
         try {
             preparedStatement = connection.prepareStatement(FIND_ALL);
             ResultSet RS = preparedStatement.executeQuery();
@@ -80,8 +82,20 @@ public class ProjectNameDao implements DAO<ProjectName> {
     }
 
     @Override
-    public Optional<ProjectName> get(String id) {
-        return Optional.empty();
+    public ProjectName get(String id) {
+        try {
+            preparedStatement = connection.prepareStatement(FIND_BY_ID);
+            preparedStatement.setString(1, id);
+            ResultSet RS = preparedStatement.executeQuery();
+            ProjectName projectName = null;
+            while (RS.next()) {
+                 projectName = new ProjectName(RS.getString("projectName"), RS.getString("projectColor"), RS.getInt("done"));
+            }
+            return projectName;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return null;
     }
 
     @Override
@@ -104,7 +118,7 @@ public class ProjectNameDao implements DAO<ProjectName> {
         try {
             preparedStatement = connection.prepareStatement(UPDATE);
             preparedStatement.setString(1, project.getProjectColor());
-            preparedStatement.setInt(2,project.getDone());
+            preparedStatement.setInt(2, project.getDone());
             preparedStatement.setString(3, project.getProjectName());
             preparedStatement.executeUpdate();
         } catch (SQLException throwables) {

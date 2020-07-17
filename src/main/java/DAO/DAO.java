@@ -6,7 +6,7 @@ import java.util.Optional;
 public interface DAO<T> {
     ArrayList<T> getAll();
 
-    Optional<T> get(String id);
+   T get(String id);
 
     void add(T t);
 

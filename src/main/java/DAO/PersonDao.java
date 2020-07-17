@@ -102,8 +102,16 @@ public class PersonDao implements DAO<Person> {
     }
 
     @Override
-    public Optional<Person> get(String id) {
-        return Optional.empty();
+    public Person get(String id) {
+        try{
+            preparedStatement = connection.prepareStatement(FIND_BY_NAME);
+            preparedStatement.setString(1,id);
+            ResultSet RS = preparedStatement.executeQuery();
+            return new Person(RS.getString("id"), RS.getString("name"), RS.getString("color"), RS.getInt("retired"));
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return null;
     }
 
     @Override

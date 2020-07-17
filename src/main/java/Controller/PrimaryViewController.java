@@ -1,6 +1,8 @@
 package Controller;
 
+import DAO.ProjectNameDao;
 import DAO.TaskDao;
+import Model.ProjectName;
 import Model.Task;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,11 +15,15 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 import java.io.IOException;
 import java.net.URL;
@@ -52,11 +58,12 @@ public class PrimaryViewController implements Initializable {
         listTask = FXCollections.observableArrayList(taskDao.getAll());
     }
 
-    public void RefreshTable(){
+    public void RefreshTable() {
         TaskDao taskDao = new TaskDao();
         ObservableList<Task> taskList = FXCollections.observableArrayList(taskDao.getAll());
         tbData.setItems(taskList);
     }
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -71,6 +78,27 @@ public class PrimaryViewController implements Initializable {
         tcProcess.setCellValueFactory(new PropertyValueFactory<>("processed"));
         tbData.setItems(listTask);
         tbData.setEditable(true);
+        tcProjectName.setCellFactory(new Callback<>() {
+            @Override
+            public TableCell<Task, String> call(TableColumn<Task, String> taskStringTableColumn) {
+                return new TableCell<>() {
+                    @Override
+                    public void updateItem(String item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (!isEmpty()) {
+                            ProjectNameDao projectNameDao = new ProjectNameDao();
+                            ProjectName name = projectNameDao.get(item);
+                            this.setStyle("-fx-background-color: #" + name.getProjectColor().substring(2) + ";");
+                            // Get fancy and change color based on data
+                            if (item.contains("@"))
+                                this.setTextFill(Color.BLUEVIOLET);
+                            setText(item);
+                            System.out.println(item);
+                        }
+                    }
+                };
+            }
+        });
     }
 
     //TODO:
@@ -145,6 +173,7 @@ public class PrimaryViewController implements Initializable {
         addTaskWindow.initModality(Modality.WINDOW_MODAL);
         addTaskWindow.initOwner(stage);
         addTaskWindow.showAndWait();
+        RefreshTable();
     }
 
     public void btnPerson(ActionEvent e) throws IOException {

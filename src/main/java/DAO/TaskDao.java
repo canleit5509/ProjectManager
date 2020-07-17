@@ -50,7 +50,7 @@ public class TaskDao implements DAO<Task> {
     }
 
     @Override
-    public Optional<Task> get(String id) {
+    public Task get(String id) {
         try {
             preparedStatement = connection.prepareStatement(FIND_BY_ID);
             preparedStatement.setString(1, id);
@@ -67,9 +67,9 @@ public class TaskDao implements DAO<Task> {
                 task.setExpectedTime(rs.getInt("expectTime"));
                 task.setFinishTime(rs.getInt("finishTime"));
                 task.setProcessed(rs.getInt("processed"));
-                return Optional.of(task);
+                return task;
             } else {
-                return Optional.empty();
+                return null;
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
