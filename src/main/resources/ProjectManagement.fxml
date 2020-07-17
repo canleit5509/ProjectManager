@@ -10,8 +10,7 @@
    <children>
       <TableView fx:id="tbData" prefHeight="150" prefWidth="600.0">
         <columns>
-          <TableColumn fx:id="tcName" prefWidth="500.0" text="Tên" />
-            <TableColumn fx:id="tcColor" prefWidth="100.0" text="Màu" />
+          <TableColumn fx:id="tcName" prefWidth="600.0" text="Tên" />
         </columns>
       </TableView>
       <Button layoutX="115.0" layoutY="298.0" mnemonicParsing="false" onAction="#btnAdd" text="Thêm" />

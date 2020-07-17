@@ -14,12 +14,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.stage.Modality;
@@ -33,6 +30,8 @@ import java.util.ResourceBundle;
 
 
 public class PrimaryViewController implements Initializable {
+    @FXML
+    Button btnEdit;
     @FXML
     TableView<Task> tbData;
     @FXML
@@ -95,7 +94,6 @@ public class PrimaryViewController implements Initializable {
                             if (item.contains("@"))
                                 this.setTextFill(Color.BLUEVIOLET);
                             setText(item);
-                            System.out.println(item);
                         }
                     }
                 };
@@ -198,5 +196,12 @@ public class PrimaryViewController implements Initializable {
         addTaskWindow.initModality(Modality.WINDOW_MODAL);
         addTaskWindow.initOwner(stage);
         addTaskWindow.showAndWait();
+    }
+
+    public void Clicked(MouseEvent mouseEvent) throws IOException {
+        Task selected = (Task) tbData.getSelectionModel().getSelectedItem();
+        if(mouseEvent.getClickCount()==2 && selected!=null) {
+            btnEdit.fire();
+        }
     }
 }

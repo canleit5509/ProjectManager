@@ -11,7 +11,7 @@ public class PersonDao implements DAO<Person> {
     private static final String DRIVER_NAME = "com.mysql.cj.jdbc.Driver";
     private static final String DB_URL = "jdbc:mysql://localhost:3306/projectmanager";
     private static final String ID = "root";
-    private static final String PASS = "192025509Aa";
+    private static final String PASS = "";
 
     private static final String DELETE = "DELETE FROM person WHERE id=?";
     private static final String FIND_ALL = "SELECT * FROM person ORDER BY id";
@@ -104,10 +104,13 @@ public class PersonDao implements DAO<Person> {
     @Override
     public Person get(String id) {
         try{
-            preparedStatement = connection.prepareStatement(FIND_BY_NAME);
+            preparedStatement = connection.prepareStatement(FIND_BY_ID);
             preparedStatement.setString(1,id);
             ResultSet RS = preparedStatement.executeQuery();
-            return new Person(RS.getString("id"), RS.getString("name"), RS.getString("color"), RS.getInt("retired"));
+            while(RS.next()){
+                Person person = new Person(RS.getString("id"), RS.getString("name"), RS.getString("color"), RS.getInt("retired"));
+                return person;
+            }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

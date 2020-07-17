@@ -8,18 +8,18 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 public class ProjectNameDao implements DAO<ProjectName> {
+    Connection connection;
     private static final String DRIVER_NAME = "com.mysql.cj.jdbc.Driver";
     private static final String DB_URL = "jdbc:mysql://localhost:3306/projectmanager";
     private static final String ID = "root";
-    private static final String PASS = "192025509Aa";
-    Connection connection;
+    private static final String PASS = "";
     private static final String DELETE = "DELETE FROM projectname WHERE projectName=?";
     private static final String FIND_ALL = "SELECT * FROM projectname ORDER BY projectName";
     private static final String FIND_ALL_NOW = "SELECT * FROM projectname WHERE done=false ORDER BY projectName";
     private static final String FIND_ALL_DONE = "SELECT * FROM projectname WHERE done=true ORDER BY projectName";
     private static final String FIND_BY_ID = "SELECT * FROM projectName WHERE projectName=?";
     private static final String INSERT = "INSERT INTO projectname(projectName, projectColor, done) VALUES(?, ?, ?)";
-    private static final String UPDATE = "UPDATE projectname SET projectColor=?, done=? WHERE projectName=?";
+    private static final String UPDATE = "UPDATE projectname SET projectName=?, projectColor=?, done=? WHERE projectName=?";
     PreparedStatement preparedStatement;
 
     public ProjectNameDao() {
@@ -114,12 +114,18 @@ public class ProjectNameDao implements DAO<ProjectName> {
     }
 
     @Override
-    public void update(ProjectName project) {
+    public void update(ProjectName projectName) {
+
+    }
+
+
+    public void update(ProjectName project, String oldName) {
         try {
             preparedStatement = connection.prepareStatement(UPDATE);
-            preparedStatement.setString(1, project.getProjectColor());
-            preparedStatement.setInt(2, project.getDone());
-            preparedStatement.setString(3, project.getProjectName());
+            preparedStatement.setString(1, project.getProjectName());
+            preparedStatement.setString(2, project.getProjectColor());
+            preparedStatement.setInt(3, project.getDone());
+            preparedStatement.setString(4, oldName);
             preparedStatement.executeUpdate();
         } catch (SQLException throwables) {
             throwables.printStackTrace();

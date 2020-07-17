@@ -14,8 +14,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 import java.io.IOException;
 import java.net.URL;
@@ -32,9 +34,7 @@ public class ManageProject implements Initializable {
     @FXML
     RadioButton checkAll;
     @FXML
-    TableColumn<Person, String> tcName;
-    @FXML
-    TableColumn<Person, ColorPicker> tcColor;
+    TableColumn<ProjectName, String> tcName;
     @FXML
     Button btnDone;
     ProjectNameDao projectNameDao = new ProjectNameDao();
@@ -50,9 +50,9 @@ public class ManageProject implements Initializable {
         addProjectWindow.setScene(scene);
         addProjectWindow.initModality(Modality.WINDOW_MODAL);
         addProjectWindow.initOwner(stage);
-//        AddProject addPerson = loader.getController();
         addProjectWindow.showAndWait();
         RefreshTable(projectNameDao.getAllNow());
+        checkNow.setSelected(true);
     }
 
     public void btnUpdate(ActionEvent e) throws IOException {
@@ -75,6 +75,7 @@ public class ManageProject implements Initializable {
             updateProjectWindow.initOwner(stage);
             UpdateProject updateProject1 = loader.getController();
             updateProject1.setProject(projectName);
+            updateProject1.oldName=projectName.getProjectName();
             updateProjectWindow.showAndWait();
             RefreshTable(projectNameDao.getAllNow());
             checkNow.setSelected(true);
@@ -91,9 +92,27 @@ public class ManageProject implements Initializable {
             alert.show();
         } else {
             projectName.setDone(1);
-            projectNameDao.update(projectName);
+            projectNameDao.update(projectName,projectName.getProjectName());
             RefreshTable(projectNameDao.getAllNow());
         }
+    }
+    public void refreshColor(){
+        tcName.setCellFactory(new Callback<>() {
+            @Override
+            public TableCell<ProjectName, String> call(TableColumn<ProjectName, String> taskStringTableColumn) {
+                return new TableCell<>() {
+                    @Override
+                    public void updateItem(String item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (!isEmpty()) {
+                            ProjectName projectName = projectNameDao.get(item);
+                            this.setStyle("-fx-background-color: #" + projectName.getProjectColor().substring(2) + ";");
+                            setText(item);
+                        }
+                    }
+                };
+            }
+        });
     }
 
     @Override
@@ -105,8 +124,8 @@ public class ManageProject implements Initializable {
         checkNow.setSelected(true);
         ObservableList<ProjectName> personList = FXCollections.observableArrayList(projectNameDao.getAllNow());
         tcName.setCellValueFactory(new PropertyValueFactory<>("projectName"));
-        tcColor.setCellValueFactory(new PropertyValueFactory<>("projectColor"));
         tbData.setItems(personList);
+        refreshColor();
     }
     public void RefreshTable(ArrayList<ProjectName> list){
         ObservableList<ProjectName> projectList = FXCollections.observableArrayList(list);
@@ -116,15 +135,18 @@ public class ManageProject implements Initializable {
     public void checkNow(ActionEvent actionEvent) {
         RefreshTable(projectNameDao.getAllNow());
         btnDone.setVisible(true);
+        refreshColor();
     }
 
     public void checkRetire(ActionEvent actionEvent) {
         RefreshTable(projectNameDao.getAllDone());
         btnDone.setVisible(false);
+        refreshColor();
     }
 
     public void checkAll(ActionEvent actionEvent) {
         RefreshTable(projectNameDao.getAll());
         btnDone.setVisible(false);
+        refreshColor();
     }
 }
