@@ -12,13 +12,19 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.InputMethodEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Random;
 import java.util.ResourceBundle;
 
@@ -38,11 +44,11 @@ public class AddTaskViewController implements Initializable {
     @FXML
     DatePicker finishDate;
     @FXML
-    TextField expectedTime;
+    Label expectedTime;
     @FXML
-    TextField finishTime;
+    Label finishTime;
     @FXML
-    TextField processed;
+    Label processed;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -50,36 +56,61 @@ public class AddTaskViewController implements Initializable {
         Random random = new Random();
         int taskID = random.nextInt(899999) + 100000;
         id.setText(String.valueOf(taskID));
+        processed.setText("0");
+    }
 
+    public boolean validate(){
+        if(prName.getValue()==null){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Thông báo");
+            alert.setHeaderText("Vui lòng chọn dự án!");
+            alert.showAndWait();
+            return false;
+        }
+        if(name.getValue()==null){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Thông báo");
+            alert.setHeaderText("Vui lòng chọn nhân sự");
+            alert.showAndWait();
+            return false;
+        }
+        if(title.getText().equals("")){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Thông báo");
+            alert.setHeaderText("Vui lòng chọn tên công việc");
+            alert.showAndWait();
+            return false;
+        }
+        if(startDate.getValue()==null){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Thông báo");
+            alert.setHeaderText("Vui lòng chọn ngày bắt đầu");
+            alert.showAndWait();
+            return false;
+        }
+        if(deadline.getValue()==null){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Thông báo");
+            alert.setHeaderText("Vui lòng chọn ngày deadline");
+            alert.showAndWait();
+            return false;
+        }
+        return true;
     }
 
     public Task getTask() {
         Task task = new Task();
         task.setId(id.getText());
         task.setPrName(prName.getValue());
-
         if (!name.getValue().contains("|"))
             task.setName(name.getValue());
         else
             task.setName(name.getValue().substring(7));
         task.setTitle(title.getText());
-
-        String txtStartDate = String.valueOf(startDate.getValue());
-        if (!txtStartDate.equals("null")) {
-            task.setStartDate(txtStartDate);
-        }
-        String txtDeadline = String.valueOf(deadline.getValue());
-        if (!txtDeadline.equals("null")) {
-            task.setDeadline(txtDeadline);
-        }
+        task.setStartDate(String.valueOf(startDate.getValue()));
+        task.setDeadline(String.valueOf(deadline.getValue()));
         if (!String.valueOf(finishDate.getValue()).equals("null")) {
             task.setFinishDate(String.valueOf(finishDate.getValue()));
-        }
-        if (!expectedTime.getText().isBlank()) {
-            task.setExpectedTime(Integer.parseInt(expectedTime.getText()));
-        }
-        if (!finishTime.getText().isBlank()) {
-            task.setFinishTime(Integer.parseInt(finishTime.getText()));
         }
         if (!processed.getText().isBlank()) {
             task.setProcessed(Integer.parseInt(processed.getText()));
@@ -96,33 +127,49 @@ public class AddTaskViewController implements Initializable {
         name.setItems(personList);
     }
 
-    public int workDays(LocalDate begin, LocalDate end) {
-        int beginW = begin.getDayOfWeek().getValue();
-        int endW = end.getDayOfWeek().getValue();
-        int days = end.compareTo(begin);
-        int result = days - 2 * (days / 7);
-        if (!(days % 7 == 0)) {
-            if (beginW == 7) {
-                result -= 1;
-            } else if (endW == 7) {
-                result -= 1;
-            } else if (endW < beginW) {
-                result -= 2;
+    public int workDays(LocalDate date1, LocalDate date2) throws ParseException {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Date date11 = df.parse(String.valueOf(date1));
+        Date date22 = df.parse(String.valueOf(date2));
+        Calendar cal1 = Calendar.getInstance();
+        Calendar cal2 = Calendar.getInstance();
+        cal1.setTime(date11);
+        cal2.setTime(date22);
+        cal2.add(Calendar.DATE, 1);
+        int numberOfDays = 0;
+        while (cal1.before(cal2)) {
+            if ((Calendar.SATURDAY != cal1.get(Calendar.DAY_OF_WEEK))
+                    &&(Calendar.SUNDAY != cal1.get(Calendar.DAY_OF_WEEK))) {
+                numberOfDays++;
             }
+            cal1.add(Calendar.DATE,1);
         }
-        return result;
+        return numberOfDays;
     }
 
-    public void onPickDeadline(ActionEvent e) {
-        LocalDate ldStart = startDate.getValue();
-        LocalDate ldDeadline = deadline.getValue();
-        if (ldDeadline.compareTo(ldStart) < 0) {
+    public void onPickDeadline(ActionEvent e) throws ParseException {
+        LocalDate date1 = startDate.getValue();
+        LocalDate date2 = deadline.getValue();
+        if (date2.compareTo(date1) < 0) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Thông báo");
             alert.setHeaderText("Ngày deadline trước ngày bắt đầu!");
             alert.showAndWait();
         } else {
-            expectedTime.setText(String.valueOf(workDays(ldStart,ldDeadline)));
+            expectedTime.setText(String.valueOf(workDays(date1, date2)));
+        }
+    }
+
+    public void onPickFinishDate(ActionEvent e) throws ParseException {
+        LocalDate date1 = startDate.getValue();
+        LocalDate date2 = finishDate.getValue();
+        if (date2.compareTo(date1) < 0) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Thông báo");
+            alert.setHeaderText("Ngày hoàn thành trước ngày bắt đầu!");
+            alert.showAndWait();
+        } else {
+            finishTime.setText(String.valueOf(workDays(date1, date2)));
         }
     }
 
@@ -163,15 +210,16 @@ public class AddTaskViewController implements Initializable {
         stage.close();
     }
 
-    public void submit(ActionEvent e) {
-        Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-        System.out.println(getTask());
-        TaskDao taskDao = new TaskDao();
-        taskDao.add(getTask());
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Thông báo");
-        alert.setHeaderText("Thêm thành công");
-        alert.showAndWait();
-        stage.close();
+    public void submit(ActionEvent e) throws ParseException {
+        if(validate()){
+            Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+            TaskDao taskDao = new TaskDao();
+            taskDao.add(getTask());
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Thông báo");
+            alert.setHeaderText("Thêm thành công");
+            alert.showAndWait();
+            stage.close();
+        }
     }
 }

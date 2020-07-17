@@ -23,15 +23,15 @@
         <Button layoutX="438.0" layoutY="364.0" onAction="#cancel" text="Cancel" />
         <Button layoutX="304.0" layoutY="65.0" onAction="#AddProject" text="+" />
         <Button layoutX="680.0" layoutY="65.0" onAction="#AddPerson" text="+" />
-        <DatePicker fx:id="finishDate" layoutX="127.0" layoutY="225.0" prefHeight="25.0" prefWidth="205.0" />
+        <DatePicker fx:id="finishDate" layoutX="127.0" layoutY="225.0" onAction="#onPickFinishDate" prefHeight="25.0" prefWidth="205.0" />
         <Label layoutX="26.0" layoutY="229.0" text="Ngày kết thúc:" />
         <Label layoutX="23.0" layoutY="290.0" text="Thời gian dự kiến:" />
-        <TextField fx:id="expectedTime" editable="false" layoutX="124.0" layoutY="286.0" prefHeight="26.0" prefWidth="33.0" />
         <Label layoutX="301.0" layoutY="290.0" text="Thời gian kết thúc:" />
-        <TextField fx:id="finishTime" editable="false" layoutX="405.0" layoutY="286.0" prefHeight="26.0" prefWidth="33.0" />
         <Label layoutX="583.0" layoutY="290.0" text="Tiến độ:" />
-        <TextField fx:id="processed" layoutX="635.0" layoutY="286.0" prefHeight="26.0" prefWidth="34.0" />
         <Label layoutX="26.0" layoutY="28.0" text="Mã công việc" />
         <Label fx:id="id" layoutX="113.0" layoutY="28.0" text="Label" />
+      <Label fx:id="expectedTime" layoutX="133.0" layoutY="291.0" text="" />
+      <Label fx:id="finishTime" layoutX="419.0" layoutY="290.0" text="" />
+      <Label fx:id="processed" layoutX="641.0" layoutY="290.0" text="" />
     </children>
 </AnchorPane>
