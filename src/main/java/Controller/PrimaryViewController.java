@@ -1,7 +1,9 @@
 package Controller;
 
+import DAO.PersonDao;
 import DAO.ProjectNameDao;
 import DAO.TaskDao;
+import Model.Person;
 import Model.ProjectName;
 import Model.Task;
 import javafx.collections.FXCollections;
@@ -95,14 +97,32 @@ public class PrimaryViewController implements Initializable {
                             if (item.contains("@"))
                                 this.setTextFill(Color.BLUEVIOLET);
                             setText(item);
-                            System.out.println(item);
+                        }
+                    }
+                };
+            }
+        });
+        tcNgPTr.setCellFactory(new Callback<TableColumn<Task, String>, TableCell<Task, String>>() {
+            @Override
+            public TableCell<Task, String> call(TableColumn<Task, String> taskStringTableColumn) {
+                return  new TableCell<>() {
+                    @Override
+                    public void updateItem(String item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (!isEmpty()) {
+                            PersonDao personDao = new PersonDao();
+                            Person person = personDao.get(item);
+                            this.setStyle("-fx-background-color: #" + person.getColor().substring(2) + ";");
+                            // Get fancy and change color based on data
+                            if (item.contains("@"))
+                                this.setTextFill(Color.BLUEVIOLET);
+                            setText(item);
                         }
                     }
                 };
             }
         });
     }
-
     //TODO:
     public void addTask(Event e) throws IOException {
         Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
