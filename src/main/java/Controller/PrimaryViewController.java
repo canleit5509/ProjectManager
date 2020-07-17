@@ -12,6 +12,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -20,6 +21,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 
@@ -122,13 +124,21 @@ public class PrimaryViewController implements Initializable {
             alert.setHeaderText("Vui lòng chọn công việc cần xóa");
             alert.show();
         } else {
-            tbData.getItems().remove(selected);
-            TaskDao taskDao = new TaskDao();
-            taskDao.delete(selected);
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Thông báo");
-            alert.setHeaderText("Đã xóa");
-            alert.show();
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Xóa công việc");
+            alert.setHeaderText("Bạn có chắc chắn muốn xóa công việc này?");
+            Optional<ButtonType> option = alert.showAndWait();
+            if (option.get() == null) {
+            } else if (option.get() == ButtonType.OK) {
+                tbData.getItems().remove(selected);
+                TaskDao taskDao = new TaskDao();
+                taskDao.delete(selected);
+                Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
+                alert2.setTitle("Thông báo");
+                alert2.setHeaderText("Đã xóa");
+                alert2.show();
+            } else if (option.get() == ButtonType.CANCEL) {
+            }
         }
     }
 
