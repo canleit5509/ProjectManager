@@ -7,17 +7,17 @@
 
 <AnchorPane prefHeight="600.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.PrimaryViewController">
    <children>
-      <TableView fx:id="tbData" prefHeight="530.0" prefWidth="1211.0">
+      <TableView fx:id="tbData" editable="true" prefHeight="530.0" prefWidth="1211.0">
         <columns>
-          <TableColumn fx:id="tcProjectName" prefWidth="123.0" text="Project Name" />
-          <TableColumn fx:id="tcTask" prefWidth="245.0" text="Task" />
-            <TableColumn fx:id="tcNgPTr" prefWidth="111.0" text="Người Phụ trách" />
-            <TableColumn fx:id="tcDateStart" prefWidth="110.0" text="Ngày Bắt đầu" />
-            <TableColumn fx:id="tcDeadline" prefWidth="110.0" text="Deadline" />
-            <TableColumn fx:id="tcFinishDate" prefWidth="110.0" text="Ngày hoàn thành" />
-            <TableColumn fx:id="tcExpectedTime" prefWidth="130.0" text="Thời gian" />
-            <TableColumn fx:id="tcFinishTime" prefWidth="130.0" text="Thời gian hoàn thành" />
-            <TableColumn fx:id="tcProcess" prefWidth="140.0" text="Phần trăm hoàn thành" />
+          <TableColumn editable="true" fx:id="tcProjectName" prefWidth="123.0" text="Project Name" />
+          <TableColumn editable="true" fx:id="tcTask" prefWidth="245.0" text="Task" />
+            <TableColumn editable="true" fx:id="tcNgPTr" prefWidth="111.0" text="Người Phụ trách" />
+            <TableColumn editable="true" fx:id="tcDateStart" prefWidth="110.0" text="Ngày Bắt đầu" />
+            <TableColumn editable="true" fx:id="tcDeadline" prefWidth="110.0" text="Deadline" />
+            <TableColumn editable="true" fx:id="tcFinishDate" prefWidth="110.0" text="Ngày hoàn thành" />
+            <TableColumn editable="true" fx:id="tcExpectedTime" prefWidth="130.0" text="Thời gian" />
+            <TableColumn editable="true" fx:id="tcFinishTime" prefWidth="130.0" text="Thời gian hoàn thành" />
+            <TableColumn editable="true" fx:id="tcProcess" prefWidth="140.0" text="Phần trăm hoàn thành" />
         </columns>
       </TableView>
       <Button fx:id="btnDetail" layoutX="597.0" layoutY="550.0" mnemonicParsing="false" text="Chi tiết" />

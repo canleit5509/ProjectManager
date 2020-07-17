@@ -238,7 +238,6 @@ public class AddTaskViewController implements Initializable {
             Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
             TaskDao taskDao = new TaskDao();
             taskDao.add(getTask());
-            System.out.println(getTask().toString());
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Thông báo");
             alert.setHeaderText("Thêm thành công");

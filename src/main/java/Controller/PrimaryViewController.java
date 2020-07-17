@@ -23,7 +23,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -62,26 +61,10 @@ public class PrimaryViewController implements Initializable {
         listTask = FXCollections.observableArrayList(taskDao.getAll());
     }
 
-    public void RefreshTable() {
+    public void refreshTable() {
         TaskDao taskDao = new TaskDao();
         ObservableList<Task> taskList = FXCollections.observableArrayList(taskDao.getAll());
         tbData.setItems(taskList);
-    }
-
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        tcProjectName.setCellValueFactory(new PropertyValueFactory<>("prName"));
-        tcTask.setCellValueFactory(new PropertyValueFactory<>("title"));
-        tcNgPTr.setCellValueFactory(new PropertyValueFactory<>("name"));
-        tcDateStart.setCellValueFactory(new PropertyValueFactory<>("startDate"));
-        tcDeadline.setCellValueFactory(new PropertyValueFactory<>("deadline"));
-        tcFinishDate.setCellValueFactory(new PropertyValueFactory<>("finishDate"));
-        tcExpectedTime.setCellValueFactory(new PropertyValueFactory<>("expectedTime"));
-        tcFinishTime.setCellValueFactory(new PropertyValueFactory<>("finishTime"));
-        tcProcess.setCellValueFactory(new PropertyValueFactory<>("processed"));
-        tbData.setItems(listTask);
-        tbData.setEditable(true);
         tcProjectName.setCellFactory(new Callback<>() {
             @Override
             public TableCell<Task, String> call(TableColumn<Task, String> taskStringTableColumn) {
@@ -93,9 +76,6 @@ public class PrimaryViewController implements Initializable {
                             ProjectNameDao projectNameDao = new ProjectNameDao();
                             ProjectName name = projectNameDao.get(item);
                             this.setStyle("-fx-background-color: #" + name.getProjectColor().substring(2) + ";");
-                            // Get fancy and change color based on data
-                            if (item.contains("@"))
-                                this.setTextFill(Color.BLUEVIOLET);
                             setText(item);
                         }
                     }
@@ -113,9 +93,6 @@ public class PrimaryViewController implements Initializable {
                             PersonDao personDao = new PersonDao();
                             Person person = personDao.get(item);
                             this.setStyle("-fx-background-color: #" + person.getColor().substring(2) + ";");
-                            // Get fancy and change color based on data
-                            if (item.contains("@"))
-                                this.setTextFill(Color.BLUEVIOLET);
                             setText(item);
                         }
                     }
@@ -123,6 +100,23 @@ public class PrimaryViewController implements Initializable {
             }
         });
     }
+
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        tcProjectName.setCellValueFactory(new PropertyValueFactory<>("prName"));
+        tcTask.setCellValueFactory(new PropertyValueFactory<>("title"));
+        tcNgPTr.setCellValueFactory(new PropertyValueFactory<>("name"));
+        tcDateStart.setCellValueFactory(new PropertyValueFactory<>("startDate"));
+        tcDeadline.setCellValueFactory(new PropertyValueFactory<>("deadline"));
+        tcFinishDate.setCellValueFactory(new PropertyValueFactory<>("finishDate"));
+        tcExpectedTime.setCellValueFactory(new PropertyValueFactory<>("expectedTime"));
+        tcFinishTime.setCellValueFactory(new PropertyValueFactory<>("finishTime"));
+        tcProcess.setCellValueFactory(new PropertyValueFactory<>("processed"));
+        tbData.setItems(listTask);
+        refreshTable();
+    }
+
     //TODO:
     public void addTask(Event e) throws IOException {
         Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
@@ -136,7 +130,7 @@ public class PrimaryViewController implements Initializable {
         addTaskWindow.initModality(Modality.WINDOW_MODAL);
         addTaskWindow.initOwner(stage);
         addTaskWindow.showAndWait();
-        RefreshTable();
+        refreshTable();
     }
 
     public void updateTask(ActionEvent e) throws IOException {
@@ -161,7 +155,7 @@ public class PrimaryViewController implements Initializable {
             updateTaskWindow.initModality(Modality.WINDOW_MODAL);
             updateTaskWindow.initOwner(stage);
             updateTaskWindow.showAndWait();
-            RefreshTable();
+            refreshTable();
         }
     }
 
@@ -186,6 +180,7 @@ public class PrimaryViewController implements Initializable {
                 alert2.setTitle("Thông báo");
                 alert2.setHeaderText("Đã xóa");
                 alert2.show();
+                refreshTable();
             } else if (option.get() == ButtonType.CANCEL) {
             }
         }
@@ -203,7 +198,7 @@ public class PrimaryViewController implements Initializable {
         addTaskWindow.initModality(Modality.WINDOW_MODAL);
         addTaskWindow.initOwner(stage);
         addTaskWindow.showAndWait();
-        RefreshTable();
+        refreshTable();
     }
 
     public void btnPerson(ActionEvent e) throws IOException {
