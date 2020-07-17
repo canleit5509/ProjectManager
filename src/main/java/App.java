@@ -1,9 +1,3 @@
-import Controller.PersonDao;
-import Controller.ProjectNameDao;
-import Controller.TaskDao;
-import Model.Person;
-import Model.ProjectName;
-import Model.Task;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,10 +5,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.ArrayList;
 
 public class App extends Application {
 

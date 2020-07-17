@@ -1,5 +1,6 @@
-package Controller;
+package DAO;
 
+import DAO.DAO;
 import Model.Person;
 
 import java.sql.*;
@@ -10,7 +11,7 @@ public class PersonDao implements DAO<Person> {
     private static final String DRIVER_NAME = "com.mysql.cj.jdbc.Driver";
     private static final String DB_URL = "jdbc:mysql://localhost:3306/projectmanager";
     private static final String ID = "root";
-    private static final String PASS = "";
+    private static final String PASS = "192025509Aa";
 
     private static final String DELETE = "DELETE FROM person WHERE id=?";
     private static final String FIND_ALL = "SELECT * FROM person ORDER BY id";

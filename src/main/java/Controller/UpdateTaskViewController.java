@@ -1,10 +1,11 @@
 package Controller;
 
 
-import Model.Person;
+import DAO.PersonDao;
+import DAO.ProjectNameDao;
+import DAO.TaskDao;
 import Model.Task;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
