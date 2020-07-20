@@ -7,7 +7,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="450.0" prefWidth="730.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.AddTaskViewController">
+<AnchorPane prefHeight="450.0" prefWidth="730.0" xmlns="http://javafx.com/javafx/10.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.AddTaskViewController">
     <children>
         <ComboBox fx:id="prName" layoutX="90.0" layoutY="65.0" prefHeight="25.0" prefWidth="205.0" />
         <ComboBox fx:id="name" layoutX="450.0" layoutY="65.0" prefHeight="25.0" prefWidth="220.0" />

@@ -5,22 +5,21 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="600.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.PrimaryViewController">
+<AnchorPane prefHeight="600.0" prefWidth="1578.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.PrimaryViewController">
    <children>
-      <TableView fx:id="tbData" editable="true" onMouseClicked="#Clicked" prefHeight="530" prefWidth="1211.0">
+      <TableView fx:id="tbData" editable="true" onMouseClicked="#Clicked" prefHeight="530" prefWidth="1010.0">
         <columns>
-          <TableColumn fx:id="tcProjectName" prefWidth="123.0" text="Project Name" />
-          <TableColumn fx:id="tcTask" prefWidth="245.0" text="Task" />
-            <TableColumn fx:id="tcNgPTr" prefWidth="111.0" text="Người Phụ trách" />
-            <TableColumn fx:id="tcDateStart" prefWidth="110.0" text="Ngày Bắt đầu" />
-            <TableColumn fx:id="tcDeadline" prefWidth="110.0" text="Deadline" />
+          <TableColumn fx:id="tcProjectName" prefWidth="123.0" text="Tên dự án" />
+          <TableColumn fx:id="tcTask" prefWidth="245.0" text="Công việc" />
+            <TableColumn fx:id="tcNgPTr" prefWidth="111.0" text="Người phụ trách" />
+            <TableColumn fx:id="tcDateStart" prefWidth="80.0" text="Ngày bắt đầu" />
+            <TableColumn fx:id="tcDeadline" prefWidth="80.0" text="Ngày đến hạn" />
             <TableColumn fx:id="tcFinishDate" prefWidth="110.0" text="Ngày hoàn thành" />
             <TableColumn fx:id="tcExpectedTime" prefWidth="130.0" text="Thời gian" />
             <TableColumn fx:id="tcFinishTime" prefWidth="130.0" text="Thời gian hoàn thành" />
-            <TableColumn fx:id="tcProcess" prefWidth="140.0" text="Phần trăm hoàn thành" />
+            <TableColumn fx:id="tcProcess" prefWidth="140.0" text="Phần trăm công việc hoàn thành" />
         </columns>
       </TableView>
-      <Button fx:id="btnDetail" layoutX="597.0" layoutY="550.0" mnemonicParsing="false" text="Chi tiết" />
       <Button fx:id="btnDel" layoutX="527.0" layoutY="550.0" mnemonicParsing="false" onAction="#Delete" text="Xoá" />
       <Button fx:id="btnEdit" layoutX="350.0" layoutY="550.0" mnemonicParsing="false" onAction="#updateTask" text="Sửa" />
       <Button fx:id="btnAdd" layoutX="72.0" layoutY="550.0" mnemonicParsing="false" onAction="#addTask" text="Thêm" />

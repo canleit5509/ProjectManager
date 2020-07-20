@@ -108,7 +108,7 @@ public class ManagePerson implements Initializable {
                     public void updateItem(String item, boolean empty) {
                         super.updateItem(item, empty);
                         if (!isEmpty()) {
-                            Person person = personDao.get(item);
+                            Person person = personDao.getByID(item);
                             this.setStyle("-fx-background-color: #" + person.getColor().substring(2) + ";");
                             setText(item);
                         }

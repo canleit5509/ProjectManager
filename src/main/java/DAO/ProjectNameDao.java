@@ -19,7 +19,11 @@ public class ProjectNameDao implements DAO<ProjectName> {
     private static final String FIND_ALL_DONE = "SELECT * FROM projectname WHERE done=true ORDER BY projectName";
     private static final String FIND_BY_ID = "SELECT * FROM projectName WHERE projectName=?";
     private static final String INSERT = "INSERT INTO projectname(projectName, projectColor, done) VALUES(?, ?, ?)";
-    private static final String UPDATE = "UPDATE projectname SET projectName=?, projectColor=?, done=? WHERE projectName=?";
+    private static final String UPDATE1 = "SET FOREIGN_KEY_CHECKS=OFF";
+    private static final String UPDATE2 = "UPDATE projectname SET projectName=?, projectColor=?, done=? WHERE projectName=?";
+    private static final String UPDATE3 = "UPDATE task SET projectName=? where projectName=?";
+    private static final String UPDATE4 = "SET FOREIGN_KEY_CHECKS=ON";
+            //    private static final String UPDATE = "UPDATE projectname SET projectName=?, projectColor=?, done=? WHERE projectName=?";
     PreparedStatement preparedStatement;
 
     public ProjectNameDao() {
@@ -32,6 +36,7 @@ public class ProjectNameDao implements DAO<ProjectName> {
 
         try {
             preparedStatement = connection.prepareStatement(FIND_ALL);
+            System.out.println(preparedStatement.toString());
             ResultSet RS = preparedStatement.executeQuery();
             while (RS.next()) {
                 ProjectName projectName = new ProjectName(RS.getString("projectName"), RS.getString("projectColor"), RS.getInt("done"));
@@ -89,7 +94,7 @@ public class ProjectNameDao implements DAO<ProjectName> {
             ResultSet RS = preparedStatement.executeQuery();
             ProjectName projectName = null;
             while (RS.next()) {
-                 projectName = new ProjectName(RS.getString("projectName"), RS.getString("projectColor"), RS.getInt("done"));
+                projectName = new ProjectName(RS.getString("projectName"), RS.getString("projectColor"), RS.getInt("done"));
             }
             return projectName;
         } catch (SQLException throwables) {
@@ -121,12 +126,20 @@ public class ProjectNameDao implements DAO<ProjectName> {
 
     public void update(ProjectName project, String oldName) {
         try {
-            preparedStatement = connection.prepareStatement(UPDATE);
+            preparedStatement = connection.prepareStatement(UPDATE1);
+            preparedStatement.executeQuery();
+            preparedStatement = connection.prepareStatement(UPDATE2);
             preparedStatement.setString(1, project.getProjectName());
             preparedStatement.setString(2, project.getProjectColor());
             preparedStatement.setInt(3, project.getDone());
             preparedStatement.setString(4, oldName);
             preparedStatement.executeUpdate();
+            preparedStatement = connection.prepareStatement(UPDATE3);
+            preparedStatement.setString(1, project.getProjectName());
+            preparedStatement.setString(2, oldName);
+            preparedStatement.executeUpdate();
+            preparedStatement = connection.prepareStatement(UPDATE4);
+            preparedStatement.executeQuery();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {
