@@ -1,8 +1,9 @@
 package Controller;
 
 import DAO.ProjectNameDao;
-import Model.Person;
+import DTO.ProjectNameDTO;
 import Model.ProjectName;
+import Service.ProjectNameService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -14,7 +15,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -26,19 +26,22 @@ import java.util.ResourceBundle;
 
 public class ManageProject implements Initializable {
     @FXML
-    TableView tbData;
+    private TableView tbData;
     @FXML
-    RadioButton checkNow;
+    private RadioButton checkNow;
     @FXML
-    RadioButton checkDone;
+    private RadioButton checkDone;
     @FXML
-    RadioButton checkAll;
+    private RadioButton checkAll;
     @FXML
-    TableColumn<ProjectName, String> tcName;
+    private TableColumn<ProjectName, String> tcName;
     @FXML
-    Button btnDone;
-    ProjectNameDao projectNameDao = new ProjectNameDao();
+    private Button btnDone;
 
+    ProjectNameService service;
+    public ManageProject(){
+        service = new ProjectNameService();
+    }
     public void btnAdd(ActionEvent e) throws IOException {
         Stage stage = (Stage)((Node) e.getSource()).getScene().getWindow();
         FXMLLoader loader = new FXMLLoader();
@@ -51,12 +54,12 @@ public class ManageProject implements Initializable {
         addProjectWindow.initModality(Modality.WINDOW_MODAL);
         addProjectWindow.initOwner(stage);
         addProjectWindow.showAndWait();
-        RefreshTable(projectNameDao.getAllNow());
+        RefreshTable(service.getAllDoneProject(0));
         checkNow.setSelected(true);
     }
 
     public void btnUpdate(ActionEvent e) throws IOException {
-        ProjectName projectName = (ProjectName) tbData.getSelectionModel().getSelectedItem();
+        ProjectNameDTO projectName = (ProjectNameDTO) tbData.getSelectionModel().getSelectedItem();
         if (projectName == null) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Warning");
@@ -77,14 +80,14 @@ public class ManageProject implements Initializable {
             updateProject1.setProject(projectName);
             updateProject1.oldName=projectName.getProjectName();
             updateProjectWindow.showAndWait();
-            RefreshTable(projectNameDao.getAllNow());
+            RefreshTable(service.getAllDoneProject(0));
             checkNow.setSelected(true);
             btnDone.setVisible(true);
         }
     }
 
     public void btnKick(ActionEvent actionEvent) {
-        ProjectName projectName = (ProjectName) tbData.getSelectionModel().getSelectedItem();
+        ProjectNameDTO projectName = (ProjectNameDTO) tbData.getSelectionModel().getSelectedItem();
         if (projectName == null) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Warning");
@@ -92,8 +95,8 @@ public class ManageProject implements Initializable {
             alert.show();
         } else {
             projectName.setDone(1);
-            projectNameDao.update(projectName,projectName.getProjectName());
-            RefreshTable(projectNameDao.getAllNow());
+            service.updateProject(projectName);
+            RefreshTable(service.getAllDoneProject(0));
         }
     }
     public void refreshColor(){
@@ -105,7 +108,7 @@ public class ManageProject implements Initializable {
                     public void updateItem(String item, boolean empty) {
                         super.updateItem(item, empty);
                         if (!isEmpty()) {
-                            ProjectName projectName = projectNameDao.get(item);
+                            ProjectNameDTO projectName = service.getProjectName(item);
                             this.setStyle("-fx-background-color: #" + projectName.getProjectColor().substring(2) + ";");
                             setText(item);
                         }
@@ -122,30 +125,30 @@ public class ManageProject implements Initializable {
         checkDone.setToggleGroup(group);
         checkAll.setToggleGroup(group);
         checkNow.setSelected(true);
-        ObservableList<ProjectName> personList = FXCollections.observableArrayList(projectNameDao.getAllNow());
+        ObservableList<ProjectNameDTO> personList = FXCollections.observableArrayList(service.getAllDoneProject(0));
         tcName.setCellValueFactory(new PropertyValueFactory<>("projectName"));
         tbData.setItems(personList);
         refreshColor();
     }
-    public void RefreshTable(ArrayList<ProjectName> list){
-        ObservableList<ProjectName> projectList = FXCollections.observableArrayList(list);
+    public void RefreshTable(ArrayList<ProjectNameDTO> list){
+        ObservableList<ProjectNameDTO> projectList = FXCollections.observableArrayList(list);
         tbData.setItems(projectList);
     }
 
     public void checkNow(ActionEvent actionEvent) {
-        RefreshTable(projectNameDao.getAllNow());
+        RefreshTable(service.getAllDoneProject(0));
         btnDone.setVisible(true);
         refreshColor();
     }
 
     public void checkRetire(ActionEvent actionEvent) {
-        RefreshTable(projectNameDao.getAllDone());
+        RefreshTable(service.getAllDoneProject(1));
         btnDone.setVisible(false);
         refreshColor();
     }
 
     public void checkAll(ActionEvent actionEvent) {
-        RefreshTable(projectNameDao.getAll());
+        RefreshTable(service.getAllProject());
         btnDone.setVisible(false);
         refreshColor();
     }

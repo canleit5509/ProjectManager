@@ -1,7 +1,7 @@
 package Controller;
 
-import DAO.ProjectNameDao;
-import Model.ProjectName;
+import DTO.ProjectNameDTO;
+import Service.ProjectNameService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -31,7 +31,7 @@ public class UpdateProject implements Initializable {
         radioNow.setToggleGroup(group);
         radioDone.setToggleGroup(group);
     }
-    public void setProject(ProjectName projectName){
+    public void setProject(ProjectNameDTO projectName){
         oldName = txtName.getText();
         txtName.setText(projectName.getProjectName());
         color.setValue(Color.valueOf(projectName.getProjectColor()));
@@ -50,9 +50,9 @@ public class UpdateProject implements Initializable {
         int done=0;
         if(radioDone.isSelected())
             done=1;
-        ProjectName project = new ProjectName(name,txtColor,done);
-        ProjectNameDao projectNameDao = new ProjectNameDao();
-        projectNameDao.update(project,oldName);
+        ProjectNameDTO project = new ProjectNameDTO(name,txtColor,done);
+        ProjectNameService service = new ProjectNameService();
+        service.updateProject(project);
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Thông báo");
         alert.setHeaderText("Cập nhật thành công");
