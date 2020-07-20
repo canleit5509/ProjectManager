@@ -124,7 +124,8 @@ public class AddTaskViewController implements Initializable {
             task.setFinishTime(Integer.parseInt(finishTime.getText()));
         }
         if (!processed.getText().equals("")) {
-            task.setProcessed(Integer.parseInt(processed.getText()));
+            //TODO: remove % from label processed
+            task.setProcessed(Integer.parseInt(processed.getText().substring(0,processed.getText().length()-1)));
         }
         return task;
     }

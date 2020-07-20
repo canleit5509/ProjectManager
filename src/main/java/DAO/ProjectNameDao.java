@@ -12,7 +12,7 @@ public class ProjectNameDao implements DAO<ProjectName> {
     private static final String DRIVER_NAME = "com.mysql.cj.jdbc.Driver";
     private static final String DB_URL = "jdbc:mysql://localhost:3306/projectmanager";
     private static final String ID = "root";
-    private static final String PASS = "192025509Aa";
+    private static final String PASS = "192025509Aa"; //TODO: change password
     private static final String DELETE = "DELETE FROM projectname WHERE projectName=?";
     private static final String FIND_ALL = "SELECT * FROM projectname ORDER BY projectName";
     private static final String FIND_ALL_DONE = "SELECT * FROM projectname WHERE done=? ORDER BY projectName";

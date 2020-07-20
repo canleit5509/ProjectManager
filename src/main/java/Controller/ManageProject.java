@@ -34,7 +34,7 @@ public class ManageProject implements Initializable {
     @FXML
     private RadioButton checkAll;
     @FXML
-    private TableColumn<ProjectName, String> tcName;
+    private TableColumn<ProjectNameDTO, String> tcName;
     @FXML
     private Button btnDone;
 

@@ -33,9 +33,9 @@ public class ManagePerson implements Initializable {
     @FXML
     private RadioButton checkAll;
     @FXML
-    private TableColumn<Person, String> tcID;
+    private TableColumn<PersonDTO, String> tcID;
     @FXML
-    private TableColumn<Person, String> tcName;
+    private TableColumn<PersonDTO, String> tcName;
     @FXML
     private Button btnKick;
     private PersonService service;
