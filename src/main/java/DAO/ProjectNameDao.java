@@ -12,11 +12,10 @@ public class ProjectNameDao implements DAO<ProjectName> {
     private static final String DRIVER_NAME = "com.mysql.cj.jdbc.Driver";
     private static final String DB_URL = "jdbc:mysql://localhost:3306/projectmanager";
     private static final String ID = "root";
-    private static final String PASS = "";
+    private static final String PASS = "192025509Aa";
     private static final String DELETE = "DELETE FROM projectname WHERE projectName=?";
     private static final String FIND_ALL = "SELECT * FROM projectname ORDER BY projectName";
-    private static final String FIND_ALL_NOW = "SELECT * FROM projectname WHERE done=false ORDER BY projectName";
-    private static final String FIND_ALL_DONE = "SELECT * FROM projectname WHERE done=true ORDER BY projectName";
+    private static final String FIND_ALL_DONE = "SELECT * FROM projectname WHERE done=? ORDER BY projectName";
     private static final String FIND_BY_ID = "SELECT * FROM projectName WHERE projectName=?";
     private static final String INSERT = "INSERT INTO projectname(projectName, projectColor, done) VALUES(?, ?, ?)";
     private static final String UPDATE1 = "SET FOREIGN_KEY_CHECKS=OFF";
@@ -25,15 +24,15 @@ public class ProjectNameDao implements DAO<ProjectName> {
     private static final String UPDATE4 = "SET FOREIGN_KEY_CHECKS=ON";
             //    private static final String UPDATE = "UPDATE projectname SET projectName=?, projectColor=?, done=? WHERE projectName=?";
     PreparedStatement preparedStatement;
-
+    ArrayList<ProjectName> projectNames;
     public ProjectNameDao() {
         connection = getConnection();
+        projectNames = new ArrayList<>();
     }
 
     @Override
     public ArrayList<ProjectName> getAll() {
-        ArrayList<ProjectName> projectNames = new ArrayList<>();
-
+        projectNames.clear();
         try {
             preparedStatement = connection.prepareStatement(FIND_ALL);
             System.out.println(preparedStatement.toString());
@@ -50,29 +49,11 @@ public class ProjectNameDao implements DAO<ProjectName> {
         return projectNames;
     }
 
-    public ArrayList<ProjectName> getAllNow() {
-        ArrayList<ProjectName> projectNames = new ArrayList<>();
-
-        try {
-            preparedStatement = connection.prepareStatement(FIND_ALL_NOW);
-            ResultSet RS = preparedStatement.executeQuery();
-            while (RS.next()) {
-                ProjectName projectName = new ProjectName(RS.getString("projectName"), RS.getString("projectColor"), RS.getInt("done"));
-                projectNames.add(projectName);
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        } finally {
-            close(preparedStatement);
-        }
-        return projectNames;
-    }
-
-    public ArrayList<ProjectName> getAllDone() {
-        ArrayList<ProjectName> projectNames = new ArrayList<>();
-
+    public ArrayList<ProjectName> getAllDone(int check) {
+        projectNames.clear();
         try {
             preparedStatement = connection.prepareStatement(FIND_ALL_DONE);
+            preparedStatement.setInt(1, check);
             ResultSet RS = preparedStatement.executeQuery();
             while (RS.next()) {
                 ProjectName projectName = new ProjectName(RS.getString("projectName"), RS.getString("projectColor"), RS.getInt("done"));
@@ -178,10 +159,12 @@ public class ProjectNameDao implements DAO<ProjectName> {
         return projectNames;
     }
 
-    public ArrayList<String> getAllNameNow() {
+    public ArrayList<String> getAllProjectNameDoing() {
+
         ArrayList<String> projectNames = new ArrayList<>();
         try {
-            preparedStatement = connection.prepareStatement(FIND_ALL_NOW);
+            preparedStatement = connection.prepareStatement(FIND_ALL_DONE);
+            preparedStatement.setInt(1, 0);
             ResultSet RS = preparedStatement.executeQuery();
             while (RS.next()) {
                 String s = RS.getString("projectName");
@@ -201,16 +184,6 @@ public class ProjectNameDao implements DAO<ProjectName> {
             return DriverManager.getConnection(DB_URL, ID, PASS);
         } catch (Exception e) {
             throw new RuntimeException(e);
-        }
-    }
-
-    private static void close(Connection connection) {
-        if (connection != null) {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
         }
     }
 

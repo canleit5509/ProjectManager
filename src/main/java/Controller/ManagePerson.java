@@ -1,7 +1,8 @@
 package Controller;
 
-import DAO.PersonDao;
+import DTO.PersonDTO;
 import Model.Person;
+import Service.PersonService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -13,7 +14,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -25,23 +25,27 @@ import java.util.ResourceBundle;
 
 public class ManagePerson implements Initializable {
     @FXML
-    TableView tbData;
+    private TableView tbData;
     @FXML
-    RadioButton checkNow;
+    private RadioButton checkNow;
     @FXML
-    RadioButton checkRetire;
+    private RadioButton checkRetire;
     @FXML
-    RadioButton checkAll;
+    private RadioButton checkAll;
     @FXML
-    TableColumn<Person, String> tcID;
+    private TableColumn<Person, String> tcID;
     @FXML
-    TableColumn<Person, String> tcName;
+    private TableColumn<Person, String> tcName;
     @FXML
-    Button btnKick;
-    PersonDao personDao = new PersonDao();
+    private Button btnKick;
+    private PersonService service;
+
+    public ManagePerson() {
+        service = new PersonService();
+    }
 
     public void btnAdd(ActionEvent e) throws IOException {
-        Stage stage = (Stage)((Node) e.getSource()).getScene().getWindow();
+        Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/AddPerson.fxml"));
         Parent addProject = loader.load();
@@ -54,19 +58,19 @@ public class ManagePerson implements Initializable {
         AddPerson addPerson = loader.getController();
         addPerson.setID();
         addProjectWindow.showAndWait();
-        RefreshTable(personDao.getAllPersonNow());
+        RefreshTable(service.getRetiredPeople(0));
         refreshColor();
     }
 
     public void btnUpdate(ActionEvent e) throws IOException {
-        Person person = (Person) tbData.getSelectionModel().getSelectedItem();
+        PersonDTO person = (PersonDTO) tbData.getSelectionModel().getSelectedItem();
         if (person == null) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Warning");
             alert.setHeaderText("Vui lòng chọn nhân viên");
             alert.show();
         } else {
-            Stage stage = (Stage)((Node) e.getSource()).getScene().getWindow();
+            Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/UpdatePerson.fxml"));
             Parent addProject = loader.load();
@@ -79,7 +83,7 @@ public class ManagePerson implements Initializable {
             UpdatePerson updatePerson = loader.getController();
             updatePerson.setPerson(person);
             addProjectWindow.showAndWait();
-            RefreshTable(personDao.getAllPersonNow());
+            RefreshTable(service.getRetiredPeople(0));
             refreshColor();
             checkNow.setSelected(true);
             btnKick.setVisible(true);
@@ -88,7 +92,7 @@ public class ManagePerson implements Initializable {
     }
 
     public void btnKick(ActionEvent actionEvent) {
-        Person person = (Person) tbData.getSelectionModel().getSelectedItem();
+        PersonDTO person = (PersonDTO) tbData.getSelectionModel().getSelectedItem();
         if (person == null) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Warning");
@@ -96,22 +100,23 @@ public class ManagePerson implements Initializable {
             alert.show();
         } else {
             person.setRetired(1);
-            personDao.update(person);
-            RefreshTable(personDao.getAllPersonNow());
+            service.updatePerson(person);
+            RefreshTable(service.getRetiredPeople(0));
             refreshColor();
+
         }
     }
 
-    public void refreshColor(){
+    public void refreshColor() {
         tcID.setCellFactory(new Callback<>() {
             @Override
-            public TableCell<Person, String> call(TableColumn<Person, String> taskStringTableColumn) {
+            public TableCell<PersonDTO, String> call(TableColumn<PersonDTO, String> taskStringTableColumn) {
                 return new TableCell<>() {
                     @Override
                     public void updateItem(String item, boolean empty) {
                         super.updateItem(item, empty);
                         if (!isEmpty()) {
-                            Person person = personDao.getByID(item);
+                            PersonDTO person = service.getPersonByID(item);
                             this.setStyle("-fx-background-color: #" + person.getColor().substring(2) + ";");
                             setText(item);
                         }
@@ -120,6 +125,7 @@ public class ManagePerson implements Initializable {
             }
         });
     }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         ToggleGroup group = new ToggleGroup();
@@ -127,32 +133,32 @@ public class ManagePerson implements Initializable {
         checkRetire.setToggleGroup(group);
         checkAll.setToggleGroup(group);
         checkNow.setSelected(true);
-        PersonDao personDao = new PersonDao();
-        ObservableList<Person> personList = FXCollections.observableArrayList(personDao.getAllPersonNow());
+        ObservableList<PersonDTO> personList = FXCollections.observableArrayList(service.getRetiredPeople(0));
         tcID.setCellValueFactory(new PropertyValueFactory<>("id"));
         tcName.setCellValueFactory(new PropertyValueFactory<>("name"));
         tbData.setItems(personList);
         refreshColor();
     }
-    public void RefreshTable(ArrayList<Person> list){
-        ObservableList<Person> personList = FXCollections.observableArrayList(list);
+
+    public void RefreshTable(ArrayList<PersonDTO> list) {
+        ObservableList<PersonDTO> personList = FXCollections.observableArrayList(list);
         tbData.setItems(personList);
     }
 
     public void checkNow(ActionEvent actionEvent) {
-        RefreshTable(personDao.getAllPersonNow());
+        RefreshTable(service.getRetiredPeople(0));
         btnKick.setVisible(true);
         refreshColor();
     }
 
     public void checkRetire(ActionEvent actionEvent) {
-        RefreshTable(personDao.getAllPersonRetired());
+        RefreshTable(service.getRetiredPeople(1));
         btnKick.setVisible(false);
         refreshColor();
     }
 
     public void checkAll(ActionEvent actionEvent) {
-        RefreshTable(personDao.getAll());
+        RefreshTable(service.getAllPeople());
         btnKick.setVisible(false);
         refreshColor();
     }
