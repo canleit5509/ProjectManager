@@ -52,6 +52,7 @@ public class ManageProject implements Initializable {
         addProjectWindow.initOwner(stage);
         addProjectWindow.showAndWait();
         RefreshTable(projectNameDao.getAllNow());
+        refreshColor();
         checkNow.setSelected(true);
     }
 
@@ -78,6 +79,7 @@ public class ManageProject implements Initializable {
             updateProject1.oldName=projectName.getProjectName();
             updateProjectWindow.showAndWait();
             RefreshTable(projectNameDao.getAllNow());
+            refreshColor();
             checkNow.setSelected(true);
             btnDone.setVisible(true);
         }
@@ -94,6 +96,7 @@ public class ManageProject implements Initializable {
             projectName.setDone(1);
             projectNameDao.update(projectName,projectName.getProjectName());
             RefreshTable(projectNameDao.getAllNow());
+            refreshColor();
         }
     }
     public void refreshColor(){

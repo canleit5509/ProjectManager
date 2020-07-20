@@ -10,8 +10,9 @@
    <children>
       <Label layoutX="75.0" layoutY="92.0" text="Nhập tên dự án" />
       <TextField fx:id="prName" layoutX="199.0" layoutY="87.0" prefHeight="26.0" prefWidth="209.0" />
-      <ColorPicker fx:id="color" layoutX="199.0" layoutY="176.0" />
-      <Button layoutX="141.0" layoutY="243.0" mnemonicParsing="false" onAction="#okBtn" text="OK" />
-      <Button layoutX="324.0" layoutY="243.0" mnemonicParsing="false" onAction="#cancelBtn" text="Cancel" />
+      <ColorPicker fx:id="color" layoutX="199.0" layoutY="143.0" />
+      <Button layoutX="147.0" layoutY="209.0" mnemonicParsing="false" onAction="#okBtn" prefHeight="46.0" prefWidth="51.0" text="OK" />
+      <Button layoutX="324.0" layoutY="209.0" mnemonicParsing="false" onAction="#cancelBtn" prefHeight="46.0" prefWidth="51.0" text="Cancel" />
+      <Label layoutX="75.0" layoutY="147.0" text="Nhãn màu" />
    </children>
 </AnchorPane>

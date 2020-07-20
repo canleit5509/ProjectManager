@@ -9,11 +9,12 @@
 <AnchorPane prefHeight="311.0" prefWidth="508.0" xmlns="http://javafx.com/javafx/10.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.AddPerson">
    <children>
       <Label layoutX="79.0" layoutY="100.0" text="Nhập tên nhân sự" />
-      <TextField fx:id="psName" layoutX="199.0" layoutY="95.0" prefHeight="26.0" prefWidth="209.0" />
-      <ColorPicker fx:id="color" layoutX="199.0" layoutY="176.0" />
-      <Button layoutX="141.0" layoutY="243.0" mnemonicParsing="false" onAction="#okBtn" text="OK" />
-      <Button layoutX="324.0" layoutY="243.0" mnemonicParsing="false" onAction="#cancelBtn" text="Cancel" />
-      <Label layoutX="84.0" layoutY="49.0" text="ID" />
-      <Label fx:id="txtID" layoutX="199.0" layoutY="49.0" text="ID" />
+      <TextField fx:id="psName" layoutX="193.0" layoutY="95.0" prefHeight="26.0" prefWidth="209.0" />
+      <ColorPicker fx:id="color" layoutX="199.0" layoutY="156.0" />
+      <Button layoutX="148.0" layoutY="220.0" mnemonicParsing="false" onAction="#okBtn" prefHeight="46.0" prefWidth="51.0" text="OK" />
+      <Button layoutX="309.0" layoutY="220.0" mnemonicParsing="false" onAction="#cancelBtn" prefHeight="46.0" prefWidth="51.0" text="Hủy" />
+      <Label layoutX="79.0" layoutY="58.0" text="ID" />
+      <Label fx:id="txtID" layoutX="193.0" layoutY="58.0" text="ID" />
+      <Label layoutX="79.0" layoutY="160.0" text="Nhãn màu" />
    </children>
 </AnchorPane>

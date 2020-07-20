@@ -5,9 +5,9 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="600.0" prefWidth="1578.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.PrimaryViewController">
+<AnchorPane prefHeight="600.0" prefWidth="1450.0" xmlns="http://javafx.com/javafx/10.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.PrimaryViewController">
    <children>
-      <TableView fx:id="tbData" editable="true" onMouseClicked="#Clicked" prefHeight="530" prefWidth="1010.0">
+      <TableView fx:id="tbData" editable="true" onMouseClicked="#Clicked" prefHeight="530" prefWidth="1481.0">
         <columns>
           <TableColumn fx:id="tcProjectName" prefWidth="123.0" text="Tên dự án" />
           <TableColumn fx:id="tcTask" prefWidth="245.0" text="Công việc" />
@@ -25,5 +25,6 @@
       <Button fx:id="btnAdd" layoutX="72.0" layoutY="550.0" mnemonicParsing="false" onAction="#addTask" text="Thêm" />
       <Button layoutX="769.0" layoutY="550.0" mnemonicParsing="false" onAction="#btnProject" text="Project" />
       <Button layoutX="951.0" layoutY="550.0" mnemonicParsing="false" onAction="#btnPerson" text="Person" />
+      <AnchorPane layoutX="1010.0" prefHeight="530.0" prefWidth="489.0" />
    </children>
 </AnchorPane>

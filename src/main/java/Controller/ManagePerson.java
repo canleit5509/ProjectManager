@@ -55,6 +55,7 @@ public class ManagePerson implements Initializable {
         addPerson.setID();
         addProjectWindow.showAndWait();
         RefreshTable(personDao.getAllPersonNow());
+        refreshColor();
     }
 
     public void btnUpdate(ActionEvent e) throws IOException {
@@ -79,6 +80,7 @@ public class ManagePerson implements Initializable {
             updatePerson.setPerson(person);
             addProjectWindow.showAndWait();
             RefreshTable(personDao.getAllPersonNow());
+            refreshColor();
             checkNow.setSelected(true);
             btnKick.setVisible(true);
         }
@@ -96,6 +98,7 @@ public class ManagePerson implements Initializable {
             person.setRetired(1);
             personDao.update(person);
             RefreshTable(personDao.getAllPersonNow());
+            refreshColor();
         }
     }
 

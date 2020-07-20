@@ -59,7 +59,7 @@ public class AddTaskViewController implements Initializable {
         Random random = new Random();
         int taskID = random.nextInt(899999) + 100000;
         id.setText(String.valueOf(taskID));
-        processed.setText("0");
+        processed.setText("0%");
     }
 
     public boolean validate(){
