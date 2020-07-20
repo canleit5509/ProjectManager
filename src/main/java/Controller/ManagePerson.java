@@ -13,8 +13,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 import java.io.IOException;
 import java.net.URL;
@@ -34,8 +36,6 @@ public class ManagePerson implements Initializable {
     TableColumn<Person, String> tcID;
     @FXML
     TableColumn<Person, String> tcName;
-    @FXML
-    TableColumn<Person, ColorPicker> tcColor;
     @FXML
     Button btnKick;
     PersonDao personDao = new PersonDao();
@@ -99,6 +99,24 @@ public class ManagePerson implements Initializable {
         }
     }
 
+    public void refreshColor(){
+        tcID.setCellFactory(new Callback<>() {
+            @Override
+            public TableCell<Person, String> call(TableColumn<Person, String> taskStringTableColumn) {
+                return new TableCell<>() {
+                    @Override
+                    public void updateItem(String item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (!isEmpty()) {
+                            Person person = personDao.get(item);
+                            this.setStyle("-fx-background-color: #" + person.getColor().substring(2) + ";");
+                            setText(item);
+                        }
+                    }
+                };
+            }
+        });
+    }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         ToggleGroup group = new ToggleGroup();
@@ -110,8 +128,8 @@ public class ManagePerson implements Initializable {
         ObservableList<Person> personList = FXCollections.observableArrayList(personDao.getAllPersonNow());
         tcID.setCellValueFactory(new PropertyValueFactory<>("id"));
         tcName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        tcColor.setCellValueFactory(new PropertyValueFactory<>("color"));
         tbData.setItems(personList);
+        refreshColor();
     }
     public void RefreshTable(ArrayList<Person> list){
         ObservableList<Person> personList = FXCollections.observableArrayList(list);
@@ -121,15 +139,18 @@ public class ManagePerson implements Initializable {
     public void checkNow(ActionEvent actionEvent) {
         RefreshTable(personDao.getAllPersonNow());
         btnKick.setVisible(true);
+        refreshColor();
     }
 
     public void checkRetire(ActionEvent actionEvent) {
         RefreshTable(personDao.getAllPersonRetired());
         btnKick.setVisible(false);
+        refreshColor();
     }
 
     public void checkAll(ActionEvent actionEvent) {
         RefreshTable(personDao.getAll());
         btnKick.setVisible(false);
+        refreshColor();
     }
 }

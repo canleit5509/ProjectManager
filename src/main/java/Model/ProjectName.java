@@ -38,4 +38,13 @@ public class ProjectName {
     public void setProjectColor(String projectColor) {
         this.projectColor = projectColor;
     }
+
+    @Override
+    public String toString() {
+        return "ProjectName{" +
+                "projectName='" + projectName + '\'' +
+                ", projectColor='" + projectColor + '\'' +
+                ", done=" + done +
+                '}';
+    }
 }

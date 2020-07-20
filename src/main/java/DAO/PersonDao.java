@@ -107,11 +107,7 @@ public class PersonDao implements DAO<Person> {
             preparedStatement = connection.prepareStatement(FIND_BY_NAME);
             preparedStatement.setString(1,id);
             ResultSet RS = preparedStatement.executeQuery();
-            while (RS.next()){
-                Person person = new Person(RS.getString("id"),RS.getString("name"),RS.getString("color"), RS.getInt("retired"));
-                return person;
-            }
-
+            return new Person(RS.getString("id"), RS.getString("name"), RS.getString("color"), RS.getInt("retired"));
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
