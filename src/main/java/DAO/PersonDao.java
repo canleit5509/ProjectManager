@@ -15,8 +15,7 @@ public class PersonDao implements DAO<Person> {
 
     private static final String DELETE = "DELETE FROM person WHERE id=?";
     private static final String FIND_ALL = "SELECT * FROM person ORDER BY id";
-    private static final String FIND_ALL_NOW = "SELECT * FROM person WHERE retired=false ORDER BY id";
-    private static final String FIND_ALL_RETIRED = "SELECT * FROM person WHERE retired=true ORDER BY id";
+    private static final String FIND_ALL_RETIRED = "SELECT * FROM person WHERE retired=? ORDER BY id";
     private static final String FIND_BY_ID = "SELECT * FROM person WHERE id=?";
     private static final String FIND_BY_NAME = "SELECT * FROM person WHERE name=?";
     private static final String INSERT = "INSERT INTO person(id, name, color, retired) VALUES(?, ?, ?, ?)";
@@ -26,14 +25,16 @@ public class PersonDao implements DAO<Person> {
      */
     private PreparedStatement preparedStatement;
     private Connection connection;
+    private ArrayList<Person> listPeople;
 
     public PersonDao() {
         connection = getConnection();
+        listPeople = new ArrayList<>();
     }
 
     @Override
     public ArrayList<Person> getAll() {
-        ArrayList<Person> listPeople = new ArrayList<>();
+        listPeople.clear();
         try {
             preparedStatement = connection.prepareStatement(FIND_ALL);
             ResultSet RS = preparedStatement.executeQuery();
@@ -49,45 +50,30 @@ public class PersonDao implements DAO<Person> {
         return listPeople;
     }
 
-    public ArrayList<String> getAllIDName() {
-        ArrayList<String> listPeople = new ArrayList<>();
+    public ArrayList<String> getDoingIdName() {
+        ArrayList<String> listPeopleName = new ArrayList<>();
         try {
-            preparedStatement = connection.prepareStatement(FIND_ALL_NOW);
+            preparedStatement = connection.prepareStatement(FIND_ALL_RETIRED);
+            preparedStatement.setInt(1, 0);
             ResultSet RS = preparedStatement.executeQuery();
             while (RS.next()) {
                 String id = RS.getString("id");
                 String name = RS.getString("name");
-                listPeople.add(id + "|" + name);
+                listPeopleName.add(id + "|" + name);
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {
             close(preparedStatement);
         }
-        return listPeople;
+        return listPeopleName;
     }
 
-    public ArrayList<Person> getAllPersonNow() {
-        ArrayList<Person> listPeople = new ArrayList<>();
-        try {
-            preparedStatement = connection.prepareStatement(FIND_ALL_NOW);
-            ResultSet RS = preparedStatement.executeQuery();
-            while (RS.next()) {
-                Person person = new Person(RS.getString("id"), RS.getString("name"), RS.getString("color"), RS.getInt("retired"));
-                listPeople.add(person);
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        } finally {
-            close(preparedStatement);
-        }
-        return listPeople;
-    }
-
-    public ArrayList<Person> getAllPersonRetired() {
+    public ArrayList<Person> getRetiredPerson(int check) {
         ArrayList<Person> listPeople = new ArrayList<>();
         try {
             preparedStatement = connection.prepareStatement(FIND_ALL_RETIRED);
+            preparedStatement.setInt(1,check);
             ResultSet RS = preparedStatement.executeQuery();
             while (RS.next()) {
                 Person person = new Person(RS.getString("id"), RS.getString("name"), RS.getString("color"), RS.getInt("retired"));
@@ -102,18 +88,35 @@ public class PersonDao implements DAO<Person> {
     }
 
     @Override
-    public Person get(String id) {
-        try{
+    public Person get(String name) {
+        try {
             preparedStatement = connection.prepareStatement(FIND_BY_NAME);
-            preparedStatement.setString(1,id);
+            preparedStatement.setString(1, name);
             ResultSet RS = preparedStatement.executeQuery();
-            return new Person(RS.getString("id"), RS.getString("name"), RS.getString("color"), RS.getInt("retired"));
+            Person person = null;
+            while (RS.next()) {
+                person = new Person(RS.getString("id"), RS.getString("name"), RS.getString("color"), RS.getInt("retired"));
+            }
+            return person;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
         return null;
     }
-
+    public Person getByID(String id) {
+        try{
+            preparedStatement = connection.prepareStatement(FIND_BY_ID);
+            preparedStatement.setString(1,id);
+            ResultSet RS = preparedStatement.executeQuery();
+            while(RS.next()){
+                Person person = new Person(RS.getString("id"), RS.getString("name"), RS.getString("color"), RS.getInt("retired"));
+                return person;
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return null;
+    }
     @Override
     public void add(Person person) {
         try {
@@ -184,16 +187,6 @@ public class PersonDao implements DAO<Person> {
             return DriverManager.getConnection(DB_URL, ID, PASS);
         } catch (Exception e) {
             throw new RuntimeException(e);
-        }
-    }
-
-    private static void close(Connection connection) {
-        if (connection != null) {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
         }
     }
 

@@ -128,8 +128,8 @@ public class AddTaskViewController implements Initializable {
     public void setComboBox() {
         PersonDao personDao = new PersonDao();
         ProjectNameDao projectNameDao = new ProjectNameDao();
-        ObservableList<String> prList = FXCollections.observableArrayList(projectNameDao.getAllNameNow());
-        ObservableList<String> personList = FXCollections.observableArrayList(personDao.getAllIDName());
+        ObservableList<String> prList = FXCollections.observableArrayList(projectNameDao.getAllProjectNameDoing());
+        ObservableList<String> personList = FXCollections.observableArrayList(personDao.getDoingIdName());
         prName.setItems(prList);
         name.setItems(personList);
     }
@@ -233,7 +233,7 @@ public class AddTaskViewController implements Initializable {
         stage.close();
     }
 
-    public void submit(ActionEvent e) throws ParseException {
+    public void submit(ActionEvent e) {
         if(validate()){
             Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
             TaskDao taskDao = new TaskDao();

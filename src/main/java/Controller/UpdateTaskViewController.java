@@ -15,7 +15,6 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.input.InputMethodEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -154,8 +153,8 @@ public class UpdateTaskViewController implements Initializable {
     public void setComboBox() {
         PersonDao personDao = new PersonDao();
         ProjectNameDao projectNameDao = new ProjectNameDao();
-        ObservableList<String> prList = FXCollections.observableArrayList(projectNameDao.getAllNameNow());
-        ObservableList<String> personList = FXCollections.observableArrayList(personDao.getAllIDName());
+        ObservableList<String> prList = FXCollections.observableArrayList(projectNameDao.getAllProjectNameDoing());
+        ObservableList<String> personList = FXCollections.observableArrayList(personDao.getDoingIdName());
         prName.setItems(prList);
         name.setItems(personList);
     }

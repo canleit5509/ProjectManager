@@ -1,7 +1,9 @@
 package Controller;
 
 import DAO.PersonDao;
+import DTO.PersonDTO;
 import Model.Person;
+import Service.PersonService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -18,20 +20,21 @@ import java.util.ResourceBundle;
 
 public class AddPerson implements Initializable {
     @FXML
-    Label txtID;
+    private Label txtID;
     @FXML
-    TextField psName;
+    private TextField psName;
     @FXML
-    ColorPicker color;
-    PersonDao personDao = new PersonDao();
+    private ColorPicker color;
+    PersonService service;
     public void setID(){
         Random random = new Random();
         int id = random.nextInt(899999)+100000;
         txtID.setText(id+"");
+        service = new PersonService();
     }
     public void okBtn(ActionEvent e) {
-        Person person = new Person(txtID.getText(),psName.getText(),color.getValue().toString(),0);
-        personDao.add(person);
+        PersonDTO person = new PersonDTO(txtID.getText(),psName.getText(),color.getValue().toString(),0);
+        service.addPerson(person);
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Thông báo");
         alert.setHeaderText("Thêm thành công");

@@ -1,7 +1,9 @@
 package Controller;
 
 import DAO.PersonDao;
+import DTO.PersonDTO;
 import Model.Person;
+import Service.PersonService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -15,24 +17,26 @@ import java.util.ResourceBundle;
 
 public class UpdatePerson implements Initializable {
     @FXML
-    Label txtID;
+    private Label txtID;
     @FXML
-    TextField txtName;
+    private TextField txtName;
     @FXML
-    ColorPicker color;
+    private ColorPicker color;
     @FXML
-    RadioButton radioNow;
+    private RadioButton radioNow;
     @FXML
-    RadioButton radioRetired;
-
-
+    private RadioButton radioRetired;
+    private PersonService service;
+    public UpdatePerson(){
+        service = new PersonService();
+    }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         ToggleGroup group = new ToggleGroup();
         radioNow.setToggleGroup(group);
         radioRetired.setToggleGroup(group);
     }
-    public void setPerson(Person person){
+    public void setPerson(PersonDTO person){
         txtID.setText(person.getId());
         txtName.setText(person.getName());
         color.setValue(Color.valueOf(person.getColor()));
@@ -52,9 +56,9 @@ public class UpdatePerson implements Initializable {
         int retired=0;
         if(radioRetired.isSelected())
             retired=1;
-        Person person = new Person(id,name,txtColor,retired);
-        PersonDao personDao = new PersonDao();
-        personDao.update(person);
+
+        PersonDTO person = new PersonDTO(id,name,txtColor,retired);
+        service.updatePerson(person);
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Thông báo");
         alert.setHeaderText("Cập nhật thành công");
