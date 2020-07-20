@@ -212,6 +212,7 @@ public class PrimaryViewController implements Initializable {
         addTaskWindow.initModality(Modality.WINDOW_MODAL);
         addTaskWindow.initOwner(stage);
         addTaskWindow.showAndWait();
+        refreshTable();
     }
 
     public void Clicked(MouseEvent mouseEvent) throws IOException {

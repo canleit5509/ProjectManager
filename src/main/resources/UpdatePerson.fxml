@@ -7,16 +7,17 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="311.0" prefWidth="508.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.UpdatePerson">
+<AnchorPane prefHeight="311.0" prefWidth="505.0" xmlns="http://javafx.com/javafx/10.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.UpdatePerson">
    <children>
       <Label layoutX="79.0" layoutY="100.0" text="Nhập tên nhân sự" />
       <TextField fx:id="txtName" layoutX="199.0" layoutY="95.0" prefHeight="26.0" prefWidth="209.0" />
-      <ColorPicker fx:id="color" layoutX="199.0" layoutY="156.0" />
-      <Button layoutX="141.0" layoutY="243.0" mnemonicParsing="false" onAction="#okBtn" text="OK" />
-      <Button layoutX="324.0" layoutY="243.0" mnemonicParsing="false" onAction="#cancelBtn" text="Cancel" />
+      <ColorPicker fx:id="color" layoutX="199.0" layoutY="143.0" />
+      <Button layoutX="141.0" layoutY="243.0" mnemonicParsing="false" onAction="#okBtn" prefHeight="39.0" prefWidth="51.0" text="OK" />
+      <Button layoutX="315.0" layoutY="243.0" mnemonicParsing="false" onAction="#cancelBtn" prefHeight="39.0" prefWidth="51.0" text="Cancel" />
       <Label layoutX="84.0" layoutY="49.0" text="ID" />
       <Label fx:id="txtID" layoutX="199.0" layoutY="49.0" text="ID" />
       <RadioButton fx:id="radioNow" layoutX="199.0" layoutY="198.0" mnemonicParsing="false" text="Đang làm việc" />
       <RadioButton fx:id="radioRetired" layoutX="324.0" layoutY="198.0" mnemonicParsing="false" text="Đã nghỉ làm" />
+      <Label layoutX="79.0" layoutY="147.0" text="Nhãn màu" />
    </children>
 </AnchorPane>

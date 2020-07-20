@@ -6,17 +6,17 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ManagePerson">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ManagePerson">
    <children>
-      <TableView fx:id="tbData" prefHeight="150" prefWidth="600.0">
+      <TableView fx:id="tbData" prefHeight="226.0" prefWidth="600.0">
         <columns>
           <TableColumn fx:id="tcID" prefWidth="150.0" text="ID" />
           <TableColumn fx:id="tcName" prefWidth="450.0" text="Tên" />
         </columns>
       </TableView>
-      <Button layoutX="115.0" layoutY="298.0" mnemonicParsing="false" onAction="#btnAdd" text="Thêm" />
-      <Button layoutX="274.0" layoutY="298.0" mnemonicParsing="false" onAction="#btnUpdate" text="Cập nhật" />
-      <Button fx:id="btnKick" layoutX="420.0" layoutY="298.0" mnemonicParsing="false" onAction="#btnKick" text="Đã nghỉ làm" />
+      <Button layoutX="115.0" layoutY="298.0" mnemonicParsing="false" onAction="#btnAdd" prefHeight="47.0" prefWidth="54.0" text="Thêm" />
+      <Button layoutX="274.0" layoutY="298.0" mnemonicParsing="false" onAction="#btnUpdate" prefHeight="47.0" prefWidth="73.0" text="Cập nhật" />
+      <Button fx:id="btnKick" layoutX="420.0" layoutY="298.0" mnemonicParsing="false" onAction="#btnKick" prefHeight="47.0" prefWidth="86.0" text="Đã nghỉ làm" />
       <RadioButton fx:id="checkNow" layoutX="118.0" layoutY="243.0" mnemonicParsing="false" onAction="#checkNow" text="Đang làm" />
       <RadioButton fx:id="checkRetire" layoutX="219.0" layoutY="243.0" mnemonicParsing="false" onAction="#checkRetire" text="Đã nghỉ làm" />
       <RadioButton fx:id="checkAll" layoutX="351.0" layoutY="243.0" mnemonicParsing="false" onAction="#checkAll" text="Tất cả" />

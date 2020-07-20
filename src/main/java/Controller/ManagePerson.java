@@ -55,6 +55,7 @@ public class ManagePerson implements Initializable {
         addPerson.setID();
         addProjectWindow.showAndWait();
         RefreshTable(personDao.getAllPersonNow());
+        refreshColor();
     }
 
     public void btnUpdate(ActionEvent e) throws IOException {
@@ -79,6 +80,7 @@ public class ManagePerson implements Initializable {
             updatePerson.setPerson(person);
             addProjectWindow.showAndWait();
             RefreshTable(personDao.getAllPersonNow());
+            refreshColor();
             checkNow.setSelected(true);
             btnKick.setVisible(true);
         }
@@ -96,6 +98,7 @@ public class ManagePerson implements Initializable {
             person.setRetired(1);
             personDao.update(person);
             RefreshTable(personDao.getAllPersonNow());
+            refreshColor();
         }
     }
 
@@ -108,7 +111,7 @@ public class ManagePerson implements Initializable {
                     public void updateItem(String item, boolean empty) {
                         super.updateItem(item, empty);
                         if (!isEmpty()) {
-                            Person person = personDao.get(item);
+                            Person person = personDao.getByID(item);
                             this.setStyle("-fx-background-color: #" + person.getColor().substring(2) + ";");
                             setText(item);
                         }
