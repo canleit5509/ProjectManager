@@ -1,6 +1,5 @@
 package Controller;
 
-import DAO.PersonDao;
 import DTO.PersonDTO;
 import Model.Person;
 import Service.PersonService;
@@ -40,11 +39,13 @@ public class ManagePerson implements Initializable {
     @FXML
     private Button btnKick;
     private PersonService service;
-    public ManagePerson(){
+
+    public ManagePerson() {
         service = new PersonService();
     }
+
     public void btnAdd(ActionEvent e) throws IOException {
-        Stage stage = (Stage)((Node) e.getSource()).getScene().getWindow();
+        Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/AddPerson.fxml"));
         Parent addProject = loader.load();
@@ -68,7 +69,7 @@ public class ManagePerson implements Initializable {
             alert.setHeaderText("Vui lòng chọn nhân viên");
             alert.show();
         } else {
-            Stage stage = (Stage)((Node) e.getSource()).getScene().getWindow();
+            Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/UpdatePerson.fxml"));
             Parent addProject = loader.load();
@@ -102,7 +103,7 @@ public class ManagePerson implements Initializable {
         }
     }
 
-    public void refreshColor(){
+    public void refreshColor() {
         tcID.setCellFactory(new Callback<>() {
             @Override
             public TableCell<Person, String> call(TableColumn<Person, String> taskStringTableColumn) {
@@ -120,6 +121,7 @@ public class ManagePerson implements Initializable {
             }
         });
     }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         ToggleGroup group = new ToggleGroup();
@@ -133,7 +135,8 @@ public class ManagePerson implements Initializable {
         tbData.setItems(personList);
         refreshColor();
     }
-    public void RefreshTable(ArrayList<PersonDTO> list){
+
+    public void RefreshTable(ArrayList<PersonDTO> list) {
         ObservableList<PersonDTO> personList = FXCollections.observableArrayList(list);
         tbData.setItems(personList);
     }

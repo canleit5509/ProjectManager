@@ -1,8 +1,6 @@
 package Controller;
 
-import DAO.ProjectNameDao;
 import DTO.ProjectNameDTO;
-import Model.ProjectName;
 import Service.ProjectNameService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,12 +13,13 @@ import javafx.stage.Stage;
 
 public class AddProject {
     @FXML
-    TextField prName;
+    private TextField prName;
     @FXML
-    ColorPicker color;
-    ProjectNameService service = new ProjectNameService();
+    private ColorPicker color;
+    private ProjectNameService service = new ProjectNameService();
+
     public void okBtn(ActionEvent e) {
-        ProjectNameDTO projectName = new ProjectNameDTO(prName.getText(),color.getValue().toString(),0);
+        ProjectNameDTO projectName = new ProjectNameDTO(prName.getText(), color.getValue().toString(), 0);
         service.addProjectName(projectName);
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Thông báo");

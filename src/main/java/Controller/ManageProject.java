@@ -1,6 +1,5 @@
 package Controller;
 
-import DAO.ProjectNameDao;
 import DTO.ProjectNameDTO;
 import Model.ProjectName;
 import Service.ProjectNameService;
@@ -25,6 +24,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class ManageProject implements Initializable {
+    ProjectNameService service;
     @FXML
     private TableView tbData;
     @FXML
@@ -38,12 +38,12 @@ public class ManageProject implements Initializable {
     @FXML
     private Button btnDone;
 
-    ProjectNameService service;
-    public ManageProject(){
+    public ManageProject() {
         service = new ProjectNameService();
     }
+
     public void btnAdd(ActionEvent e) throws IOException {
-        Stage stage = (Stage)((Node) e.getSource()).getScene().getWindow();
+        Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/AddProject.fxml"));
         Parent addProject = loader.load();
@@ -66,7 +66,7 @@ public class ManageProject implements Initializable {
             alert.setHeaderText("Vui lòng chọn dự án");
             alert.show();
         } else {
-            Stage stage = (Stage)((Node) e.getSource()).getScene().getWindow();
+            Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/UpdateProject.fxml"));
             Parent updateProject = loader.load();
@@ -78,7 +78,7 @@ public class ManageProject implements Initializable {
             updateProjectWindow.initOwner(stage);
             UpdateProject updateProject1 = loader.getController();
             updateProject1.setProject(projectName);
-            updateProject1.oldName=projectName.getProjectName();
+            updateProject1.oldName = projectName.getProjectName();
             updateProjectWindow.showAndWait();
             RefreshTable(service.getAllDoneProject(0));
             checkNow.setSelected(true);
@@ -99,7 +99,8 @@ public class ManageProject implements Initializable {
             RefreshTable(service.getAllDoneProject(0));
         }
     }
-    public void refreshColor(){
+
+    public void refreshColor() {
         tcName.setCellFactory(new Callback<>() {
             @Override
             public TableCell<ProjectName, String> call(TableColumn<ProjectName, String> taskStringTableColumn) {
@@ -130,7 +131,8 @@ public class ManageProject implements Initializable {
         tbData.setItems(personList);
         refreshColor();
     }
-    public void RefreshTable(ArrayList<ProjectNameDTO> list){
+
+    public void RefreshTable(ArrayList<ProjectNameDTO> list) {
         ObservableList<ProjectNameDTO> projectList = FXCollections.observableArrayList(list);
         tbData.setItems(projectList);
     }

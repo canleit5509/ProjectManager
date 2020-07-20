@@ -7,7 +7,7 @@ import Model.Person;
 import java.util.ArrayList;
 
 public class PersonService {
-    private PersonDao dao;
+    private final PersonDao dao;
 
     public PersonService() {
         dao = new PersonDao();
@@ -35,10 +35,12 @@ public class PersonService {
         Person person = dao.get(name);
         return convertToDTO(person);
     }
-    public PersonDTO getPersonByID(String ID){
-        Person person =dao.getByID(ID);
+
+    public PersonDTO getPersonByID(String ID) {
+        Person person = dao.getByID(ID);
         return convertToDTO(person);
     }
+
     public void addPerson(PersonDTO dto) {
         Person person = convertToPerson(dto);
         dao.add(person);
@@ -51,27 +53,32 @@ public class PersonService {
                 people) {
             peopleDTOS.add(convertToDTO(person));
         }
-        return  peopleDTOS;
+        return peopleDTOS;
     }
-    public ArrayList<String> getAllPeopleName(){
+
+    public ArrayList<String> getAllPeopleName() {
         return dao.getAllName();
     }
-    public ArrayList<String> getDoingPeopleIdName(){
+
+    public ArrayList<String> getDoingPeopleIdName() {
         return dao.getDoingIdName();
     }
-    public ArrayList<PersonDTO> getRetiredPeople(int check){
+
+    public ArrayList<PersonDTO> getRetiredPeople(int check) {
         ArrayList<Person> people = dao.getRetiredPerson(check);
         ArrayList<PersonDTO> peopleDTOS = new ArrayList<>();
         for (Person person :
                 people) {
             peopleDTOS.add(convertToDTO(person));
         }
-        return  peopleDTOS;
+        return peopleDTOS;
     }
-    public void updatePerson(PersonDTO dto){
+
+    public void updatePerson(PersonDTO dto) {
         dao.update(convertToPerson(dto));
     }
-    public void deletePerson(PersonDTO dto){
+
+    public void deletePerson(PersonDTO dto) {
         dao.delete(convertToPerson(dto));
     }
 

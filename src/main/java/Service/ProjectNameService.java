@@ -7,7 +7,7 @@ import Model.ProjectName;
 import java.util.ArrayList;
 
 public class ProjectNameService {
-    private ProjectNameDao dao;
+    private final ProjectNameDao dao;
 
     public ProjectNameService() {
         dao = new ProjectNameDao();
@@ -48,15 +48,18 @@ public class ProjectNameService {
         }
         return nameDTOS;
     }
-    public void updateProject(ProjectNameDTO dto){
+
+    public void updateProject(ProjectNameDTO dto) {
         ProjectName projectName = convertToProjectName(dto);
-        dao.update(projectName,projectName.getProjectName());
+        dao.update(projectName, projectName.getProjectName());
     }
-    public void deleteProject(ProjectNameDTO dto){
-        ProjectName projectName =convertToProjectName(dto);
+
+    public void deleteProject(ProjectNameDTO dto) {
+        ProjectName projectName = convertToProjectName(dto);
         dao.delete(projectName);
     }
-    public ArrayList<ProjectNameDTO> getAllDoneProject(int check){
+
+    public ArrayList<ProjectNameDTO> getAllDoneProject(int check) {
         ArrayList<ProjectName> projectNames = dao.getAllDone(check);
         ArrayList<ProjectNameDTO> nameDTOS = new ArrayList<>();
         for (ProjectName name :
@@ -65,10 +68,12 @@ public class ProjectNameService {
         }
         return nameDTOS;
     }
-    public ArrayList<String> getAllProjectName(){
+
+    public ArrayList<String> getAllProjectName() {
         return dao.getAllName();
     }
-    public ArrayList<String> getAllDoingProjectName(){
+
+    public ArrayList<String> getAllDoingProjectName() {
         return dao.getAllProjectNameDoing();
     }
 }

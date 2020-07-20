@@ -1,8 +1,6 @@
 package Controller;
 
-import DAO.PersonDao;
 import DTO.PersonDTO;
-import Model.Person;
 import Service.PersonService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -27,23 +25,26 @@ public class UpdatePerson implements Initializable {
     @FXML
     private RadioButton radioRetired;
     private PersonService service;
-    public UpdatePerson(){
+
+    public UpdatePerson() {
         service = new PersonService();
     }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         ToggleGroup group = new ToggleGroup();
         radioNow.setToggleGroup(group);
         radioRetired.setToggleGroup(group);
     }
-    public void setPerson(PersonDTO person){
+
+    public void setPerson(PersonDTO person) {
         txtID.setText(person.getId());
         txtName.setText(person.getName());
         color.setValue(Color.valueOf(person.getColor()));
-        if(person.getRetired()==0){
+        if (person.getRetired() == 0) {
             radioRetired.setSelected(false);
             radioNow.setSelected(true);
-        }else{
+        } else {
             radioNow.setSelected(false);
             radioRetired.setSelected(true);
         }
@@ -53,11 +54,11 @@ public class UpdatePerson implements Initializable {
         String id = txtID.getText();
         String name = txtName.getText();
         String txtColor = color.getValue().toString();
-        int retired=0;
-        if(radioRetired.isSelected())
-            retired=1;
+        int retired = 0;
+        if (radioRetired.isSelected())
+            retired = 1;
 
-        PersonDTO person = new PersonDTO(id,name,txtColor,retired);
+        PersonDTO person = new PersonDTO(id, name, txtColor, retired);
         service.updatePerson(person);
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Thông báo");

@@ -1,10 +1,10 @@
 package Controller;
 
 
-import DAO.PersonDao;
-import DAO.ProjectNameDao;
-import DAO.TaskDao;
-import Model.Task;
+import DTO.TaskDTO;
+import Service.PersonService;
+import Service.ProjectNameService;
+import Service.TaskService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -18,7 +18,6 @@ import javafx.scene.control.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-
 
 import java.io.IOException;
 import java.net.URL;
@@ -52,9 +51,14 @@ public class AddTaskViewController implements Initializable {
     Label finishTime;
     @FXML
     Label processed;
-
+    private PersonService personService;
+    private ProjectNameService projectNameService;
+    private TaskService taskService;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        taskService = new TaskService();
+        personService = new PersonService();
+        projectNameService = new ProjectNameService();
         setComboBox();
         Random random = new Random();
         int taskID = random.nextInt(899999) + 100000;
@@ -62,36 +66,36 @@ public class AddTaskViewController implements Initializable {
         processed.setText("0");
     }
 
-    public boolean validate(){
-        if(prName.getValue()==null){
+    public boolean validate() {
+        if (prName.getValue() == null) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Thông báo");
             alert.setHeaderText("Vui lòng chọn dự án!");
             alert.showAndWait();
             return false;
         }
-        if(name.getValue()==null){
+        if (name.getValue() == null) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Thông báo");
             alert.setHeaderText("Vui lòng chọn nhân sự");
             alert.showAndWait();
             return false;
         }
-        if(title.getText().equals("")){
+        if (title.getText().equals("")) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Thông báo");
             alert.setHeaderText("Vui lòng chọn tên công việc");
             alert.showAndWait();
             return false;
         }
-        if(startDate.getValue()==null){
+        if (startDate.getValue() == null) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Thông báo");
             alert.setHeaderText("Vui lòng chọn ngày bắt đầu");
             alert.showAndWait();
             return false;
         }
-        if(deadline.getValue()==null){
+        if (deadline.getValue() == null) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Thông báo");
             alert.setHeaderText("Vui lòng chọn ngày deadline");
@@ -101,8 +105,8 @@ public class AddTaskViewController implements Initializable {
         return true;
     }
 
-    public Task getTask() {
-        Task task = new Task();
+    public TaskDTO getTask() {
+        TaskDTO task = new TaskDTO();
         task.setId(id.getText());
         task.setPrName(prName.getValue());
         if (!name.getValue().contains("|"))
@@ -116,7 +120,7 @@ public class AddTaskViewController implements Initializable {
             task.setFinishDate(String.valueOf(finishDate.getValue()));
         }
         task.setExpectedTime(Integer.parseInt(expectedTime.getText()));
-        if(!finishTime.getText().equals("")){
+        if (!finishTime.getText().equals("")) {
             task.setFinishTime(Integer.parseInt(finishTime.getText()));
         }
         if (!processed.getText().equals("")) {
@@ -126,10 +130,8 @@ public class AddTaskViewController implements Initializable {
     }
 
     public void setComboBox() {
-        PersonDao personDao = new PersonDao();
-        ProjectNameDao projectNameDao = new ProjectNameDao();
-        ObservableList<String> prList = FXCollections.observableArrayList(projectNameDao.getAllProjectNameDoing());
-        ObservableList<String> personList = FXCollections.observableArrayList(personDao.getDoingIdName());
+        ObservableList<String> prList = FXCollections.observableArrayList(projectNameService.getAllDoingProjectName());
+        ObservableList<String> personList = FXCollections.observableArrayList(personService.getDoingPeopleIdName());
         prName.setItems(prList);
         name.setItems(personList);
     }
@@ -146,13 +148,14 @@ public class AddTaskViewController implements Initializable {
         int numberOfDays = 0;
         while (cal1.before(cal2)) {
             if ((Calendar.SATURDAY != cal1.get(Calendar.DAY_OF_WEEK))
-                    &&(Calendar.SUNDAY != cal1.get(Calendar.DAY_OF_WEEK))) {
+                    && (Calendar.SUNDAY != cal1.get(Calendar.DAY_OF_WEEK))) {
                 numberOfDays++;
             }
-            cal1.add(Calendar.DATE,1);
+            cal1.add(Calendar.DATE, 1);
         }
         return numberOfDays;
     }
+
     public void onPickStart(ActionEvent e) {
         Callback<DatePicker, DateCell> callback = new Callback<>() {
             @Override
@@ -170,6 +173,7 @@ public class AddTaskViewController implements Initializable {
         deadline.setDayCellFactory(callback);
         finishDate.setDayCellFactory(callback);
     }
+
     public void onPickDeadline(ActionEvent e) throws ParseException {
         LocalDate date1 = startDate.getValue();
         LocalDate date2 = deadline.getValue();
@@ -234,10 +238,9 @@ public class AddTaskViewController implements Initializable {
     }
 
     public void submit(ActionEvent e) {
-        if(validate()){
+        if (validate()) {
             Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-            TaskDao taskDao = new TaskDao();
-            taskDao.add(getTask());
+            taskService.addTask(getTask());
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Thông báo");
             alert.setHeaderText("Thêm thành công");

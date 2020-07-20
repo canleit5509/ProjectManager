@@ -3,9 +3,13 @@ package Controller;
 import DAO.PersonDao;
 import DAO.ProjectNameDao;
 import DAO.TaskDao;
+import DTO.PersonDTO;
+import DTO.TaskDTO;
 import Model.Person;
 import Model.ProjectName;
 import Model.Task;
+import Service.PersonService;
+import Service.TaskService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -34,39 +38,40 @@ public class PrimaryViewController implements Initializable {
     @FXML
     Button btnEdit;
     @FXML
-    TableView<Task> tbData;
+    TableView<TaskDTO> tbData;
     @FXML
-    TableColumn<Task, String> tcProjectName;
+    TableColumn<TaskDTO, String> tcProjectName;
     @FXML
-    TableColumn<Task, String> tcTask;
+    TableColumn<TaskDTO, String> tcTask;
     @FXML
-    TableColumn<Task, String> tcNgPTr;
+    TableColumn<TaskDTO, String> tcNgPTr;
     @FXML
-    TableColumn<Task, String> tcDateStart;
+    TableColumn<TaskDTO, String> tcDateStart;
     @FXML
-    TableColumn<Task, String> tcDeadline;
+    TableColumn<TaskDTO, String> tcDeadline;
     @FXML
-    TableColumn<Task, String> tcFinishDate;
+    TableColumn<TaskDTO, String> tcFinishDate;
     @FXML
-    TableColumn<Task, String> tcExpectedTime;
+    TableColumn<TaskDTO, String> tcExpectedTime;
     @FXML
-    TableColumn<Task, String> tcFinishTime;
+    TableColumn<TaskDTO, String> tcFinishTime;
     @FXML
-    TableColumn<Task, String> tcProcess;
-    private ObservableList<Task> listTask;
-
+    TableColumn<TaskDTO, String> tcProcess;
+    private ObservableList<TaskDTO> listTask;
+    TaskService taskService;
+    PersonService personService;
     public PrimaryViewController() {
-        TaskDao taskDao = new TaskDao();
-        listTask = FXCollections.observableArrayList(taskDao.getAll());
+         taskService = new TaskService();
+         personService = new PersonService();
+        listTask = FXCollections.observableArrayList(taskService.getAllTask());
     }
 
     public void refreshTable() {
-        TaskDao taskDao = new TaskDao();
-        ObservableList<Task> taskList = FXCollections.observableArrayList(taskDao.getAll());
+        ObservableList<TaskDTO> taskList = FXCollections.observableArrayList(taskService.getAllTask());
         tbData.setItems(taskList);
         tcProjectName.setCellFactory(new Callback<>() {
             @Override
-            public TableCell<Task, String> call(TableColumn<Task, String> taskStringTableColumn) {
+            public TableCell<TaskDTO, String> call(TableColumn<TaskDTO, String> taskStringTableColumn) {
                 return new TableCell<>() {
                     @Override
                     public void updateItem(String item, boolean empty) {
@@ -81,16 +86,15 @@ public class PrimaryViewController implements Initializable {
                 };
             }
         });
-        tcNgPTr.setCellFactory(new Callback<TableColumn<Task, String>, TableCell<Task, String>>() {
+        tcNgPTr.setCellFactory(new Callback<TableColumn<TaskDTO, String>, TableCell<TaskDTO, String>>() {
             @Override
-            public TableCell<Task, String> call(TableColumn<Task, String> taskStringTableColumn) {
+            public TableCell<TaskDTO, String> call(TableColumn<TaskDTO, String> taskStringTableColumn) {
                 return  new TableCell<>() {
                     @Override
                     public void updateItem(String item, boolean empty) {
                         super.updateItem(item, empty);
                         if (!isEmpty()) {
-                            PersonDao personDao = new PersonDao();
-                            Person person = personDao.get(item);
+                            PersonDTO person = personService.getPersonByName(item);
                             this.setStyle("-fx-background-color: #" + person.getColor().substring(2) + ";");
                             setText(item);
                         }
@@ -139,7 +143,7 @@ public class PrimaryViewController implements Initializable {
         Parent updateTaskParent = loader.load();
         Scene scene = new Scene(updateTaskParent);
         UpdateTaskViewController controller = loader.getController();
-        Task selected = tbData.getSelectionModel().getSelectedItem();
+        TaskDTO selected = tbData.getSelectionModel().getSelectedItem();
         if (selected == null) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Warning");
@@ -159,7 +163,7 @@ public class PrimaryViewController implements Initializable {
     }
 
     public void Delete(ActionEvent e) {
-        Task selected = (Task) tbData.getSelectionModel().getSelectedItem();
+        TaskDTO selected = (TaskDTO) tbData.getSelectionModel().getSelectedItem();
         if (selected == null) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Warning");
@@ -173,8 +177,7 @@ public class PrimaryViewController implements Initializable {
             if (option.get() == null) {
             } else if (option.get() == ButtonType.OK) {
                 tbData.getItems().remove(selected);
-                TaskDao taskDao = new TaskDao();
-                taskDao.delete(selected);
+                taskService.deleteTask(selected);
                 Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
                 alert2.setTitle("Thông báo");
                 alert2.setHeaderText("Đã xóa");
@@ -215,7 +218,7 @@ public class PrimaryViewController implements Initializable {
     }
 
     public void Clicked(MouseEvent mouseEvent) throws IOException {
-        Task selected = (Task) tbData.getSelectionModel().getSelectedItem();
+        TaskDTO selected = (TaskDTO) tbData.getSelectionModel().getSelectedItem();
         if(mouseEvent.getClickCount()==2 && selected!=null) {
             btnEdit.fire();
         }

@@ -22,7 +22,7 @@ public class UpdateProject implements Initializable {
     RadioButton radioNow;
     @FXML
     RadioButton radioDone;
-    String oldName="";
+    String oldName = "";
 
 
     @Override
@@ -31,14 +31,15 @@ public class UpdateProject implements Initializable {
         radioNow.setToggleGroup(group);
         radioDone.setToggleGroup(group);
     }
-    public void setProject(ProjectNameDTO projectName){
+
+    public void setProject(ProjectNameDTO projectName) {
         oldName = txtName.getText();
         txtName.setText(projectName.getProjectName());
         color.setValue(Color.valueOf(projectName.getProjectColor()));
-        if(projectName.getDone()==0){
+        if (projectName.getDone() == 0) {
             radioDone.setSelected(false);
             radioNow.setSelected(true);
-        }else{
+        } else {
             radioNow.setSelected(false);
             radioDone.setSelected(true);
         }
@@ -47,10 +48,10 @@ public class UpdateProject implements Initializable {
     public void okBtn(ActionEvent e) {
         String name = txtName.getText();
         String txtColor = color.getValue().toString();
-        int done=0;
-        if(radioDone.isSelected())
-            done=1;
-        ProjectNameDTO project = new ProjectNameDTO(name,txtColor,done);
+        int done = 0;
+        if (radioDone.isSelected())
+            done = 1;
+        ProjectNameDTO project = new ProjectNameDTO(name, txtColor, done);
         ProjectNameService service = new ProjectNameService();
         service.updateProject(project);
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
