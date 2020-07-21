@@ -1,18 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="1000.0" prefWidth="1920.0" stylesheets="@../CSS/PrimaryView.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.PrimaryViewController">
+<VBox prefHeight="1000.0" prefWidth="1920.0" stylesheets="@../CSS/PrimaryView.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.PrimaryViewController">
     <MenuBar VBox.vgrow="NEVER">
         <Menu text="File">
             <MenuItem text="Import" />
             <MenuItem text="Export" />
         </Menu>
     </MenuBar>
-    <ScrollPane>
+    <ScrollPane hbarPolicy="NEVER">
         <SplitPane dividerPositions="0.6666666666666666" nodeOrientation="LEFT_TO_RIGHT">
-            <TableView fx:id="tbData" editable="true" onMouseClicked="#Clicked" prefHeight="1000" prefWidth="1165.0">
+            <TableView fx:id="tbData" editable="true" onMouseClicked="#Clicked" prefWidth="950.0">
                 <columns>
                     <TableColumn fx:id="tcProjectName" prefWidth="100" text="Project" />
                     <TableColumn fx:id="tcTask" prefWidth="260" text="Task" />
@@ -27,9 +35,10 @@
                     </TableColumn>
                 </columns>
             </TableView>
-            <ScrollPane>
-                <TableView>
-
+            <ScrollPane hbarPolicy="ALWAYS" vbarPolicy="NEVER">
+                <TableView fx:id="tbDetailTask" prefHeight="1000.0" prefWidth="970.0">
+                    <columns>
+                    </columns>
                 </TableView>
             </ScrollPane>
         </SplitPane>

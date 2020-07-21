@@ -6,6 +6,7 @@ import DTO.TaskDTO;
 import Model.ProjectName;
 import Service.PersonService;
 import Service.TaskService;
+import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -26,6 +27,12 @@ import javafx.util.Callback;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.temporal.TemporalField;
+import java.time.temporal.WeekFields;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -35,6 +42,8 @@ public class PrimaryViewController implements Initializable {
     Button btnEdit;
     @FXML
     TableView<TaskDTO> tbData;
+    @FXML
+    TableView tbDetailTask;
     @FXML
     TableColumn<TaskDTO, String> tcProjectName;
     @FXML
@@ -56,9 +65,10 @@ public class PrimaryViewController implements Initializable {
     private ObservableList<TaskDTO> listTask;
     TaskService taskService;
     PersonService personService;
+
     public PrimaryViewController() {
-         taskService = new TaskService();
-         personService = new PersonService();
+        taskService = new TaskService();
+        personService = new PersonService();
         listTask = FXCollections.observableArrayList(taskService.getAllTask());
     }
 
@@ -85,7 +95,7 @@ public class PrimaryViewController implements Initializable {
         tcNgPTr.setCellFactory(new Callback<TableColumn<TaskDTO, String>, TableCell<TaskDTO, String>>() {
             @Override
             public TableCell<TaskDTO, String> call(TableColumn<TaskDTO, String> taskStringTableColumn) {
-                return  new TableCell<>() {
+                return new TableCell<>() {
                     @Override
                     public void updateItem(String item, boolean empty) {
                         super.updateItem(item, empty);
@@ -100,9 +110,53 @@ public class PrimaryViewController implements Initializable {
         });
     }
 
+    public void createDetailTask() {
+        tbDetailTask.getItems().addAll();
+        tbDetailTask.setEditable(true);
+        tbDetailTask.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
+        LocalDate localDateNow = LocalDate.now();
+        WeekFields weekFieldsf = WeekFields.of(DayOfWeek.MONDAY, 1);
+        TemporalField weekOfYear = weekFieldsf.weekOfYear();
+        int weekNumberNow = localDateNow.get(weekOfYear);
+        for (int i = 0; i <= 51; i++) {
+            TableColumn<TaskDTO, String> firstNameCol = new TableColumn<TaskDTO, String>("Tuần " + weekNumberNow);
+            ArrayList<String> dateList = new ArrayList<>();
+            dateList.add("Thứ hai");
+            dateList.add("Thứ ba");
+            dateList.add("Thứ tư");
+            dateList.add("Thứ năm");
+            dateList.add("Thứ sáu");
+            for(int j=0;j<=4;j++){
+                TableColumn<TaskDTO, String> subNameCol = new TableColumn<TaskDTO, String>(dateList.get(j));
+                subNameCol.setCellFactory(new Callback<>() {
+                    @Override
+                    public TableCell<TaskDTO, String> call(TableColumn<TaskDTO, String> taskStringTableColumn) {
+                        return new TableCell<>() {
+                            @Override
+                            public void updateItem(String item, boolean empty) {
+                                super.updateItem(item, empty);
+                                if (!isEmpty()) {
+                                    ProjectNameDao projectNameDao = new ProjectNameDao();
+                                    System.out.println("test thu");
+                                    ProjectName name = projectNameDao.get(item);
+                                    this.setStyle("-fx-background-color: #" + name.getProjectColor().substring(2) + ";");
+                                    setText(item);
+                                }
+                            }
+                        };
+                    }
+                });
+                firstNameCol.getColumns().add(subNameCol);
+            }
+            tbDetailTask.getColumns().add(firstNameCol);
+            weekNumberNow++;
+            weekNumberNow%=52;
+        }
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        createDetailTask();
         tbData.setEditable(true);
         tcProjectName.setEditable(true);
         tcProjectName.setCellValueFactory(new PropertyValueFactory<>("prName"));
@@ -121,7 +175,11 @@ public class PrimaryViewController implements Initializable {
         tcProcess.setEditable(true);
         tcProcess.setCellValueFactory(new PropertyValueFactory<>("processed"));
         tbData.setItems(listTask);
+        tbData.setMaxWidth(940);
         refreshTable();
+
+
+//        TableRow
     }
 
     //TODO:
@@ -224,7 +282,7 @@ public class PrimaryViewController implements Initializable {
 
     public void Clicked(MouseEvent mouseEvent) throws IOException {
         TaskDTO selected = (TaskDTO) tbData.getSelectionModel().getSelectedItem();
-        if(mouseEvent.getClickCount()==2 && selected!=null) {
+        if (mouseEvent.getClickCount() == 2 && selected != null) {
             btnEdit.fire();
         }
     }
