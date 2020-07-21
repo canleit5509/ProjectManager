@@ -15,9 +15,10 @@ public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/PrimaryView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/FXML/PrimaryView.fxml"));
         Scene scene = new Scene(root);
         primaryStage.setTitle("Project Manage");
+        primaryStage.setMaximized(true);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

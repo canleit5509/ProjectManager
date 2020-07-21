@@ -1,7 +1,6 @@
 package Controller;
 
 import DTO.PersonDTO;
-import Model.Person;
 import Service.PersonService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -47,7 +46,7 @@ public class ManagePerson implements Initializable {
     public void btnAdd(ActionEvent e) throws IOException {
         Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/AddPerson.fxml"));
+        loader.setLocation(getClass().getResource("/FXML/AddPerson.fxml"));
         Parent addProject = loader.load();
         Scene scene = new Scene(addProject);
         Stage addProjectWindow = new Stage();
@@ -72,7 +71,7 @@ public class ManagePerson implements Initializable {
         } else {
             Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/UpdatePerson.fxml"));
+            loader.setLocation(getClass().getResource("/FXML/UpdatePerson.fxml"));
             Parent addProject = loader.load();
             Scene scene = new Scene(addProject);
             Stage addProjectWindow = new Stage();

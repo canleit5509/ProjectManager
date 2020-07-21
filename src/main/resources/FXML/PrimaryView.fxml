@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox prefHeight="1000.0" prefWidth="1920.0" stylesheets="@../CSS/PrimaryView.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.PrimaryViewController">
+    <MenuBar VBox.vgrow="NEVER">
+        <Menu text="File">
+            <MenuItem text="Import" />
+            <MenuItem text="Export" />
+        </Menu>
+    </MenuBar>
+    <ScrollPane>
+        <SplitPane dividerPositions="0.6666666666666666" nodeOrientation="LEFT_TO_RIGHT">
+            <TableView fx:id="tbData" editable="true" onMouseClicked="#Clicked" prefHeight="1000" prefWidth="1165.0">
+                <columns>
+                    <TableColumn fx:id="tcProjectName" prefWidth="100" text="Project" />
+                    <TableColumn fx:id="tcTask" prefWidth="260" text="Task" />
+                    <TableColumn fx:id="tcNgPTr" prefWidth="80.0" text="Employee" />
+                    <TableColumn fx:id="tcDateStart" prefWidth="90" text="Start" />
+                    <TableColumn fx:id="tcDeadline" prefWidth="90" text="Deadline" />
+                    <TableColumn fx:id="tcFinishDate" prefWidth="90" text="Finish" />
+                    <TableColumn fx:id="tcExpectedTime" prefWidth="85" text="Expected Time" />
+                    <TableColumn fx:id="tcFinishTime" prefWidth="85.0" text="Finish Time" />
+                    <TableColumn fx:id="tcProcess" prefWidth="70.0">
+                        <text>% Process</text>
+                    </TableColumn>
+                </columns>
+            </TableView>
+            <ScrollPane>
+                <TableView>
+
+                </TableView>
+            </ScrollPane>
+        </SplitPane>
+    </ScrollPane>
+    <HBox alignment="CENTER" spacing="200">
+        <Button fx:id="btnAdd" layoutX="72.0" layoutY="550.0" mnemonicParsing="false" onAction="#addTask" text="Thêm" />
+        <Button fx:id="btnDel" layoutX="527.0" layoutY="550.0" mnemonicParsing="false" onAction="#Delete" text="Xoá" />
+        <Button fx:id="btnEdit" layoutX="350.0" layoutY="550.0" mnemonicParsing="false" onAction="#updateTask" text="Sửa" />
+        <Button layoutX="769.0" layoutY="550.0" mnemonicParsing="false" onAction="#btnProject" text="Project" />
+        <Button layoutX="951.0" layoutY="550.0" mnemonicParsing="false" onAction="#btnPerson" text="Person" />
+    </HBox>
+</VBox>

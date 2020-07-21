@@ -168,7 +168,7 @@ public class UpdateTaskViewController implements Initializable {
     public void AddProject(ActionEvent e) throws IOException {
         Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/AddProject.fxml"));
+        loader.setLocation(getClass().getResource("/FXML/AddProject.fxml"));
         Parent addProject = loader.load();
         Scene scene = new Scene(addProject);
         Stage addProjectWindow = new Stage();
@@ -183,7 +183,7 @@ public class UpdateTaskViewController implements Initializable {
     public void AddPerson(ActionEvent e) throws IOException {
         Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/AddPerson.fxml"));
+        loader.setLocation(getClass().getResource("/FXML/AddPerson.fxml"));
         Parent addProject = loader.load();
         Scene scene = new Scene(addProject);
         Stage addProjectWindow = new Stage();

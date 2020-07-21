@@ -1,13 +1,9 @@
 package Controller;
 
-import DAO.PersonDao;
 import DAO.ProjectNameDao;
-import DAO.TaskDao;
 import DTO.PersonDTO;
 import DTO.TaskDTO;
-import Model.Person;
 import Model.ProjectName;
-import Model.Task;
 import Service.PersonService;
 import Service.TaskService;
 import javafx.collections.FXCollections;
@@ -22,8 +18,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -107,14 +103,22 @@ public class PrimaryViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        tbData.setEditable(true);
+        tcProjectName.setEditable(true);
         tcProjectName.setCellValueFactory(new PropertyValueFactory<>("prName"));
+        tcProjectName.setCellFactory(TextFieldTableCell.forTableColumn());
+        tcTask.setEditable(true);
         tcTask.setCellValueFactory(new PropertyValueFactory<>("title"));
+        tcTask.setCellFactory(TextFieldTableCell.forTableColumn());
+        tcNgPTr.setEditable(true);
         tcNgPTr.setCellValueFactory(new PropertyValueFactory<>("name"));
+
         tcDateStart.setCellValueFactory(new PropertyValueFactory<>("startDate"));
         tcDeadline.setCellValueFactory(new PropertyValueFactory<>("deadline"));
         tcFinishDate.setCellValueFactory(new PropertyValueFactory<>("finishDate"));
         tcExpectedTime.setCellValueFactory(new PropertyValueFactory<>("expectedTime"));
         tcFinishTime.setCellValueFactory(new PropertyValueFactory<>("finishTime"));
+        tcProcess.setEditable(true);
         tcProcess.setCellValueFactory(new PropertyValueFactory<>("processed"));
         tbData.setItems(listTask);
         refreshTable();
@@ -124,7 +128,7 @@ public class PrimaryViewController implements Initializable {
     public void addTask(Event e) throws IOException {
         Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/AddTaskView.fxml"));
+        loader.setLocation(getClass().getResource("/FXML/AddTaskView.fxml"));
         Parent addTaskParent = loader.load();
         Scene scene = new Scene(addTaskParent);
         Stage addTaskWindow = new Stage();
@@ -139,7 +143,7 @@ public class PrimaryViewController implements Initializable {
     public void updateTask(ActionEvent e) throws IOException {
         Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/UpdateTaskView.fxml"));
+        loader.setLocation(getClass().getResource("/FXML/UpdateTaskView.fxml"));
         Parent updateTaskParent = loader.load();
         Scene scene = new Scene(updateTaskParent);
         UpdateTaskViewController controller = loader.getController();
@@ -191,7 +195,7 @@ public class PrimaryViewController implements Initializable {
     public void btnProject(ActionEvent e) throws IOException {
         Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/ProjectManagement.fxml"));
+        loader.setLocation(getClass().getResource("/FXML/ProjectManagement.fxml"));
         Parent addTaskParent = loader.load();
         Scene scene = new Scene(addTaskParent);
         Stage addTaskWindow = new Stage();
@@ -206,7 +210,7 @@ public class PrimaryViewController implements Initializable {
     public void btnPerson(ActionEvent e) throws IOException {
         Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/PersonManagement.fxml"));
+        loader.setLocation(getClass().getResource("/FXML/PersonManagement.fxml"));
         Parent addTaskParent = loader.load();
         Scene scene = new Scene(addTaskParent);
         Stage addTaskWindow = new Stage();

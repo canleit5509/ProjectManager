@@ -1,0 +1,9 @@
+.root{
+    -fx-font-size: 13;
+}
+.table-view {
+    -fx-size: 65px;
+}
+.button {
+    -fx-font: bolder;
+}
