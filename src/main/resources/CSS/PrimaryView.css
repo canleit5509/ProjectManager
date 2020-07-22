@@ -1,9 +1,16 @@
 .root{
     -fx-font-size: 13;
 }
-.table-view {
-    -fx-size: 65px;
+.table-view .column-header{
+    -fx-size: 47px;
+    -fx-cell-size: 30px;
+}
+.table-view{
+    -fx-max-width: 940px;
+}
+.table-view .column {
+    -fx-max-width: 50px;
 }
 .button {
-    -fx-font: bolder;
+    -fx-font-style: italic;
 }

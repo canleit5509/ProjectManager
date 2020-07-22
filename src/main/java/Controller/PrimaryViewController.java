@@ -23,14 +23,20 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import utils.Constant;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.WeekFields;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 
 public class PrimaryViewController implements Initializable {
+    private final ObservableList<TaskDTO> listTask;
     @FXML
     Button btnEdit;
     @FXML
@@ -53,12 +59,14 @@ public class PrimaryViewController implements Initializable {
     TableColumn<TaskDTO, String> tcFinishTime;
     @FXML
     TableColumn<TaskDTO, String> tcProcess;
-    private ObservableList<TaskDTO> listTask;
     TaskService taskService;
     PersonService personService;
+    @FXML
+    private TableView<String> tbDetail;
+
     public PrimaryViewController() {
-         taskService = new TaskService();
-         personService = new PersonService();
+        taskService = new TaskService();
+        personService = new PersonService();
         listTask = FXCollections.observableArrayList(taskService.getAllTask());
     }
 
@@ -85,7 +93,7 @@ public class PrimaryViewController implements Initializable {
         tcNgPTr.setCellFactory(new Callback<TableColumn<TaskDTO, String>, TableCell<TaskDTO, String>>() {
             @Override
             public TableCell<TaskDTO, String> call(TableColumn<TaskDTO, String> taskStringTableColumn) {
-                return  new TableCell<>() {
+                return new TableCell<>() {
                     @Override
                     public void updateItem(String item, boolean empty) {
                         super.updateItem(item, empty);
@@ -104,7 +112,9 @@ public class PrimaryViewController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         tbData.setEditable(true);
+        tbData.setMaxWidth(940);
         tcProjectName.setEditable(true);
+        tcProjectName.setText(Constant.PrimaryConstant.PROJECT_NAME);
         tcProjectName.setCellValueFactory(new PropertyValueFactory<>("prName"));
         tcProjectName.setCellFactory(TextFieldTableCell.forTableColumn());
         tcTask.setEditable(true);
@@ -112,7 +122,6 @@ public class PrimaryViewController implements Initializable {
         tcTask.setCellFactory(TextFieldTableCell.forTableColumn());
         tcNgPTr.setEditable(true);
         tcNgPTr.setCellValueFactory(new PropertyValueFactory<>("name"));
-
         tcDateStart.setCellValueFactory(new PropertyValueFactory<>("startDate"));
         tcDeadline.setCellValueFactory(new PropertyValueFactory<>("deadline"));
         tcFinishDate.setCellValueFactory(new PropertyValueFactory<>("finishDate"));
@@ -121,7 +130,14 @@ public class PrimaryViewController implements Initializable {
         tcProcess.setEditable(true);
         tcProcess.setCellValueFactory(new PropertyValueFactory<>("processed"));
         tbData.setItems(listTask);
+        tbDetail.setFixedCellSize(30);
+        //tbDetail.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         refreshTable();
+        for (int i = 0; i < 52; i++) {
+            detail(LocalDate.of(2020,1,1).plus(i, ChronoUnit.WEEKS));
+        }
+
+
     }
 
     //TODO:
@@ -167,7 +183,7 @@ public class PrimaryViewController implements Initializable {
     }
 
     public void Delete(ActionEvent e) {
-        TaskDTO selected = (TaskDTO) tbData.getSelectionModel().getSelectedItem();
+        TaskDTO selected = tbData.getSelectionModel().getSelectedItem();
         if (selected == null) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Warning");
@@ -223,9 +239,28 @@ public class PrimaryViewController implements Initializable {
     }
 
     public void Clicked(MouseEvent mouseEvent) throws IOException {
-        TaskDTO selected = (TaskDTO) tbData.getSelectionModel().getSelectedItem();
-        if(mouseEvent.getClickCount()==2 && selected!=null) {
+        TaskDTO selected = tbData.getSelectionModel().getSelectedItem();
+        if (mouseEvent.getClickCount() == 2 && selected != null) {
             btnEdit.fire();
         }
+    }
+
+    public String getDayOfMonth(LocalDate date) {
+        return date.getDayOfMonth() + "/" + date.getMonthValue();
+    }
+
+    public void detail(LocalDate date) {
+        date = date.minus(date.getDayOfWeek().getValue() - 1, ChronoUnit.DAYS);
+        WeekFields weekFields = WeekFields.of(Locale.getDefault());
+        int weekNumber = date.get(weekFields.weekOfWeekBasedYear());
+        TableColumn<String, String> tcWeek = new TableColumn(String.valueOf(weekNumber));
+        TableColumn<String, String> tcMon = new TableColumn(getDayOfMonth(date));
+        TableColumn<String, String> tcTue = new TableColumn(getDayOfMonth(date.plus(1, ChronoUnit.DAYS)));
+        TableColumn<String, String> tcWed = new TableColumn(getDayOfMonth(date.plus(2, ChronoUnit.DAYS)));
+        TableColumn<String, String> tcThu = new TableColumn(getDayOfMonth(date.plus(3, ChronoUnit.DAYS)));
+        TableColumn<String, String> tcFri = new TableColumn(getDayOfMonth(date.plus(4, ChronoUnit.DAYS)));
+        tcWeek.getColumns().addAll(tcMon, tcTue, tcWed, tcThu, tcFri);
+        tbDetail.getColumns().add(tcWeek);
+
     }
 }
