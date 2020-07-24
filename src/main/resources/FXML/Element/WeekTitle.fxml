@@ -3,7 +3,7 @@
 <?import Controller.element.RowDayTitle?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.VBox?>
-<fx:root type="javafx.scene.layout.VBox" xmlns:fx="http://javafx.com/fxml">
-    <Label></Label>
-    <RowDayTitle></RowDayTitle>
+<fx:root type="VBox" fx:controller="Controller.element.RowDayTitle" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1">
+    <Label fx:id="weekNum"/>
+    <RowDayTitle fx:id="rowDayTitle"/>
 </fx:root>

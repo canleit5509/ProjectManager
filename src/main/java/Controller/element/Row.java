@@ -17,7 +17,7 @@ public class Row extends HBox {
     @FXML
     Rectangle thu;
     @FXML
-    Rectangle fri;
+     Rectangle fri;
 
     public Row(){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/Element/Row.fxml"));

@@ -1,5 +1,6 @@
 package Controller;
 
+import Controller.element.WeekTitle;
 import DAO.ProjectNameDao;
 import DTO.PersonDTO;
 import DTO.TaskDTO;
@@ -20,6 +21,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -59,6 +61,8 @@ public class PrimaryViewController implements Initializable {
     TableColumn<TaskDTO, String> tcFinishTime;
     @FXML
     TableColumn<TaskDTO, String> tcProcess;
+    @FXML
+    HBox detail;
     TaskService taskService;
     PersonService personService;
     @FXML
@@ -114,7 +118,7 @@ public class PrimaryViewController implements Initializable {
         tbData.setEditable(true);
         tbData.setMaxWidth(940);
         tcProjectName.setEditable(true);
-        tcProjectName.setText(Constant.PrimaryConstant.PROJECT_NAME);
+        tcProjectName.setText(Constant.PrimaryViewConstant.PROJECT_NAME);
         tcProjectName.setCellValueFactory(new PropertyValueFactory<>("prName"));
         tcProjectName.setCellFactory(TextFieldTableCell.forTableColumn());
         tcTask.setEditable(true);
@@ -130,12 +134,14 @@ public class PrimaryViewController implements Initializable {
         tcProcess.setEditable(true);
         tcProcess.setCellValueFactory(new PropertyValueFactory<>("processed"));
         tbData.setItems(listTask);
-        tbDetail.setFixedCellSize(30);
-        //tbDetail.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        refreshTable();
-        for (int i = 0; i < 52; i++) {
-            detail(LocalDate.of(2020,1,1).plus(i, ChronoUnit.WEEKS));
-        }
+        WeekTitle weekTitle = new WeekTitle();
+        detail.getChildren().add(weekTitle);
+//        tbDetail.setFixedCellSize(30);
+//        //tbDetail.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+//        refreshTable();
+//        for (int i = 0; i < 52; i++) {
+//            detail(LocalDate.of(2020,1,1).plus(i, ChronoUnit.WEEKS));
+//        }
 
 
     }
@@ -166,8 +172,8 @@ public class PrimaryViewController implements Initializable {
         TaskDTO selected = tbData.getSelectionModel().getSelectedItem();
         if (selected == null) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Warning");
-            alert.setHeaderText("Vui lòng chọn công việc cần chỉnh sửa");
+            alert.setTitle(Constant.Alert.ALERT);
+            alert.setHeaderText(Constant.Alert.NOT_SELECT_EDIT);
             alert.show();
         } else {
             controller.setTask(selected);
@@ -186,7 +192,7 @@ public class PrimaryViewController implements Initializable {
         TaskDTO selected = tbData.getSelectionModel().getSelectedItem();
         if (selected == null) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Warning");
+            alert.setTitle(Constant.Alert.ALERT);
             alert.setHeaderText("Vui lòng chọn công việc cần xóa");
             alert.show();
         } else {

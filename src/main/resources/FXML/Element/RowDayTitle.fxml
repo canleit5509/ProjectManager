@@ -2,10 +2,10 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.HBox?>
-<fx:root type="javafx.scene.layout.HBox">
-    <Label maxHeight="5" maxWidth="5"/>
-    <Label maxHeight="5" maxWidth="5"/>
-    <Label maxHeight="5" maxWidth="5"/>
-    <Label maxHeight="5" maxWidth="5"/>
-    <Label maxHeight="5" maxWidth="5"/>
+<fx:root type="HBox" fx:controller="Controller.element.RowDayTitle" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1">
+    <Label fx:id="mon" maxHeight="5" maxWidth="5"/>
+    <Label fx:id="tue" maxHeight="5" maxWidth="5"/>
+    <Label fx:id="wed" maxHeight="5" maxWidth="5"/>
+    <Label fx:id="thu" maxHeight="5" maxWidth="5"/>
+    <Label fx:id="fri" maxHeight="5" maxWidth="5"/>
 </fx:root>
