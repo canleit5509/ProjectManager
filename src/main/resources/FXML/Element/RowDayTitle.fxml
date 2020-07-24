@@ -2,10 +2,11 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.HBox?>
-<fx:root type="HBox" fx:controller="Controller.element.RowDayTitle" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1">
-    <Label fx:id="mon" maxHeight="5" maxWidth="5"/>
-    <Label fx:id="tue" maxHeight="5" maxWidth="5"/>
-    <Label fx:id="wed" maxHeight="5" maxWidth="5"/>
-    <Label fx:id="thu" maxHeight="5" maxWidth="5"/>
-    <Label fx:id="fri" maxHeight="5" maxWidth="5"/>
+<fx:root type="HBox" fx:controller="Controller.element.RowDayTitle" xmlns="http://javafx.com/javafx/10.0.1"
+         xmlns:fx="http://javafx.com/fxml/1">
+    <Label fx:id="mon" maxHeight="5" maxWidth="5" layoutX="-Infinity" layoutY="-Infinity" text="Mon"/>
+    <Label fx:id="tue" maxHeight="5" maxWidth="5" layoutX="-Infinity" layoutY="-Infinity" text="Tue"/>
+    <Label fx:id="wed" maxHeight="5" maxWidth="5" layoutX="-Infinity" layoutY="-Infinity" text="Wed"/>
+    <Label fx:id="thu" maxHeight="5" maxWidth="5" layoutX="-Infinity" layoutY="-Infinity" text="Thu"/>
+    <Label fx:id="fri" maxHeight="5" maxWidth="5" layoutX="-Infinity" layoutY="-Infinity" text="Fri"/>
 </fx:root>

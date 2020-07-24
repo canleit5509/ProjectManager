@@ -1,5 +1,6 @@
 package Controller;
 
+import Controller.element.RowDayTitle;
 import Controller.element.WeekTitle;
 import DAO.ProjectNameDao;
 import DTO.PersonDTO;
@@ -134,8 +135,9 @@ public class PrimaryViewController implements Initializable {
         tcProcess.setEditable(true);
         tcProcess.setCellValueFactory(new PropertyValueFactory<>("processed"));
         tbData.setItems(listTask);
-        WeekTitle weekTitle = new WeekTitle();
-        detail.getChildren().add(weekTitle);
+        //WeekTitle weekTitle = new WeekTitle();
+        RowDayTitle dayTitle = new RowDayTitle();
+        detail.getChildren().add(dayTitle);
 //        tbDetail.setFixedCellSize(30);
 //        //tbDetail.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 //        refreshTable();
