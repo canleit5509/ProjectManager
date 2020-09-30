@@ -5,6 +5,7 @@ import DTO.PersonDTO;
 import DTO.TaskDTO;
 import Model.ProjectName;
 import Service.PersonService;
+import Service.ProjectNameService;
 import Service.TaskService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,7 +20,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -53,13 +53,17 @@ public class PrimaryViewController implements Initializable {
     TableColumn<TaskDTO, String> tcFinishTime;
     @FXML
     TableColumn<TaskDTO, String> tcProcess;
-    private ObservableList<TaskDTO> listTask;
     TaskService taskService;
     PersonService personService;
+    ProjectNameService projectNameService;
+    private ObservableList<TaskDTO> listTask;
+
     public PrimaryViewController() {
-         taskService = new TaskService();
-         personService = new PersonService();
+        taskService = new TaskService();
+        personService = new PersonService();
+        projectNameService = new ProjectNameService();
         listTask = FXCollections.observableArrayList(taskService.getAllTask());
+
     }
 
     public void refreshTable() {
@@ -75,6 +79,7 @@ public class PrimaryViewController implements Initializable {
                         if (!isEmpty()) {
                             ProjectNameDao projectNameDao = new ProjectNameDao();
                             ProjectName name = projectNameDao.get(item);
+//                            name = projectNameService.getProjectName(item);
                             this.setStyle("-fx-background-color: #" + name.getProjectColor().substring(2) + ";");
                             setText(item);
                         }
@@ -85,7 +90,7 @@ public class PrimaryViewController implements Initializable {
         tcNgPTr.setCellFactory(new Callback<TableColumn<TaskDTO, String>, TableCell<TaskDTO, String>>() {
             @Override
             public TableCell<TaskDTO, String> call(TableColumn<TaskDTO, String> taskStringTableColumn) {
-                return  new TableCell<>() {
+                return new TableCell<>() {
                     @Override
                     public void updateItem(String item, boolean empty) {
                         super.updateItem(item, empty);
@@ -112,7 +117,6 @@ public class PrimaryViewController implements Initializable {
         tcTask.setCellFactory(TextFieldTableCell.forTableColumn());
         tcNgPTr.setEditable(true);
         tcNgPTr.setCellValueFactory(new PropertyValueFactory<>("name"));
-
         tcDateStart.setCellValueFactory(new PropertyValueFactory<>("startDate"));
         tcDeadline.setCellValueFactory(new PropertyValueFactory<>("deadline"));
         tcFinishDate.setCellValueFactory(new PropertyValueFactory<>("finishDate"));
@@ -122,6 +126,12 @@ public class PrimaryViewController implements Initializable {
         tcProcess.setCellValueFactory(new PropertyValueFactory<>("processed"));
         tbData.setItems(listTask);
         refreshTable();
+        tbData.setOnMouseClicked(mouseEvent -> {
+            TaskDTO selected = (TaskDTO) tbData.getSelectionModel().getSelectedItem();
+            if (mouseEvent.getClickCount() == 2 && selected != null) {
+                btnEdit.fire();
+            }
+        });
     }
 
     //TODO:
@@ -220,12 +230,5 @@ public class PrimaryViewController implements Initializable {
         addTaskWindow.initOwner(stage);
         addTaskWindow.showAndWait();
         refreshTable();
-    }
-
-    public void Clicked(MouseEvent mouseEvent) throws IOException {
-        TaskDTO selected = (TaskDTO) tbData.getSelectionModel().getSelectedItem();
-        if(mouseEvent.getClickCount()==2 && selected!=null) {
-            btnEdit.fire();
-        }
     }
 }
